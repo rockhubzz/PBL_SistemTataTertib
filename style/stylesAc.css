@@ -1,0 +1,103 @@
+/* Header Styles */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(90deg, rgba(59, 78, 135, 0.8), rgba(25, 42, 86, 0.8));
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+header .logo {
+    display: flex;
+    align-items: center;
+}
+
+header .logo img {
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+    border-radius: 50%;
+}
+
+header h1 {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+header nav a.btn {
+    background: #ffc107;
+    color: #27365a;
+    padding: 10px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+}
+
+header nav a.btn:hover {
+    background: #ff9800;
+}
+body {
+    font-family: 'Poppins', Arial, sans-serif; /* Font modern */
+    color: white;
+    background: url('po.jpg') center center/cover no-repeat, rgba(59, 78, 135, 0.9);
+    background-blend-mode: overlay;
+}
+/* About and Contact Content */
+main {
+    padding: 50px;
+    font-family: 'Poppins', Arial, sans-serif;
+    color: #333;
+}
+
+.about-content, .contact-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.about-content h2, .contact-content h2 {
+    font-size: 30px;
+    color: #ffdd57;
+    margin-bottom: 20px;
+}
+
+.about-content p, .contact-content p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* Contact Form */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+form input, form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+form button {
+    background: #ffc107;
+    color: #27365a;
+    padding: 12px;
+    border: none;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+form button:hover {
+    background: #ff9800;
+    transform: scale(1.05);
+}
