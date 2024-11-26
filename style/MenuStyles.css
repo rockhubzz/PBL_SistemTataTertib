@@ -262,3 +262,50 @@ body {
 .toggle-btn.collapsed {
     left: 50px;
 }
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  .dropdown a {
+    text-decoration: none;
+    padding: 10px 20px;
+    color: #000;
+    background-color: #f1f1f1;
+    border-radius: 4px;
+  }
+
+  .dropdown a:hover {
+    background-color: #ddd;
+  }
+
+  /* Pop-up menu styling */
+  .dropdown-menu {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 100%; /* Position below the anchor */
+    left: 500;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 150px;
+  }
+
+  .dropdown-menu a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #000;
+  }
+
+  .dropdown-menu a:hover {
+    background-color: #f1f1f1;
+  }
+
+  /* Show the menu on hover */
+  .dropdown:hover .dropdown-menu {
+    display: block;
+  }

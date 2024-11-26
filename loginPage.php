@@ -28,22 +28,21 @@
         <h1>Masuk ke Sistem</h1>
         <p>Pilih login sebagai Admin, Dosen, atau Mahasiswa.</p>
         
-        <!-- Role Selection Form -->
-        <div class="user-options">
-          <form method="POST">
+        <!-- Login Form -->
+        <form action="login.php" method="POST">
+          <!-- Role Selection -->
+          <div class="user-options">
               <input type="radio" id="admin" name="role" value="Admin" required>
               <label for="admin">Admin</label>
-  
+
               <input type="radio" id="dosen" name="role" value="Dosen" required>
               <label for="dosen">Dosen</label>
-  
+
               <input type="radio" id="mahasiswa" name="role" value="Mahasiswa" required>
               <label for="mahasiswa">Mahasiswa</label>
-          </form>
-        </div>
-        
-        <!-- User Login Form -->
-        <form method="POST">
+          </div>
+
+          <!-- User Login -->
           <div class="input-group">
             <input type="text" name="username" placeholder="Masukkan ID" required>
           </div>

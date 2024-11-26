@@ -29,7 +29,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = isset($_POST['password']) ? trim($_POST['password']) : '';
     $role = isset($_POST['role']) ? trim($_POST['role']) : '';
 
-
+    if (empty($role)) {
+        $errorMessage = "Pilih Admin, Dosen, atau Mahasiswa.";
+    } else {
         // Query to fetch user details
         $sql = "SELECT * FROM dbo.Users WHERE username = ? AND password = ? AND role = ?";
         $params = array($username, $password, $role);
@@ -47,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Redirect based on role
             switch (strtolower($role)) {
                 case 'admin':
-                    header("Location: admin.php");
+                    header("Location: AdminMenu.php");
                     break;
                 case 'dosen':
                     header("Location: dosen.php");
@@ -60,9 +62,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             $errorMessage = "Invalid username, password, or role.";
         }
-        if($role == null){
-            $errorMessage = "Pilih Admin, dosen, atau mahasiswa.";
-        }
     }
-
+}
 ?>
