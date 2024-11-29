@@ -39,12 +39,11 @@ if ($stmt && sqlsrv_has_rows($stmt)) {
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $new_username = $_POST['new_username'];
     $new_password = $_POST['new_password'];
 
     // Update username and/or password
-    $update_query = "UPDATE dbo.Users SET username = ?, password = ? WHERE user_id = ?";
-    $params = array($new_username, $new_password, $user_key); // Use hashed passwords in production
+    $update_query = "UPDATE dbo.Users SET password = ? WHERE user_id = ?";
+    $params = array($new_password, $user_key); // Use hashed passwords in production
     $update_stmt = sqlsrv_query($conn, $update_query, $params);
 
     if ($update_stmt) {
@@ -124,13 +123,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <div class="update-container">
-        <h2>Update Profile</h2>
+        <h2>Update Password</h2>
         <?php if ($message): ?>
             <div class="message"><?= htmlspecialchars($message) ?></div>
         <?php endif; ?>
         <form action="update_profile.php" method="post">
-            <label for="new_username">New Username:</label>
-            <input type="text" name="new_username" id="new_username" value="<?= htmlspecialchars($current_username) ?>" required>
             <label for="new_password">New Password:</label>
             <input type="password" name="new_password" id="new_password" required>
             <button type="submit">Update</button>

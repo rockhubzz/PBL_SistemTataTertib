@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Modern Login Page</title>
+  <title>Login</title>
   <link rel="stylesheet" href="style/LoginStyles.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
@@ -13,7 +13,7 @@
     <!-- Header -->
     <div class="header">
       <div class="logo">
-        <img src="logop.png" alt="Logo Politeknik">
+        <img src="img/logoPoltek.png" alt="Logo Politeknik">
       </div>
       <div class="title">
         <h1>Politeknik Negeri Malang</h1>
@@ -54,13 +54,15 @@
         
         <!-- Error Message -->
         <?php if (!empty($errorMessage)): ?>
-          <p style="color: red;"><?= htmlspecialchars($errorMessage); ?></p>
+          <div class="error-message">
+            <p style="color: red;"><?= htmlspecialchars($errorMessage); ?></p>
+          </div>
         <?php endif; ?>
       </div>
-
+      
       <!-- Additional Logo -->
       <div class="extra-logo">
-        <img src="logop.png" alt="Logo Politeknik" class="extra-logo-img">
+        <img src="img/logoPoltek.png" alt="Logo Politeknik" class="extra-logo-img">
       </div>
     </div>
 
