@@ -40,16 +40,22 @@ if ($stmt && sqlsrv_has_rows($stmt)) {
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $new_password = $_POST['new_password'];
+    $confirm_password = $_POST['confirm_password'];
 
-    // Update username and/or password
-    $update_query = "UPDATE dbo.Users SET password = ? WHERE user_id = ?";
-    $params = array($new_password, $user_key); // Use hashed passwords in production
-    $update_stmt = sqlsrv_query($conn, $update_query, $params);
+    // Check if passwords match
+    if ($new_password === $confirm_password) {
+        // Update password
+        $update_query = "UPDATE dbo.Users SET password = ? WHERE user_id = ?";
+        $params = array($new_password, $user_key); // Use hashed passwords in production
+        $update_stmt = sqlsrv_query($conn, $update_query, $params);
 
-    if ($update_stmt) {
-        $message = "Profile updated successfully!";
+        if ($update_stmt) {
+            $message = "Profile updated successfully!";
+        } else {
+            $message = "Failed to update profile: " . print_r(sqlsrv_errors(), true);
+        }
     } else {
-        $message = "Failed to update profile: " . print_r(sqlsrv_errors(), true);
+        $message = "Passwords do not match. Please try again.";
     }
 }
 ?>
@@ -108,6 +114,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-weight: bold;
             color: green;
         }
+        .error-message {
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: red;
+        }
         .login-link {
             margin-top: 10px;
             text-align: center;
@@ -125,11 +137,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="update-container">
         <h2>Update Password</h2>
         <?php if ($message): ?>
-            <div class="message"><?= htmlspecialchars($message) ?></div>
+            <div class="<?= strpos($message, 'successfully') !== false ? 'message' : 'error-message' ?>">
+                <?= htmlspecialchars($message) ?>
+            </div>
         <?php endif; ?>
         <form action="update_profile.php" method="post">
             <label for="new_password">New Password:</label>
             <input type="password" name="new_password" id="new_password" required>
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" name="confirm_password" id="confirm_password" required>
             <button type="submit">Update</button>
         </form>
     </div>
