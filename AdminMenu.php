@@ -88,7 +88,7 @@
         </div>
         <div class="menu">
             <a href="#"><i class="fas fa-home"></i><span>Dashboard</span></a>
-            <a href="#"><i class="fas fa-user"></i><span>Data Mahasiswa</span></a>
+            <a href="admin_kelolaMhs.php"><i class="fas fa-user"></i><span>Data Mahasiswa</span></a>
             <a href="#"><i class="fas fa-book"></i><span>Data Dosen</span></a>
             <a href="#"><i class="fas fa-warning"></i><span>Pelanggaran</span></a>
             <a href="#"><i class="fas fa-envelope"></i><span>Notifikasi</span></a>
