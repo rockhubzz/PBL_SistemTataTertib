@@ -45,6 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (sqlsrv_has_rows($stmt)) {
             $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
             $_SESSION['user_key'] = $row['user_id'];
+            $_SESSION['profile_name'] = $row['nama'];
 
             // Redirect based on role
             switch (strtolower($role)) {
@@ -61,6 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         } else {
             $errorMessage = "Invalid username, password, or role.";
+            header("location: loginPage.php");
         }
     }
 }

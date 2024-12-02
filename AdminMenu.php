@@ -1,9 +1,12 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Tata Tertib Mahasiswa</title>
+    <title>Dashboard Admin</title>
     <link rel="stylesheet" href="style/MenuStyles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -81,7 +84,7 @@
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="logo">
-            <img src="logo.png" alt="Logo">
+            <img src="img/logoPoltek.png" alt="Logo">
         </div>
         <div class="menu">
             <a href="#"><i class="fas fa-home"></i><span>Dashboard</span></a>
@@ -107,11 +110,12 @@
                 </div>
             </div>
             <div class="profile dropdown">
-                <img src="profile.jpg" alt="Profile Picture">
+                <img src="img/profile.png" alt="Profile Picture">
                 <div class="dropdown-menu">
                     <a href="update_profile.php">Change Password</a>
                     <a href="logout.php">Log Out</a>
                 </div>
+                <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
             </div>
         </div>
     </div>
@@ -154,7 +158,7 @@
         // Sidebar toggle functionality
         toggleBtn.addEventListener('click', () => {
             sidebar.classList.toggle('collapsed');
-            main.classList.toggle('collapsed');
+            //main.classList.toggle('collapsed');
             toggleBtn.textContent = sidebar.classList.contains('collapsed') ? '>' : '<';
         });
 
