@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     header("Location: AdminMenu.php");
                     break;
                 case 'dosen':
-                    header("Location: dosen.php");
+                    header("Location: dosenMenu.php");
                     break;
                 case 'mahasiswa':
                     header("Location: mahasiswa.php");
