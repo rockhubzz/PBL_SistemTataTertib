@@ -35,16 +35,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 // Fetch Pelanggaran data
-$query = "SELECT p.id_pelanggaran, 
-                 p.nim_pelanggar, 
-                 u.nama AS nama_pelanggar, 
-                 p.reported_by_id, 
-                 p.bukti, 
-                 p.tingkat_pelanggaran, 
-                 p.tanggal_pelanggaran, 
-                 p.status 
-          FROM dbo.Pelanggaran p
-          JOIN dbo.Users u ON p.reported_by_id = u.user_id";
+$query = "SELECT 
+    p.id_pelanggaran, 
+    p.nim_pelanggar, 
+    u.nama AS nama_pelanggar, 
+    u2.nama AS nama_pelapor,
+    p.bukti, 
+    p.tingkat_pelanggaran, 
+    p.tanggal_pelanggaran, 
+    p.status 
+FROM dbo.Pelanggaran p
+JOIN dbo.Mahasiswa m ON m.nim = p.nim_pelanggar
+JOIN dbo.Users u ON m.user_id = u.user_id
+JOIN dbo.Users u2 ON p.reported_by_id = u2.user_id
+ORDER BY p.id_pelanggaran DESC
+";
 
 $stmt = sqlsrv_query($conn, $query);
 if ($stmt === false) {
@@ -140,6 +145,31 @@ if ($stmt === false) {
             </a>
         </div>
     </div>
+        <!-- Topbar -->
+        <div class="topbar" id="topbar">
+        <div class="profile-notifications">
+            <div class="notifications" id="notification-icon">
+                <i class="fas fa-bell"></i>
+                <div class="notification-dropdown" id="notification-dropdown">
+                    <h4>Notifikasi</h4>
+                    <ul>
+                        <li>Pelanggaran baru oleh mahasiswa A.</li>
+                        <li>Dosen B mengajukan revisi data.</li>
+                        <li>Pengingat rapat pukul 10.00.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="profile dropdown">
+                <img src="img/profile.png" alt="Profile Picture">
+                <div class="dropdown-menu">
+                    <a href="update_profile.php">Change Password</a>
+                    <a href="logout.php">Log Out</a>
+                </div>
+                <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Main Content -->
     <div class="main">
@@ -152,7 +182,7 @@ if ($stmt === false) {
                             <th>ID Pelanggaran</th>
                             <th>NIM Pelanggar</th>
                             <th>Nama Pelanggar</th>
-                            <th>Reported By</th>
+                            <th>Pelapor</th>
                             <th>Bukti</th>
                             <th>Tingkat Pelanggaran</th>
                             <th>Tanggal Pelanggaran</th>
@@ -165,7 +195,7 @@ if ($stmt === false) {
                                 <td><?= htmlspecialchars($row['id_pelanggaran']) ?></td>
                                 <td><?= htmlspecialchars($row['nim_pelanggar']) ?></td>
                                 <td><?= htmlspecialchars($row['nama_pelanggar']) ?></td>
-                                <td><?= htmlspecialchars($row['reported_by_id']) ?></td>
+                                <td><?= htmlspecialchars($row['nama_pelapor']) ?></td>
                                 <td>
                                     <?php if ($row['bukti']): ?>
                                         <a href="uploads/<?= htmlspecialchars($row['bukti']) ?>" target="_blank"><?= htmlspecialchars($row['bukti']) ?></a>
