@@ -38,6 +38,7 @@ if (!$stmt) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,21 +46,26 @@ if (!$stmt) {
     <link rel="stylesheet" href="style/MenuStyles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .content-table {
+        .table-container {
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
-        .content-table, th, td {
-            border: 1px solid #ccc;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-            color: #f2f2f2;
-            background-color: #254988;
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+            color: black;
         }
 
         th {
@@ -76,35 +82,37 @@ if (!$stmt) {
             flex-direction: column;
             gap: 20px;
         }
-        #selectedMenu{
+
+        #selectedMenu {
             background-color: #353f4f;
         }
     </style>
 </head>
+
 <body>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-    <div class="logo">
-        <img src="img/logoPoltek.png" alt="Logo">
+        <div class="logo">
+            <img src="img/LogoPLTK.png" alt="Logo">
+        </div>
+        <div class="menu">
+            <a href="AdminMenu.php" class="<?= ($current_page == 'AdminMenu.php') ? 'active' : '' ?>">
+                <i class="fas fa-home"></i><span>Dashboard</span>
+            </a>
+            <a href="admin_kelolaMhs.php" class="<?= ($current_page == 'admin_kelolaMhs.php') ? 'active' : '' ?>">
+                <i class="fas fa-user"></i><span>Data Mahasiswa</span>
+            </a>
+            <a href="admin_kelolaDsn.php" class="<?= ($current_page == 'admin_kelolaDsn.php') ? 'active' : '' ?>">
+                <i class="fas fa-book"></i><span>Data Dosen</span>
+            </a>
+            <a href="admin_laporanMasuk.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
+                <i class="fas fa-warning"></i><span>Laporan Masuk</span>
+            </a>
+            <a href="admin_notifikasi.php" class="<?= ($current_page == 'admin_notifikasi.php') ? 'active' : '' ?>">
+                <i class="fas fa-envelope"></i><span>Notifikasi</span>
+            </a>
+        </div>
     </div>
-    <div class="menu">
-        <a href="AdminMenu.php" class="<?= ($current_page == 'AdminMenu.php') ? 'active' : '' ?>">
-            <i class="fas fa-home"></i><span>Dashboard</span>
-        </a>
-        <a href="admin_kelolaMhs.php" class="<?= ($current_page == 'admin_kelolaMhs.php') ? 'active' : '' ?>">
-            <i class="fas fa-user"></i><span>Data Mahasiswa</span>
-        </a>
-        <a href="admin_kelolaDsn.php" class="<?= ($current_page == 'admin_kelolaDsn.php') ? 'active' : '' ?>">
-            <i class="fas fa-book"></i><span>Data Dosen</span>
-        </a>
-        <a href="admin_laporanMasuk.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
-            <i class="fas fa-warning"></i><span>Laporan Masuk</span>
-        </a>
-        <a href="admin_notifikasi.php" class="<?= ($current_page == 'admin_notifikasi.php') ? 'active' : '' ?>">
-            <i class="fas fa-envelope"></i><span>Notifikasi</span>
-        </a>
-    </div>
-</div>
     <!-- Topbar -->
     <div class="topbar" id="topbar">
         <div class="profile-notifications">
@@ -133,8 +141,8 @@ if (!$stmt) {
     <!-- Main Content -->
     <div class="main" id="main">
         <h2>Data Mahasiswa</h2>
-        <div class="dashboard-content">
-            <table class="content-table">
+        <div class="table-container">
+            <table>
                 <thead>
                     <tr>
                         <th>NIM</th>
@@ -169,4 +177,5 @@ if (!$stmt) {
         });
     </script>
 </body>
+
 </html>

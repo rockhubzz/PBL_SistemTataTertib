@@ -45,20 +45,25 @@ if (!$stmt) {
     <link rel="stylesheet" href="style/MenuStyles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .content-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+       .table-container {
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .content-table, th, td {
-            border: 1px solid #ccc;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
         }
 
         th, td {
-            padding: 12px;
-            text-align: left;
-            background-color: #264a8a;
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+            color: black;
         }
 
         th {
@@ -81,7 +86,7 @@ if (!$stmt) {
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
     <div class="logo">
-        <img src="img/logoPoltek.png" alt="Logo">
+        <img src="img/LogoPLTK.png" alt="Logo">
     </div>
     <div class="menu">
         <a href="AdminMenu.php" class="<?= ($current_page == 'AdminMenu.php') ? 'active' : '' ?>">
@@ -130,8 +135,8 @@ if (!$stmt) {
     <!-- Main Content -->
     <div class="main" id="main">
         <h2>Data Dosen</h2>
-        <div class="dashboard-content">
-            <table class="content-table">
+        <div class="table-container">
+            <table>
                 <thead>
                     <tr>
                         <th>NIP</th>
