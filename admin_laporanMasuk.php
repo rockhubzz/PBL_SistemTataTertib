@@ -47,7 +47,8 @@ $query = "SELECT
 FROM dbo.Pelanggaran p
 JOIN dbo.Mahasiswa m ON m.nim = p.nim_pelanggar
 JOIN dbo.Users u ON m.user_id = u.user_id
-JOIN dbo.Users u2 ON p.reported_by_id = u2.user_id;
+JOIN dbo.Users u2 ON p.reported_by_id = u2.user_id
+ORDER BY p.id_pelanggaran DESC
 ";
 
 $stmt = sqlsrv_query($conn, $query);

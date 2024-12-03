@@ -30,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_report'])) {
     $tingkat_pelanggaran = $_POST['tingkat_pelanggaran'];
     $tanggal_pelanggaran = $_POST['tanggal_pelanggaran'];
     $status = 'Pending'; // Default status for new reports
+    $jenis_pelanggaran = $_POST['jenis_pelanggaran'];
 
     // Handle file upload
     $bukti = null;
@@ -44,9 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_report'])) {
     }
 
     // Insert into database
-    $queryInsert = "INSERT INTO dbo.Pelanggaran (nim_pelanggar, reported_by_id, tingkat_pelanggaran, tanggal_pelanggaran, bukti, status)
-                    VALUES (?, ?, ?, ?, ?, ?)";
-    $params = [$nim_pelanggar, $reported_by_id, $tingkat_pelanggaran, $tanggal_pelanggaran, $bukti, $status];
+    $queryInsert = "INSERT INTO dbo.Pelanggaran (nim_pelanggar, reported_by_id, tingkat_pelanggaran, tanggal_pelanggaran, bukti, status, jenis_pelanggaran)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $params = [$nim_pelanggar, $reported_by_id, $tingkat_pelanggaran, $tanggal_pelanggaran, $bukti, $status, $jenis_pelanggaran];
 
     $stmtInsert = sqlsrv_query($conn, $queryInsert, $params);
     if ($stmtInsert === false) {
@@ -264,10 +265,10 @@ select:focus {
 
     <!-- Main Content -->
     <div class="main">
-        <h2>Create a New Report</h2>
+        <h2>Buat Laporan</h2>
         <div class="form-container">
     <?php if (isset($_GET['success'])): ?>
-        <p class="success-message">Report successfully created!</p>
+        <p class="success-message">Laporan berhasil dibuat!</p>
     <?php endif; ?>
     <form method="POST" enctype="multipart/form-data">
         <div class="form-group">
@@ -279,6 +280,7 @@ select:focus {
         </div>
         <?php if ($student): ?>
             <p style="color: green;">Mahasiswa found: <?= htmlspecialchars($student['nama']) ?> (NIM: <?= htmlspecialchars($student['nim']) ?>)</p>
+            <p style="color: black">Masukkan NIM Pelanggar pada form NIM</p><br>
         <?php elseif (!$student && !empty($nimOrNama)): ?>
             <p style="color: red;">Mahasiswa not found.</p>
         <?php endif; ?>
@@ -289,16 +291,23 @@ select:focus {
             <input type="text" value="<?= htmlspecialchars($_SESSION['profile_name']) ?>" readonly>
         </div>
         <div class="form-group">
-            <label for="tingkat_pelanggaran">Tingkat Pelanggaran</label>
-            <select id="tingkat_pelanggaran" name="tingkat_pelanggaran" required>
-                <option value="" disabled selected>Select Level</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
-        </div>
+    <label for="tingkat_pelanggaran">Tingkat Pelanggaran</label>
+    <select id="tingkat_pelanggaran" name="tingkat_pelanggaran" required onchange="updateJenisPelanggaran()">
+        <option value="" disabled selected>Select Level</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+</div>
+<div class="form-group">
+    <label for="jenis_pelanggaran">Jenis Pelanggaran</label>
+    <select id="jenis_pelanggaran" name="jenis_pelanggaran" required>
+        <option value="" disabled selected>Select Type</option>
+        <!-- Options will be dynamically updated here -->
+    </select>
+</div>
         <div class="form-group">
             <label for="tanggal_pelanggaran">Tanggal Pelanggaran</label>
             <input type="date" id="tanggal_pelanggaran" name="tanggal_pelanggaran" required>
@@ -338,4 +347,30 @@ select:focus {
     document.body.appendChild(form);
     form.submit(); // Submit the form
 }
+function updateJenisPelanggaran() {
+        const tingkatPelanggaran = document.getElementById('tingkat_pelanggaran').value;
+        const jenisPelanggaran = document.getElementById('jenis_pelanggaran');
+
+        // Clear existing options
+        jenisPelanggaran.innerHTML = '<option value="" disabled selected>Select Type</option>';
+
+        // Define options based on tingkat_pelanggaran
+        const options = {
+            1: ['Merusak nama baik Polinema', 'Menggunakan obat-obatan terlarang', 'Mengedarkan serta menjual obat-obatan terlarang', 'Melakukan tindak kriminal dan terbukti bersalah'],
+            2: ['Merusak fasilitas Polinema', 'Mengakses materi pornografi di area kampus', 'Membawa dan/atau menggunakan senjata tajam'],
+            3: ['Melanggar peraturan Polinema/jurusan/prodi', 'Tidak menjaga kebersihan', 'Membuat kegaduhan', 'Merokok di luar area merokok', 'Bermain kartu, game online di area kampus'],
+            4: ['Berpakaian tidak pantas', 'Mahasiswa laki-laki berambut tidak rapi', 'Mahasiswa berambut berwarna', 'Makan atau minum di lab'],
+            5: ['Berbicara tidak sopan'],
+        };
+
+        // Populate options based on tingkat_pelanggaran
+        if (options[tingkatPelanggaran]) {
+            options[tingkatPelanggaran].forEach(option => {
+                const opt = document.createElement('option');
+                opt.value = option;
+                opt.textContent = option;
+                jenisPelanggaran.appendChild(opt);
+            });
+        }
+    }
 </script>

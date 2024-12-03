@@ -26,7 +26,8 @@ $query = "
         id_pelanggaran, 
         nim_pelanggar, 
         reported_by_id, 
-        bukti, 
+        bukti,
+        jenis_pelanggaran,
         tingkat_pelanggaran, 
         tanggal_pelanggaran, 
         status 
@@ -34,6 +35,7 @@ $query = "
         dbo.Pelanggaran 
     WHERE 
         reported_by_id = ?
+    ORDER BY id_pelanggaran DESC
 ";
 $params = [$userKey];
 $stmt = sqlsrv_query($conn, $query, $params);
@@ -47,7 +49,7 @@ if (!$stmt) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Pelanggaran</title>
+    <title>Data Laporan</title>
     <link rel="stylesheet" href="style/MenuStyles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -132,7 +134,7 @@ if (!$stmt) {
 
     <!-- Main Content -->
     <div class="main" id="main">
-        <h2>Data Pelanggaran</h2>
+        <h2>Data Laporan</h2>
         <div class="dashboard-content">
             <table class="content-table">
                 <thead>
@@ -140,6 +142,7 @@ if (!$stmt) {
                         <th>ID Pelanggaran</th>
                         <th>NIM Pelanggar</th>
                         <th>Bukti</th>
+                        <th>Jenis Pelanggaran</th>
                         <th>Tingkat Pelanggaran</th>
                         <th>Tanggal Pelanggaran</th>
                         <th>Status</th>
@@ -150,8 +153,14 @@ if (!$stmt) {
                         <tr>
                             <td><?= htmlspecialchars($row['id_pelanggaran']) ?></td>
                             <td><?= htmlspecialchars($row['nim_pelanggar']) ?></td>
-                            <td><?= htmlspecialchars($row['bukti'] ?? 'NULL') ?></td>
-                            <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
+                            <td>
+    <?php if (!empty($row['bukti'])): ?>
+        <a href="uploads/<?= htmlspecialchars($row['bukti']) ?>" target="_blank"><?= htmlspecialchars($row['bukti']) ?></a>
+    <?php else: ?>
+        <span>Tidak ada</span>
+    <?php endif; ?>
+</td>                            <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
+</td>                            <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
                             <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('Y-m-d')) ?></td>
                             <td><?= htmlspecialchars($row['status']) ?></td>
                         </tr>
