@@ -58,6 +58,7 @@ if (!$stmt) {
         th, td {
             padding: 12px;
             text-align: left;
+            background-color: #264a8a;
         }
 
         th {

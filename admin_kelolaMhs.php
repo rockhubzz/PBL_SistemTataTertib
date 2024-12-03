@@ -22,7 +22,7 @@ $query = "
     SELECT 
         m.nim, 
         u.nama AS nama, 
-        m.tingkat_pelanggaran_max 
+        (SELECT MIN(tingkat_pelanggaran) FROM Pelanggaran WHERE nim_pelanggar = m.nim) AS tingkat_pelanggaran
     FROM 
         dbo.Mahasiswa m
     INNER JOIN 
@@ -147,7 +147,7 @@ if (!$stmt) {
                         <tr>
                             <td><?= htmlspecialchars($row['nim']) ?></td>
                             <td><?= htmlspecialchars($row['nama']) ?></td>
-                            <td><?= htmlspecialchars($row['tingkat_pelanggaran_max']) ?></td>
+                            <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>

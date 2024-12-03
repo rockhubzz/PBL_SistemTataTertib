@@ -41,7 +41,8 @@ $query = "SELECT
     u.nama AS nama_pelanggar, 
     u2.nama AS nama_pelapor,
     p.bukti, 
-    p.tingkat_pelanggaran, 
+    p.tingkat_pelanggaran,
+    p.jenis_pelanggaran,
     p.tanggal_pelanggaran, 
     p.status 
 FROM dbo.Pelanggaran p
@@ -185,6 +186,7 @@ if ($stmt === false) {
                             <th>Pelapor</th>
                             <th>Bukti</th>
                             <th>Tingkat Pelanggaran</th>
+                            <th>Jenis Pelanggaran</th>
                             <th>Tanggal Pelanggaran</th>
                             <th>Status</th>
                         </tr>
@@ -204,6 +206,7 @@ if ($stmt === false) {
                                     <?php endif; ?>
                                 </td>
                                 <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
+                                <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
                                 <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('Y-m-d')) ?></td>
                                 <td>
                                     <select name="status[<?= $row['id_pelanggaran'] ?>]">
