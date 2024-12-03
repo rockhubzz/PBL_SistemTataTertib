@@ -77,29 +77,28 @@ body {
 .user-options {
     display: flex;
     justify-content: space-between;
-    gap: 15px; /* Adds space between the buttons */
-    margin-bottom: 20px; /* Space between buttons and input */
+    gap: 15px; /* Reduce space between buttons */
+    margin-bottom: 15px;
 }
 .user-options .btn {
     flex: 1; /* Ensures all buttons take equal width */
     background: linear-gradient(90deg, #ffc107, #ff9800);
     color: #27365a;
     text-decoration: none;
-    padding: 5px 20px; /* Consistent padding for all buttons */
+    padding: 5px 10px; /* Consistent padding for all buttons */
     border-radius: 30px;
     font-weight: bold;
     font-size: 14px;
     transition: all 0.3s ease-in-out;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     border: none; /* Remove border */
 }
 .user-options .btn:hover {
     background: linear-gradient(90deg, #ff9800, #ffc107);
-    transform: scale(1.05); /* Slightly smaller scale effect for better fit */
+    transform: scale(1.1); /* Slightly smaller scale effect for better fit */
 }
 label.option {
-    position: relative;
-    flex: 1;
+    flex: 1; /* Equal width for each button */
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
@@ -111,18 +110,19 @@ label.option input {
 
 label.option .option-background {
     display: inline-block;
-    padding: 5px 20px;
+    padding: 8px 0; /* Smaller height for the button */
     background: linear-gradient(90deg, #ffc107, #ff9800);
     color: #27365a;
     font-weight: bold;
-    font-size: 16px;
-    border-radius: 30px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    font-size: 14px; /* Reduce font size */
+    border-radius: 20px; /* Smaller border radius */
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease-in-out;
+    width: 100%; /* Ensure full width of the container */
 }
 label.option input:checked + .option-background {
     background: linear-gradient(90deg, #ff9800, #ffc107);
-    transform: scale(1.1);
+    transform: scale(1.1); /* Smaller scaling effect */
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 /* Form Styles */
