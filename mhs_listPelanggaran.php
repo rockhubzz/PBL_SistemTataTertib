@@ -123,14 +123,17 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
             <img src="img/logoPoltek.png" alt="Logo">
         </div>
         <div class="menu">
-            <a href="Mahasiswa.php" class="<?= ($current_page == 'Mahasiswa.php') ? 'active' : '' ?>">
+        <a href="Mahasiswa.php" class="<?= ($current_page == 'Mahasiswa.php') ? 'active' : '' ?>">
                 <i class="fas fa-home"></i><span>Dashboard</span>
             </a>
             <a href="mhs_listPelanggaran.php" class="<?= ($current_page == 'mhs_listPelanggaran.php') ? 'active' : '' ?>">
                 <i class="fas fa-exclamation-circle"></i><span>Lihat Pelanggaran</span>
             </a>
-            <a href="buat_laporan.php" class="<?= ($current_page == 'buat_laporan.php') ? 'active' : '' ?>">
+            <a href="mhs_buatLaporan.php" class="<?= ($current_page == 'buat_laporan.php') ? 'active' : '' ?>">
                 <i class="fas fa-file-alt"></i><span>Buat Laporan</span>
+            </a>
+            <a href="mhs_listLaporan.php" class="<?= ($current_page == 'buat_laporan.php') ? 'active' : '' ?>">
+                <i class="fas fa-book"></i><span>Lihat Laporan</span>
             </a>
             <a href="mengajukan_sanksi.php" class="<?= ($current_page == 'mengajukan_sanksi.php') ? 'active' : '' ?>">
                 <i class="fas fa-gavel"></i><span>Mengajukan Sanksi</span>
@@ -147,7 +150,7 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
     <!-- Topbar -->
     <div class="topbar" id="topbar">
         <div class="profile-notifications">
-            <h2>List Pelanggaran Anda</h2>
+            <h2>Laporan untuk Anda</h2>
             <div class="notifications" id="notification-icon">
                 <i class="fas fa-bell"></i>
                 <div class="notification-dropdown" id="notification-dropdown">
@@ -203,7 +206,11 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
                             <td><?= htmlspecialchars($pelanggaran['id_pelanggaran']) ?></td>
                             <td><?= htmlspecialchars($pelanggaran['jenis_pelanggaran']) ?></td>
                             <td><?= htmlspecialchars($pelanggaran['tanggal_pelanggaran']->format('Y-m-d')) ?></td>
-                            <td><a href='mhs_ajukanBanding.php' class='view-btn'>Ajukan Banding</a></td>
+                            <td><?php 
+                                    $url = "mhs_ajukanBanding.php?id_pelanggaran=" . urlencode($pelanggaran['id_pelanggaran']);
+                                    echo "<a href='{$url}' class='view-btn'>Edit</a>";
+                                    ?>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>

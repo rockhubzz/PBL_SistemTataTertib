@@ -1,8 +1,6 @@
 <?php
 // Start the session
 session_start();
-$idEdit = isset($_GET['id_pelanggaran']) ? intval($_GET['id_pelanggaran']) : null;
-
 
 // Include database configuration
 $config = parse_ini_file('db_config.ini');
@@ -24,19 +22,6 @@ if (!$conn) {
 if (!isset($_SESSION['profile_name']) || !isset($_SESSION['user_key'])) {
     die("Unauthorized access. Please log in.");
 }
-
-$query = "
-    SELECT * FROM dbo.Pelanggaran WHERE id_pelanggaran = ?
-";
-$params = [$idEdit];
-$stmt = sqlsrv_query($conn, $query, $params);
-
-if ($stmt === false) {
-    die("Query failed: " . print_r(sqlsrv_errors(), true));
-}
-
-$row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
-
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_report'])) {
@@ -60,14 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_report'])) {
     }
 
     // Insert into database
-    $queryInsert = "UPDATE dbo.Pelanggaran
-                        SET nim_pelanggar = ?,
-                        reported_by_id = ?, tingkat_pelanggaran = ?,
-                        tanggal_pelanggaran = ?,
-                        bukti = ?, status = ?,
-                        jenis_pelanggaran = ?
-                    WHERE id_pelanggaran = ?";
-    $params = [$nim_pelanggar, $reported_by_id, $tingkat_pelanggaran, $tanggal_pelanggaran, $bukti, $status, $jenis_pelanggaran, $idEdit];
+    $queryInsert = "INSERT INTO dbo.Pelanggaran (nim_pelanggar, reported_by_id, tingkat_pelanggaran, tanggal_pelanggaran, bukti, status, jenis_pelanggaran)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $params = [$nim_pelanggar, $reported_by_id, $tingkat_pelanggaran, $tanggal_pelanggaran, $bukti, $status, $jenis_pelanggaran];
 
     $stmtInsert = sqlsrv_query($conn, $queryInsert, $params);
     if ($stmtInsert === false) {
@@ -102,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['nim_pelanggar'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Laporan</title>
+    <title>Buat Laporan</title>
     <link rel="stylesheet" href="style/MenuStyles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -243,28 +223,38 @@ select:focus {
 <body>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-    <div class="logo">
-        <img src="img/logoPoltek.png" alt="Logo">
-    </div>
-    <div class="menu">
-        <a href="dosenMenu.php" class="<?= ($current_page == 'dosenMenu.php') ? 'active' : '' ?>">
-            <i class="fas fa-home"></i><span>Dashboard</span>
-        </a>
-        <a href="dsn_buatLaporan.php" class="<?= ($current_page == 'dsn_buatLaporan.php') ? 'active' : '' ?>">
-            <i class="fas fa-user"></i><span>Buat Laporan</span>
-        </a>
-        <a href="dsn_listLaporan.php" class="<?= ($current_page == 'dsn_listLaporan.php') ? 'active' : '' ?>">
-            <i class="fas fa-book"></i><span>List Laporan</span>
-        </a>
-        <a href="dsn_laporanBanding.php" class="<?= ($current_page == 'laporan_banding.php') ? 'active' : '' ?>">
+        <div class="logo">
+            <img src="img/logoPoltek.png" alt="Logo">
+        </div>
+        <div class="menu">
+        <a href="Mahasiswa.php" class="<?= ($current_page == 'Mahasiswa.php') ? 'active' : '' ?>">
+                <i class="fas fa-home"></i><span>Dashboard</span>
+            </a>
+            <a href="mhs_listPelanggaran.php" class="<?= ($current_page == 'mhs_listPelanggaran.php') ? 'active' : '' ?>">
+                <i class="fas fa-exclamation-circle"></i><span>Lihat Pelanggaran</span>
+            </a>
+            <a href="mhs_buatLaporan.php" class="<?= ($current_page == 'buat_laporan.php') ? 'active' : '' ?>">
+                <i class="fas fa-file-alt"></i><span>Buat Laporan</span>
+            </a>
+            <a href="mhs_listLaporan.php" class="<?= ($current_page == 'buat_laporan.php') ? 'active' : '' ?>">
+                <i class="fas fa-book"></i><span>Lihat Laporan</span>
+            </a>
+            <a href="mengajukan_sanksi.php" class="<?= ($current_page == 'mengajukan_sanksi.php') ? 'active' : '' ?>">
+                <i class="fas fa-gavel"></i><span>Mengajukan Sanksi</span>
+            </a>
+            <a href="laporan_pernyataan.php" class="<?= ($current_page == 'laporan_pernyataan.php') ? 'active' : '' ?>">
+                <i class="fas fa-clipboard"></i><span>Laporan Pernyataan</span>
+            </a>
+            <a href="laporan_banding.php" class="<?= ($current_page == 'laporan_banding.php') ? 'active' : '' ?>">
                 <i class="fas fa-balance-scale"></i><span>Laporan Banding</span>
             </a>
-
+        </div>
     </div>
-</div>
+
     <!-- Topbar -->
     <div class="topbar" id="topbar">
         <div class="profile-notifications">
+            <h2>Laporan untuk Anda</h2>
             <div class="notifications" id="notification-icon">
                 <i class="fas fa-bell"></i>
                 <div class="notification-dropdown" id="notification-dropdown">
@@ -287,9 +277,10 @@ select:focus {
         </div>
     </div>
 
+
     <!-- Main Content -->
     <div class="main">
-        <h2>Edit Laporan</h2>
+        <h2>Buat Laporan</h2>
         <div class="form-container">
     <?php if (isset($_GET['success'])): ?>
         <p class="success-message">Laporan berhasil dibuat!</p>
@@ -298,9 +289,16 @@ select:focus {
         <div class="form-group">
             <label for="nim_pelanggar">NIM / Nama Pelanggar</label>
             <div style="display: flex; gap: 10px;">
-                <input type="text" id="nim_pelanggar" name="nim_pelanggar" value="<?= htmlspecialchars($row['nim_pelanggar'] ?? '') ?>" required>
+                <input type="text" id="nim_pelanggar" name="nim_pelanggar" value="<?= htmlspecialchars($_POST['nim_pelanggar'] ?? '') ?>" required>
+                <button type="button" name="verify_mahasiswa" class="submit-btn" onclick="checkNim()">Check</button>
             </div>
         </div>
+        <?php if ($student): ?>
+            <p style="color: green;">Mahasiswa found: <?= htmlspecialchars($student['nama']) ?> (NIM: <?= htmlspecialchars($student['nim']) ?>)</p>
+            <p style="color: black">Masukkan NIM Pelanggar pada form NIM</p><br>
+        <?php elseif (!$student && !empty($nimOrNama)): ?>
+            <p style="color: red;">Mahasiswa not found.</p>
+        <?php endif; ?>
 
         <!-- Other form fields remain unchanged -->
         <div class="form-group">
@@ -308,33 +306,28 @@ select:focus {
             <input type="text" value="<?= htmlspecialchars($_SESSION['profile_name']) ?>" readonly>
         </div>
         <div class="form-group">
-        <div class="form-group">
-    <label for="tanggal_pelanggaran">Tanggal Pelanggaran</label>
-    <input 
-        type="date" 
-        id="tanggal_pelanggaran" 
-        name="tanggal_pelanggaran" 
-        value="<?= isset($row['tanggal_pelanggaran']) ? htmlspecialchars($row['tanggal_pelanggaran']->format('Y-m-d')) : '' ?>" 
-        required
-    >
-</div>
-<div class="form-group">
     <label for="tingkat_pelanggaran">Tingkat Pelanggaran</label>
     <select id="tingkat_pelanggaran" name="tingkat_pelanggaran" required onchange="updateJenisPelanggaran()">
-        <option value="" disabled <?= !isset($row['tingkat_pelanggaran']) ? 'selected' : '' ?>>Select Level</option>
-        <option value="1" <?= isset($row['tingkat_pelanggaran']) && $row['tingkat_pelanggaran'] == 1 ? 'selected' : '' ?>>1</option>
-        <option value="2" <?= isset($row['tingkat_pelanggaran']) && $row['tingkat_pelanggaran'] == 2 ? 'selected' : '' ?>>2</option>
-        <option value="3" <?= isset($row['tingkat_pelanggaran']) && $row['tingkat_pelanggaran'] == 3 ? 'selected' : '' ?>>3</option>
-        <option value="4" <?= isset($row['tingkat_pelanggaran']) && $row['tingkat_pelanggaran'] == 4 ? 'selected' : '' ?>>4</option>
-        <option value="5" <?= isset($row['tingkat_pelanggaran']) && $row['tingkat_pelanggaran'] == 5 ? 'selected' : '' ?>>5</option>
+        <option value="" disabled selected>Select Level</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
     </select>
 </div>
 <div class="form-group">
     <label for="jenis_pelanggaran">Jenis Pelanggaran</label>
     <select id="jenis_pelanggaran" name="jenis_pelanggaran" required>
-        <option value="" disabled>Select Type</option>
+        <option value="" disabled selected>Select Type</option>
+        <!-- Options will be dynamically updated here -->
     </select>
-</div>        <div class="form-group">
+</div>
+        <div class="form-group">
+            <label for="tanggal_pelanggaran">Tanggal Pelanggaran</label>
+            <input type="date" id="tanggal_pelanggaran" name="tanggal_pelanggaran" required>
+        </div>
+        <div class="form-group">
             <label for="bukti">Upload Bukti</label>
             <input type="file" id="bukti" name="bukti" accept=".jpg,.png,.pdf">
         </div>
@@ -369,10 +362,12 @@ select:focus {
     document.body.appendChild(form);
     form.submit(); // Submit the form
 }
-document.addEventListener("DOMContentLoaded", function () {
+function updateJenisPelanggaran() {
         const tingkatPelanggaran = document.getElementById('tingkat_pelanggaran').value;
         const jenisPelanggaran = document.getElementById('jenis_pelanggaran');
-        const currentJenisPelanggaran = <?= json_encode($row['jenis_pelanggaran'] ?? '') ?>;
+
+        // Clear existing options
+        jenisPelanggaran.innerHTML = '<option value="" disabled selected>Select Type</option>';
 
         // Define options based on tingkat_pelanggaran
         const options = {
@@ -383,27 +378,14 @@ document.addEventListener("DOMContentLoaded", function () {
             5: ['Berbicara tidak sopan'],
         };
 
-        function populateJenisPelanggaran() {
-            const tingkatPelanggaranValue = document.getElementById('tingkat_pelanggaran').value;
-
-            // Clear existing options
-            jenisPelanggaran.innerHTML = '<option value="" disabled>Select Type</option>';
-
-            // Populate options based on tingkat_pelanggaran
-            if (options[tingkatPelanggaranValue]) {
-                options[tingkatPelanggaranValue].forEach(option => {
-                    const opt = document.createElement('option');
-                    opt.value = option;
-                    opt.textContent = option;
-                    if (option === currentJenisPelanggaran) {
-                        opt.selected = true;
-                    }
-                    jenisPelanggaran.appendChild(opt);
-                });
-            }
+        // Populate options based on tingkat_pelanggaran
+        if (options[tingkatPelanggaran]) {
+            options[tingkatPelanggaran].forEach(option => {
+                const opt = document.createElement('option');
+                opt.value = option;
+                opt.textContent = option;
+                jenisPelanggaran.appendChild(opt);
+            });
         }
-
-        // Populate jenis_pelanggaran on load and when tingkat_pelanggaran changes
-        populateJenisPelanggaran();
-        document.getElementById('tingkat_pelanggaran').addEventListener('change', populateJenisPelanggaran);
-    });</script>
+    }
+</script>

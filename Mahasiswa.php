@@ -240,8 +240,11 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
             <a href="mhs_listPelanggaran.php" class="<?= ($current_page == 'mhs_listPelanggaran.php') ? 'active' : '' ?>">
                 <i class="fas fa-exclamation-circle"></i><span>Lihat Pelanggaran</span>
             </a>
-            <a href="buat_laporan.php" class="<?= ($current_page == 'buat_laporan.php') ? 'active' : '' ?>">
+            <a href="mhs_buatLaporan.php" class="<?= ($current_page == 'buat_laporan.php') ? 'active' : '' ?>">
                 <i class="fas fa-file-alt"></i><span>Buat Laporan</span>
+            </a>
+            <a href="mhs_listLaporan.php" class="<?= ($current_page == 'buat_laporan.php') ? 'active' : '' ?>">
+                <i class="fas fa-book"></i><span>Lihat Laporan</span>
             </a>
             <a href="mengajukan_sanksi.php" class="<?= ($current_page == 'mengajukan_sanksi.php') ? 'active' : '' ?>">
                 <i class="fas fa-gavel"></i><span>Mengajukan Sanksi</span>
