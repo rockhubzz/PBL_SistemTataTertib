@@ -240,8 +240,11 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
             <a href="mhs_listPelanggaran.php" class="<?= ($current_page == 'mhs_listPelanggaran.php') ? 'active' : '' ?>">
                 <i class="fas fa-exclamation-circle"></i><span>Lihat Pelanggaran</span>
             </a>
-            <a href="buat_laporan.php" class="<?= ($current_page == 'buat_laporan.php') ? 'active' : '' ?>">
+            <a href="mhs_buatLaporan.php" class="<?= ($current_page == 'buat_laporan.php') ? 'active' : '' ?>">
                 <i class="fas fa-file-alt"></i><span>Buat Laporan</span>
+            </a>
+            <a href="mhs_listLaporan.php" class="<?= ($current_page == 'buat_laporan.php') ? 'active' : '' ?>">
+                <i class="fas fa-book"></i><span>Lihat Laporan</span>
             </a>
             <a href="mengajukan_sanksi.php" class="<?= ($current_page == 'mengajukan_sanksi.php') ? 'active' : '' ?>">
                 <i class="fas fa-gavel"></i><span>Mengajukan Sanksi</span>
@@ -300,13 +303,16 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
                     <tr>
                         <td>Tingkat <?= htmlspecialchars($violation['tingkat_pelanggaran']) ?></td>
                         <td><?= htmlspecialchars($violation['jumlah_pelanggaran']) ?></td>
-                        <td><?php
-                            if($violation['jumlah_pelanggaran'] !=0 ){
-                                echo "<button class='view-btn'>Lihat Laporan</button>";
-                            }else{
-                                echo "<button class='disabled-btn'>Lihat Laporan</button>";
-                            }
-                        ?></td>
+                        <td>
+    <?php
+    if ($violation['jumlah_pelanggaran'] != 0) {
+        $url = "mhs_listPelanggaran.php?tingkat_pelanggaran=" . urlencode($violation['tingkat_pelanggaran']);
+        echo "<a href='{$url}' class='view-btn'>Lihat Laporan</a>";
+    } else {
+        echo "<button class='disabled-btn'>Lihat Laporan</button>";
+    }
+    ?>
+</td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

@@ -223,28 +223,38 @@ select:focus {
 <body>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-    <div class="logo">
-        <img src="img/logoPoltek.png" alt="Logo">
-    </div>
-    <div class="menu">
-        <a href="dosenMenu.php" class="<?= ($current_page == 'dosenMenu.php') ? 'active' : '' ?>">
-            <i class="fas fa-home"></i><span>Dashboard</span>
-        </a>
-        <a href="dsn_buatLaporan.php" class="<?= ($current_page == 'dsn_buatLaporan.php') ? 'active' : '' ?>">
-            <i class="fas fa-user"></i><span>Buat Laporan</span>
-        </a>
-        <a href="dsn_listLaporan.php" class="<?= ($current_page == 'dsn_listLaporan.php') ? 'active' : '' ?>">
-            <i class="fas fa-book"></i><span>List Laporan</span>
-        </a>
-        <a href="dsn_laporanBanding.php" class="<?= ($current_page == 'laporan_banding.php') ? 'active' : '' ?>">
+        <div class="logo">
+            <img src="img/logoPoltek.png" alt="Logo">
+        </div>
+        <div class="menu">
+        <a href="Mahasiswa.php" class="<?= ($current_page == 'Mahasiswa.php') ? 'active' : '' ?>">
+                <i class="fas fa-home"></i><span>Dashboard</span>
+            </a>
+            <a href="mhs_listPelanggaran.php" class="<?= ($current_page == 'mhs_listPelanggaran.php') ? 'active' : '' ?>">
+                <i class="fas fa-exclamation-circle"></i><span>Lihat Pelanggaran</span>
+            </a>
+            <a href="mhs_buatLaporan.php" class="<?= ($current_page == 'buat_laporan.php') ? 'active' : '' ?>">
+                <i class="fas fa-file-alt"></i><span>Buat Laporan</span>
+            </a>
+            <a href="mhs_listLaporan.php" class="<?= ($current_page == 'buat_laporan.php') ? 'active' : '' ?>">
+                <i class="fas fa-book"></i><span>Lihat Laporan</span>
+            </a>
+            <a href="mengajukan_sanksi.php" class="<?= ($current_page == 'mengajukan_sanksi.php') ? 'active' : '' ?>">
+                <i class="fas fa-gavel"></i><span>Mengajukan Sanksi</span>
+            </a>
+            <a href="laporan_pernyataan.php" class="<?= ($current_page == 'laporan_pernyataan.php') ? 'active' : '' ?>">
+                <i class="fas fa-clipboard"></i><span>Laporan Pernyataan</span>
+            </a>
+            <a href="laporan_banding.php" class="<?= ($current_page == 'laporan_banding.php') ? 'active' : '' ?>">
                 <i class="fas fa-balance-scale"></i><span>Laporan Banding</span>
             </a>
-
+        </div>
     </div>
-</div>
+
     <!-- Topbar -->
     <div class="topbar" id="topbar">
         <div class="profile-notifications">
+            <h2>Laporan untuk Anda</h2>
             <div class="notifications" id="notification-icon">
                 <i class="fas fa-bell"></i>
                 <div class="notification-dropdown" id="notification-dropdown">
@@ -266,6 +276,7 @@ select:focus {
             </div>
         </div>
     </div>
+
 
     <!-- Main Content -->
     <div class="main">

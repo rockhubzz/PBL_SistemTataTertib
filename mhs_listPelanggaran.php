@@ -1,27 +1,32 @@
 <?php
-    session_start();
-    $current_page = basename($_SERVER['PHP_SELF']);
-    $config = parse_ini_file('db_config.ini');
+session_start();
+$current_page = basename($_SERVER['PHP_SELF']);
+$config = parse_ini_file('db_config.ini');
 
-    // Extract connection details
-    $serverName = $config['serverName'];
-    $connectionInfo = array(
-        "Database" => $config['database'],
-        "UID" => $config['username'],
-        "PWD" => $config['password']
-    );
-    $conn = sqlsrv_connect($serverName, $connectionInfo);
+// Extract connection details
+$serverName = $config['serverName'];
+$connectionInfo = array(
+    "Database" => $config['database'],
+    "UID" => $config['username'],
+    "PWD" => $config['password']
+);
+$conn = sqlsrv_connect($serverName, $connectionInfo);
 
-    if (!$conn) {
-        die("Connection failed: " . print_r(sqlsrv_errors(), true));
-    }
+if (!$conn) {
+    die("Connection failed: " . print_r(sqlsrv_errors(), true));
+}
 
-    // Get tingkat_pelanggaran from the dropdown or default to 1
-    $selected_level = isset($_GET['tingkat_pelanggaran']) ? $_GET['tingkat_pelanggaran'] : 1;
+// Retrieve the tingkat_pelanggaran filter from the query string
+$filterLevel = isset($_GET['tingkat_pelanggaran']) ? intval($_GET['tingkat_pelanggaran']) : null;
 
-    // Query to fetch violations filtered by tingkat_pelanggaran
-    $query = "
-        SELECT 
+// Validate tingkat_pelanggaran
+if ($filterLevel === null) {
+    $filterLevel = 1;
+}
+
+// SQL query to fetch filtered pelanggarans
+$query = "
+    SELECT 
             p.id_pelanggaran, 
             p.jenis_pelanggaran, 
             p.tanggal_pelanggaran, 
@@ -36,21 +41,21 @@
         WHERE 
             p.tingkat_pelanggaran = ? AND m.nim = (SELECT nim FROM dbo.Mahasiswa WHERE user_id = ?)
         ORDER BY p.id_pelanggaran
-    ";
+";
+$params = [$filterLevel, $_SESSION['user_key']];
+$stmt = sqlsrv_query($conn, $query, $params);
 
-    $params = [$selected_level, $_SESSION['user_key']];
-    $stmt = sqlsrv_query($conn, $query, $params);
+if ($stmt === false) {
+    die("Query failed: " . print_r(sqlsrv_errors(), true));
+}
 
-    if ($stmt === false) {
-        die("Query failed: " . print_r(sqlsrv_errors(), true));
-    }
-
-    // Fetch results
-    $pelanggarans = [];
-    while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-        $pelanggarans[] = $row;
-    }
+// Fetch results
+$filteredViolations = [];
+while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+    $filteredViolations[] = $row;
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -95,6 +100,20 @@
             background-color: #27365a;
             color: white;
         }
+
+            .view-btn {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .view-btn:hover {
+        background-color: #45a049;
+    }
+
     </style>
 </head>
 <body>
@@ -104,14 +123,17 @@
             <img src="img/logoPoltek.png" alt="Logo">
         </div>
         <div class="menu">
-            <a href="Mahasiswa.php" class="<?= ($current_page == 'Mahasiswa.php') ? 'active' : '' ?>">
+        <a href="Mahasiswa.php" class="<?= ($current_page == 'Mahasiswa.php') ? 'active' : '' ?>">
                 <i class="fas fa-home"></i><span>Dashboard</span>
             </a>
             <a href="mhs_listPelanggaran.php" class="<?= ($current_page == 'mhs_listPelanggaran.php') ? 'active' : '' ?>">
                 <i class="fas fa-exclamation-circle"></i><span>Lihat Pelanggaran</span>
             </a>
-            <a href="buat_laporan.php" class="<?= ($current_page == 'buat_laporan.php') ? 'active' : '' ?>">
+            <a href="mhs_buatLaporan.php" class="<?= ($current_page == 'buat_laporan.php') ? 'active' : '' ?>">
                 <i class="fas fa-file-alt"></i><span>Buat Laporan</span>
+            </a>
+            <a href="mhs_listLaporan.php" class="<?= ($current_page == 'buat_laporan.php') ? 'active' : '' ?>">
+                <i class="fas fa-book"></i><span>Lihat Laporan</span>
             </a>
             <a href="mengajukan_sanksi.php" class="<?= ($current_page == 'mengajukan_sanksi.php') ? 'active' : '' ?>">
                 <i class="fas fa-gavel"></i><span>Mengajukan Sanksi</span>
@@ -128,7 +150,7 @@
     <!-- Topbar -->
     <div class="topbar" id="topbar">
         <div class="profile-notifications">
-            <h2>List Pelanggaran Anda</h2>
+            <h2>Laporan untuk Anda</h2>
             <div class="notifications" id="notification-icon">
                 <i class="fas fa-bell"></i>
                 <div class="notification-dropdown" id="notification-dropdown">
@@ -158,11 +180,11 @@
             <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="get">
                 <label for="tingkat_pelanggaran">Filter by Tingkat Pelanggaran:</label>
                 <select name="tingkat_pelanggaran" id="tingkat_pelanggaran" onchange="this.form.submit()">
-                    <option value="1" <?= $selected_level == 1 ? 'selected' : '' ?>>Tingkat 1</option>
-                    <option value="2" <?= $selected_level == 2 ? 'selected' : '' ?>>Tingkat 2</option>
-                    <option value="3" <?= $selected_level == 3 ? 'selected' : '' ?>>Tingkat 3</option>
-                    <option value="4" <?= $selected_level == 4 ? 'selected' : '' ?>>Tingkat 4</option>
-                    <option value="5" <?= $selected_level == 5 ? 'selected' : '' ?>>Tingkat 5</option>
+                    <option value="1" <?= $filterLevel == 1 ? 'selected' : '' ?>>Tingkat 1</option>
+                    <option value="2" <?= $filterLevel == 2 ? 'selected' : '' ?>>Tingkat 2</option>
+                    <option value="3" <?= $filterLevel == 3 ? 'selected' : '' ?>>Tingkat 3</option>
+                    <option value="4" <?= $filterLevel == 4 ? 'selected' : '' ?>>Tingkat 4</option>
+                    <option value="5" <?= $filterLevel == 5 ? 'selected' : '' ?>>Tingkat 5</option>
                 </select>
             </form>
         </div>
@@ -174,15 +196,21 @@
                     <th>ID Pelanggaran</th>
                     <th>Jenis Pelanggaran</th>
                     <th>Tanggal</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                <?php if (!empty($pelanggarans)): ?>
-                    <?php foreach ($pelanggarans as $pelanggaran): ?>
+                <?php if (!empty($filteredViolations)): ?>
+                    <?php foreach ($filteredViolations as $pelanggaran): ?>
                         <tr>
                             <td><?= htmlspecialchars($pelanggaran['id_pelanggaran']) ?></td>
                             <td><?= htmlspecialchars($pelanggaran['jenis_pelanggaran']) ?></td>
                             <td><?= htmlspecialchars($pelanggaran['tanggal_pelanggaran']->format('Y-m-d')) ?></td>
+                            <td><?php 
+                                    $url = "mhs_ajukanBanding.php?id_pelanggaran=" . urlencode($pelanggaran['id_pelanggaran']);
+                                    echo "<a href='{$url}' class='view-btn'>Edit</a>";
+                                    ?>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>

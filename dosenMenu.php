@@ -97,6 +97,10 @@
         <a href="dsn_listLaporan.php" class="<?= ($current_page == 'dsn_listLaporan.php') ? 'active' : '' ?>">
             <i class="fas fa-book"></i><span>List Laporan</span>
         </a>
+        <a href="dsn_laporanBanding.php" class="<?= ($current_page == 'laporan_banding.php') ? 'active' : '' ?>">
+                <i class="fas fa-balance-scale"></i><span>Laporan Banding</span>
+            </a>
+
     </div>
 </div>
     <!-- Topbar -->

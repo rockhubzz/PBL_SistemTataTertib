@@ -81,15 +81,15 @@ if (!$conn) {
         <div class="dashboard-content">
             <div class="card">
                 <h3>Total Mahasiswa</h3>
-                <p>500</p>
+                <p><?php echo $jml_mhs ?></p>
             </div>
             <div class="card">
                 <h3>Total Pelanggaran</h3>
-                <p>45</p>
+                <p><?php echo $jml_plg ?></p>
             </div>
             <div class="card">
                 <h3>Total Dosen</h3>
-                <p>30</p>
+                <p><?php echo $jml_dsn ?></p>
             </div>
         </div>
     </div>
