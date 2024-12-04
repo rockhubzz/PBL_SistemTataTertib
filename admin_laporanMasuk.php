@@ -1,7 +1,7 @@
 <?php
 // Start the session
 session_start();
-
+if(!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin"){
 // Include database configuration
 $config = parse_ini_file('db_config.ini');
 
@@ -70,6 +70,7 @@ if ($stmt === false) {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            overflow: scroll;
         }
 
         .table-container {
@@ -232,3 +233,8 @@ if ($stmt === false) {
     <?php sqlsrv_close($conn); ?>
 </body>
 </html>
+<?php
+    }else{
+    header("location: logout.php");
+}
+?>

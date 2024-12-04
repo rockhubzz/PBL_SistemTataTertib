@@ -1,7 +1,7 @@
 <?php
     session_start();
     $config = parse_ini_file('db_config.ini');
-
+    if(!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin"){
 // Extract connection details
 $serverName = $config['serverName'];
 $connectionInfo = array(
@@ -101,4 +101,8 @@ if (!$conn) {
     </div>
 </body>
 </html>
-
+<?php
+    }else{
+    header("location: logout.php");
+}
+?>

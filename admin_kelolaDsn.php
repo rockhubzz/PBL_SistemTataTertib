@@ -1,7 +1,6 @@
 <?php
 session_start();
-
-if(!empty($_SESSION['user_key'])){
+if(!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin"){
 
 // Include database configuration
 $config = parse_ini_file('db_config.ini');
@@ -181,6 +180,6 @@ if (!$stmt) {
 
 <?php
     }else{
-    header("location: loginPage.php");
+    header("location: logout.php");
 }
 ?>

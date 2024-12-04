@@ -1,6 +1,6 @@
 <?php
 session_start();
-if($_SESSION['role'] == "Mahasiswa"){
+if(!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa"){
 
     $current_page = basename($_SERVER['PHP_SELF']);
     $config = parse_ini_file('db_config.ini');
@@ -260,6 +260,6 @@ p.jenis_pelanggaran,
 </html>
 <?php
 }else{
-    header("location: loginPage.php");
+    header("location: logout.php");
 }
 ?>

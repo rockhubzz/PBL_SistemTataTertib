@@ -1,4 +1,6 @@
 <?php
-session_abort();
+session_start();
+session_unset(); // Unset all session variables
+session_destroy();
 header("location: loginPage.php");
 ?>
