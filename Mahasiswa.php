@@ -300,13 +300,16 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
                     <tr>
                         <td>Tingkat <?= htmlspecialchars($violation['tingkat_pelanggaran']) ?></td>
                         <td><?= htmlspecialchars($violation['jumlah_pelanggaran']) ?></td>
-                        <td><?php
-                            if($violation['jumlah_pelanggaran'] !=0 ){
-                                echo "<button class='view-btn'>Lihat Laporan</button>";
-                            }else{
-                                echo "<button class='disabled-btn'>Lihat Laporan</button>";
-                            }
-                        ?></td>
+                        <td>
+    <?php
+    if ($violation['jumlah_pelanggaran'] != 0) {
+        $url = "mhs_listPelanggaran.php?tingkat_pelanggaran=" . urlencode($violation['tingkat_pelanggaran']);
+        echo "<a href='{$url}' class='view-btn'>Lihat Laporan</a>";
+    } else {
+        echo "<button class='disabled-btn'>Lihat Laporan</button>";
+    }
+    ?>
+</td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

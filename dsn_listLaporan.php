@@ -87,6 +87,20 @@ if (!$stmt) {
         #selectedMenu {
             background-color: #353f4f;
         }
+
+        .view-btn {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .view-btn:hover {
+        background-color: #45a049;
+    }
+
     </style>
 </head>
 <body>
@@ -146,6 +160,7 @@ if (!$stmt) {
                         <th>Tingkat Pelanggaran</th>
                         <th>Tanggal Pelanggaran</th>
                         <th>Status</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -163,6 +178,12 @@ if (!$stmt) {
 </td>                            <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
                             <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('Y-m-d')) ?></td>
                             <td><?= htmlspecialchars($row['status']) ?></td>
+                            <td><?php 
+                            $url = "dsn_editLaporan.php?id_pelanggaran=" . urlencode($row['id_pelanggaran']);
+                            echo "<a href='{$url}' class='view-btn'>Edit</a>";
+                            ?>
+                            </td>
+
                         </tr>
                     <?php endwhile; ?>
                 </tbody>
