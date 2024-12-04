@@ -317,16 +317,6 @@ select:focus {
             <input type="text" value="<?= htmlspecialchars($_SESSION['profile_name']) ?>" readonly>
         </div>
         <div class="form-group">
-        <div class="form-group">
-    <label for="tanggal_pelanggaran">Tanggal Pelanggaran</label>
-    <input 
-        type="date" 
-        id="tanggal_pelanggaran" 
-        name="tanggal_pelanggaran" 
-        value="<?= isset($row['tanggal_pelanggaran']) ? htmlspecialchars($row['tanggal_pelanggaran']->format('Y-m-d')) : '' ?>" 
-        required
-    >
-</div>
 <div class="form-group">
     <label for="tingkat_pelanggaran">Tingkat Pelanggaran</label>
     <select id="tingkat_pelanggaran" name="tingkat_pelanggaran" required onchange="updateJenisPelanggaran()">
@@ -343,7 +333,19 @@ select:focus {
     <select id="jenis_pelanggaran" name="jenis_pelanggaran" required>
         <option value="" disabled>Select Type</option>
     </select>
-</div>        <div class="form-group">
+</div>
+<div class="form-group">
+    <label for="tanggal_pelanggaran">Tanggal Pelanggaran</label>
+    <input 
+        type="date" 
+        id="tanggal_pelanggaran" 
+        name="tanggal_pelanggaran" 
+        value="<?= isset($row['tanggal_pelanggaran']) ? htmlspecialchars($row['tanggal_pelanggaran']->format('Y-m-d')) : '' ?>" 
+        required
+    >
+</div>
+
+<div class="form-group">
             <label for="bukti">Upload Bukti</label>
             <input type="file" id="bukti" name="bukti" accept=".jpg,.png,.pdf">
         </div>
