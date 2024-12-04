@@ -70,7 +70,7 @@ if ($stmt === false) {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            overflow: scroll;
+            overflow: auto;
         }
 
         .table-container {
@@ -188,7 +188,7 @@ if ($stmt === false) {
                             <th>ID Pelanggaran</th>
                             <th>NIM Pelanggar</th>
                             <th>Nama Pelanggar</th>
-                            <th>Pelapor</th>
+                            <th>Nama Pelapor</th>
                             <th>Bukti</th>
                             <th>Tingkat Pelanggaran</th>
                             <th>Jenis Pelanggaran</th>
@@ -207,7 +207,7 @@ if ($stmt === false) {
                                     <?php if ($row['bukti']): ?>
                                         <a href="uploads/<?= htmlspecialchars($row['bukti']) ?>" target="_blank"><?= htmlspecialchars($row['bukti']) ?></a>
                                     <?php else: ?>
-                                        No File
+                                        Tidak ada
                                     <?php endif; ?>
                                 </td>
                                 <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
