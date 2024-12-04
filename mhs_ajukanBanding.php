@@ -139,8 +139,6 @@ $bandingExists = $rowCheck['count'] > 0; // True if a banding exists
             <a href="mhs_listPelanggaran.php"><i class="fas fa-exclamation-circle"></i><span>Lihat Pelanggaran</span></a>
             <a href="mhs_buatLaporan.php"><i class="fas fa-file-alt"></i><span>Buat Laporan</span></a>
             <a href="mhs_listLaporan.php"><i class="fas fa-book"></i><span>Lihat Laporan</span></a>
-            <a href="mengajukan_sanksi.php"><i class="fas fa-gavel"></i><span>Mengajukan Sanksi</span></a>
-            <a href="laporan_pernyataan.php"><i class="fas fa-clipboard"></i><span>Laporan Pernyataan</span></a>
             <a href="laporan_banding.php" class="active"><i class="fas fa-balance-scale"></i><span>Laporan Banding</span></a>
         </div>
     </div>

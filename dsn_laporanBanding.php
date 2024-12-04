@@ -158,7 +158,7 @@ if (!$stmt) {
                         <?php endwhile; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="5" style="text-align: center; font-weight: bold;">Tidak ada pengajuan banding</td>
+                            <td colspan="6" style="text-align: center; font-weight: bold;">Tidak ada pengajuan banding</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>

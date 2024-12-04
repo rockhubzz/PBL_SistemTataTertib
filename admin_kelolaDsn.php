@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if(!empty($_SESSION['user_key']){
+if(!empty($_SESSION['user_key'])){
 
 // Include database configuration
 $config = parse_ini_file('db_config.ini');
@@ -103,9 +103,13 @@ if (!$stmt) {
         <a href="admin_laporanMasuk.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
             <i class="fas fa-warning"></i><span>Laporan Masuk</span>
         </a>
-        <a href="admin_notifikasi.php" class="<?= ($current_page == 'admin_notifikasi.php') ? 'active' : '' ?>">
-            <i class="fas fa-envelope"></i><span>Notifikasi</span>
+        <a href="admin_editPlg.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
+            <i class="fas fa-edit"></i><span>Edit Pelanggaran</span>
         </a>
+        <a href="admin_editSanksi.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
+            <i class="fas fa-gavel"></i><span>Edit Sanksi</span>
+        </a>
+
     </div>
 </div>
 
@@ -176,7 +180,7 @@ if (!$stmt) {
 </html>
 
 <?php
-}else{
+    }else{
     header("location: loginPage.php");
 }
 ?>

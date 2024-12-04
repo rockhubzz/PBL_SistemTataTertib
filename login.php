@@ -63,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         } else {
             $errorMessage = "Invalid username, password, or role.";
-            header("location: loginPage.php");
+            header("Location: loginPage.php?error=invalid_credentials");
         }
     }
 }
