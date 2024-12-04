@@ -1,11 +1,13 @@
 <?php
 session_start();
-$current_page = basename($_SERVER['PHP_SELF']);
-$config = parse_ini_file('db_config.ini');
+if($_SESSION['role'] == "Mahasiswa"){
 
-// Extract connection details
-$serverName = $config['serverName'];
-$connectionInfo = array(
+    $current_page = basename($_SERVER['PHP_SELF']);
+    $config = parse_ini_file('db_config.ini');
+    
+    // Extract connection details
+    $serverName = $config['serverName'];
+    $connectionInfo = array(
     "Database" => $config['database'],
     "UID" => $config['username'],
     "PWD" => $config['password']
@@ -26,35 +28,37 @@ if ($filterLevel === null) {
 
 // SQL query to fetch filtered pelanggarans
 $query = "
-    SELECT 
-            p.id_pelanggaran, 
-            p.jenis_pelanggaran, 
+SELECT 
+p.id_pelanggaran, 
+p.jenis_pelanggaran, 
+            p.tingkat_pelanggaran,
             p.tanggal_pelanggaran, 
+            p.status,
             m.nim, 
             u.nama AS nama_mahasiswa 
         FROM 
-            dbo.Pelanggaran p
+        dbo.Pelanggaran p
         JOIN 
-            dbo.Mahasiswa m ON p.nim_pelanggar = m.nim
+        dbo.Mahasiswa m ON p.nim_pelanggar = m.nim
         JOIN 
-            dbo.Users u ON m.user_id = u.user_id
+        dbo.Users u ON m.user_id = u.user_id
         WHERE 
-            p.tingkat_pelanggaran = ? AND m.nim = (SELECT nim FROM dbo.Mahasiswa WHERE user_id = ?)
+        p.tingkat_pelanggaran = ? AND m.nim = (SELECT nim FROM dbo.Mahasiswa WHERE user_id = ?)
         ORDER BY p.id_pelanggaran
-";
-$params = [$filterLevel, $_SESSION['user_key']];
-$stmt = sqlsrv_query($conn, $query, $params);
+        ";
+        $params = [$filterLevel, $_SESSION['user_key']];
+        $stmt = sqlsrv_query($conn, $query, $params);
+        
+        if ($stmt === false) {
+            die("Query failed: " . print_r(sqlsrv_errors(), true));
+        }
 
-if ($stmt === false) {
-    die("Query failed: " . print_r(sqlsrv_errors(), true));
-}
-
-// Fetch results
-$filteredViolations = [];
-while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-    $filteredViolations[] = $row;
-}
-?>
+        // Fetch results
+        $filteredViolations = [];
+        while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+            $filteredViolations[] = $row;
+        }
+        ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -74,14 +78,14 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
             margin-top: 90px;
             margin-right: 70px;
         }
-
+        
         .filter-section select {
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 16px;
         }
-
+        
         .report-table {
             width: 90%;
             margin: 20px auto;
@@ -95,7 +99,7 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
             text-align: center;
             padding: 10px;
         }
-
+        
         .report-table th {
             background-color: #27365a;
             color: white;
@@ -113,7 +117,7 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
     .view-btn:hover {
         background-color: #45a049;
     }
-
+    
     </style>
 </head>
 <body>
@@ -123,7 +127,7 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
             <img src="img/logoPoltek.png" alt="Logo">
         </div>
         <div class="menu">
-        <a href="Mahasiswa.php" class="<?= ($current_page == 'Mahasiswa.php') ? 'active' : '' ?>">
+            <a href="Mahasiswa.php" class="<?= ($current_page == 'Mahasiswa.php') ? 'active' : '' ?>">
                 <i class="fas fa-home"></i><span>Dashboard</span>
             </a>
             <a href="mhs_listPelanggaran.php" class="<?= ($current_page == 'mhs_listPelanggaran.php') ? 'active' : '' ?>">
@@ -146,7 +150,7 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
             </a>
         </div>
     </div>
-
+    
     <!-- Topbar -->
     <div class="topbar" id="topbar">
         <div class="profile-notifications">
@@ -188,42 +192,77 @@ while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
                 </select>
             </form>
         </div>
-
+        
         <!-- Tabel Laporan -->
         <table class="report-table">
-            <thead>
-                <tr>
-                    <th>ID Pelanggaran</th>
-                    <th>Jenis Pelanggaran</th>
-                    <th>Tanggal</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (!empty($filteredViolations)): ?>
-                    <?php foreach ($filteredViolations as $pelanggaran): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($pelanggaran['id_pelanggaran']) ?></td>
-                            <td><?= htmlspecialchars($pelanggaran['jenis_pelanggaran']) ?></td>
-                            <td><?= htmlspecialchars($pelanggaran['tanggal_pelanggaran']->format('Y-m-d')) ?></td>
-                            <td><?php 
-                                    $url = "mhs_ajukanBanding.php?id_pelanggaran=" . urlencode($pelanggaran['id_pelanggaran']);
-                                    echo "<a href='{$url}' class='view-btn'>Edit</a>";
-                                    ?>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="5">Tidak ada pelanggaran pada tingkat ini.</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
+    <thead>
+        <tr>
+            <th>ID Pelanggaran</th>
+            <th>Tingkat Pelanggaran</th>
+            <th>Jenis Pelanggaran</th>
+            <th>Tanggal</th>
+            <th>Status</th>
+            <th>Status Banding</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if (!empty($filteredViolations)): ?>
+            <?php foreach ($filteredViolations as $pelanggaran): ?>
+                <?php
+                // Query to get the banding status for the current id_pelanggaran
+                $bandingQuery = "
+                SELECT kesepakatan 
+                FROM dbo.Banding 
+                    WHERE id_pelanggaran = ?
+                    ";
+                    $params = [$pelanggaran['id_pelanggaran']];
+                $bandingStmt = sqlsrv_query($conn, $bandingQuery, $params);
 
-    <script>
-        // Add any necessary JavaScript here
+                // Default status
+                $bandingStatus = "Belum Ada Banding";
+
+                if ($bandingStmt && $row = sqlsrv_fetch_array($bandingStmt, SQLSRV_FETCH_ASSOC)) {
+                    if ($row['kesepakatan'] === null) {
+                        $bandingStatus = "Pending";
+                    } elseif ($row['kesepakatan'] == 0) {
+                        $bandingStatus = "Ditolak";
+                    } elseif ($row['kesepakatan'] == 1) {
+                        $bandingStatus = "Diterima";
+                    }
+                }
+                ?>
+                <tr>
+                    <td><?= htmlspecialchars($pelanggaran['id_pelanggaran']) ?></td>
+                    <td><?= htmlspecialchars($pelanggaran['tingkat_pelanggaran']) ?></td>
+                    <td><?= htmlspecialchars($pelanggaran['jenis_pelanggaran']) ?></td>
+                    <td><?= htmlspecialchars($pelanggaran['tanggal_pelanggaran']->format('Y-m-d')) ?></td>
+                    <td><?= htmlspecialchars($pelanggaran['status']) ?></td>
+                    <td><?= htmlspecialchars($bandingStatus) ?></td>
+                    <td>
+                        <?php 
+                        $url = "mhs_ajukanBanding.php?id_pelanggaran=" . urlencode($pelanggaran['id_pelanggaran']);
+                        echo "<a href='{$url}' class='view-btn'>Ajukan Banding</a>";
+                        ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="5">Tidak ada pelanggaran pada tingkat ini.</td>
+            </tr>
+        <?php endif; ?>
+    </tbody>
+</table>
+</div>
+
+<script>
+    // Add any necessary JavaScript here
     </script>
 </body>
 </html>
+<?php
+}else{
+    header("location: loginPage.php");
+}
+?>

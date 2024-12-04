@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_banding'])) {
 
     // Insert into dbo.Banding
     $queryInsert = "INSERT INTO dbo.Banding (nim_pengaju, id_pelanggaran, alasan, kesepakatan)
-                    VALUES (?, ?, ?, 0)";
+                    VALUES (?, ?, ?, NULL)";
     $params = [$row['nim_pelanggar'], $id_pelanggaran, $alasan];
 
     $stmtInsert = sqlsrv_query($conn, $queryInsert, $params);
@@ -58,6 +58,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_banding'])) {
     header("Location: " . $_SERVER['PHP_SELF'] . "?id_pelanggaran=" . urlencode($id_pelanggaran) . "&success=1");
     exit;
 }
+$queryCheck = "SELECT COUNT(*) AS count FROM dbo.Banding WHERE id_pelanggaran = ?";
+$paramsCheck = [$id_pelanggaran];
+$stmtCheck = sqlsrv_query($conn, $queryCheck, $paramsCheck);
+
+if ($stmtCheck === false) {
+    die("Query failed: " . print_r(sqlsrv_errors(), true));
+}
+
+$rowCheck = sqlsrv_fetch_array($stmtCheck, SQLSRV_FETCH_ASSOC);
+$bandingExists = $rowCheck['count'] > 0; // True if a banding exists
 ?>
 <!DOCTYPE html>
 <html lang="en">

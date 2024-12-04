@@ -46,6 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
             $_SESSION['user_key'] = $row['user_id'];
             $_SESSION['profile_name'] = $row['nama'];
+            $_SESSION['role'] = $row['role'];
 
             // Redirect based on role
             switch (strtolower($role)) {

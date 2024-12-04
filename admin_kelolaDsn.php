@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+if(!empty($_SESSION['user_key']){
+
 // Include database configuration
 $config = parse_ini_file('db_config.ini');
 
@@ -172,3 +174,9 @@ if (!$stmt) {
     </script>
 </body>
 </html>
+
+<?php
+}else{
+    header("location: loginPage.php");
+}
+?>
