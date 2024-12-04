@@ -111,7 +111,7 @@ label.option input {
 label.option .option-background {
     display: inline-block;
     padding: 8px 0; /* Smaller height for the button */
-    background: linear-gradient(90deg, #ffc107, #ff9800);
+    background: linear-gradient(90deg, #c47602, #c49407);
     color: #27365a;
     font-weight: bold;
     font-size: 14px; /* Reduce font size */
@@ -121,7 +121,7 @@ label.option .option-background {
     width: 100%; /* Ensure full width of the container */
 }
 label.option input:checked + .option-background {
-    background: linear-gradient(90deg, #ff9800, #ffc107);
+    background: linear-gradient(90deg, #ff9800, #ffc107); 
     transform: scale(1.1); /* Smaller scaling effect */
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
