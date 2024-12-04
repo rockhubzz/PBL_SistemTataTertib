@@ -249,7 +249,7 @@ p.jenis_pelanggaran,
             <?php endforeach; ?>
         <?php else: ?>
             <tr>
-                <td colspan="5">Tidak ada pelanggaran pada tingkat ini.</td>
+                <td colspan="7">Tidak ada pelanggaran pada tingkat ini.</td>
             </tr>
         <?php endif; ?>
     </tbody>
