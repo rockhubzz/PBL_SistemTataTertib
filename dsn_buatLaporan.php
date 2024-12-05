@@ -443,7 +443,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
                     <div class="form-group">
                         <label for="nim_pelanggar">NIM / Nama Pelanggar</label>
                         <div style="display: flex; gap: 10px;">
-                            <input type="text" id="nim_pelanggar" name="nim_pelanggar" value="<?= htmlspecialchars($_POST['nim_pelanggar'] ?? '') ?>" required>
+                            <input type="text" id="nim_pelanggar" name="nim_pelanggar" placeholder="Masukkan NIM/nama" value="<?= htmlspecialchars($_POST['nim_pelanggar'] ?? '') ?>" required>
                             <button type="button" class="submit-btn" onclick="checkNim()">Check</button>
                         </div>
                     </div>
@@ -457,7 +457,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
                     <div class="form-group">
                         <label for="jenis_pelanggaran">Jenis Pelanggaran</label>
                         <select id="jenis_pelanggaran" name="jenis_pelanggaran" class="select2" required onchange="updateTingkatPelanggaran()">
-                            <option value="" disabled selected>Select Type</option>
+                            <option value="" disabled selected>Pilih Pelanggaran</option>
                             <?php foreach (array_keys($options) as $jenis): ?>
                                 <option value="<?= htmlspecialchars($jenis) ?>"><?= htmlspecialchars($jenis) ?></option>
                             <?php endforeach; ?>

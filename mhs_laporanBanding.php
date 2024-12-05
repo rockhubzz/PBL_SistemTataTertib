@@ -28,7 +28,8 @@ SELECT
     p.jenis_pelanggaran,
     um.nama AS [Nama Pengaju],
     u.nama AS [Nama Pelapor],
-    b.alasan AS [Alasan]
+    b.alasan AS [Alasan],
+    b.kesepakatan AS [status]
 FROM dbo.Banding b
 JOIN dbo.Pelanggaran p ON p.id_pelanggaran = b.id_pelanggaran
 JOIN dbo.Mahasiswa m ON b.nim_pengaju = m.nim
@@ -113,24 +114,12 @@ WHERE u.user_id = ?
                 <img src="img/logoPoltek.png" alt="Logo">
             </div>
             <div class="menu">
-                <a href="Mahasiswa.php" class="<?= ($current_page == 'Mahasiswa.php') ? 'active' : '' ?>">
-                    <i class="fas fa-home"></i><span>Dashboard</span>
-                </a>
-                <a href="mhs_listPelanggaran.php" class="<?= ($current_page == 'mhs_listPelanggaran.php') ? 'active' : '' ?>">
-                    <i class="fas fa-exclamation-circle"></i><span>Lihat Pelanggaran</span>
-                </a>
-                <a href="mhs_buatLaporan.php" class="<?= ($current_page == 'buat_laporan.php') ? 'active' : '' ?>">
-                    <i class="fas fa-file-alt"></i><span>Buat Laporan</span>
-                </a>
-                <a href="mhs_listLaporan.php" class="<?= ($current_page == 'buat_laporan.php') ? 'active' : '' ?>">
-                    <i class="fas fa-book"></i><span>Lihat Laporan</span>
-                </a>
-                <a href="mhs_laporanBanding.php" class="<?= ($current_page == 'mhs_laporanBanding.php') ? 'active' : '' ?>">
-                    <i class="fas fa-balance-scale"></i><span>Laporan Banding</span>
-                </a>
-                <a href="mhs_lihatSanksi.php" class="<?= ($current_page == 'mhs_laporanBanding.php') ? 'active' : '' ?>">
-                    <i class="fas fa-exclamation-triangle"></i><span>Lihat Sanksi</span>
-                </a>
+                <a href="Mahasiswa.php"><i class="fas fa-home"></i><span>Dashboard</span></a>
+                <a href="mhs_listPelanggaran.php"><i class="fas fa-exclamation-circle"></i><span>Lihat Pelanggaran</span></a>
+                <a href="mhs_buatLaporan.php"><i class="fas fa-file-alt"></i><span>Buat Laporan</span></a>
+                <a href="mhs_listLaporan.php"><i class="fas fa-book"></i><span>Lihat Laporan</span></a>
+                <a href="mhs_laporanBanding.php" class="active"><i class="fas fa-balance-scale"></i><span>Laporan Banding</span></a>
+                <a href="mhs_lihatSanksi.php" class="active"><i class="fas fa-exclamation-triangle"></i><span>Lihat Sanksi</span></a>
             </div>
         </div>
 
@@ -175,26 +164,32 @@ WHERE u.user_id = ?
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (sqlsrv_has_rows($stmt)): ?>
-                            <?php while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)): ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($row['id_banding']) ?></td>
-                                    <td><?= htmlspecialchars($row['id_pelanggaran']) ?></td>
-                                    <td><?= htmlspecialchars($row['Nama Pengaju']) ?></td>
-                                    <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
-                                    <td><?= htmlspecialchars($row['Alasan']) ?></td>
-                                    <td>
-                                        <button class="view-btn" onclick="handleAppealAction(<?= $row['id_banding'] ?>, 1)">Setuju</button>
-                                        <button class="view-btn" style="background-color: red" onclick="handleAppealAction(<?= $row['id_banding'] ?>, 0)">Tolak</button>
-                                    </td>
-                                </tr>
-                            <?php endwhile; ?>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="6" style="text-align: center; font-weight: bold;">Tidak ada pengajuan banding</td>
-                            </tr>
-                        <?php endif; ?>
-                    </tbody>
+    <?php if (sqlsrv_has_rows($stmt)): ?>
+        <?php while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)): ?>
+            <tr data-id="<?= htmlspecialchars($row['id_banding']) ?>">
+                <td><?= htmlspecialchars($row['id_banding']) ?></td>
+                <td><?= htmlspecialchars($row['id_pelanggaran']) ?></td>
+                <td><?= htmlspecialchars($row['Nama Pengaju']) ?></td>
+                <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
+                <td><?= htmlspecialchars($row['Alasan']) ?></td>
+                <?php if ($row['status'] === null): ?>
+                    <td>
+                        <button class="view-btn" onclick="handleAppealAction(<?= $row['id_banding'] ?>, 1)">Setuju</button>
+                        <button class="view-btn" style="background-color: red" onclick="handleAppealAction(<?= $row['id_banding'] ?>, 0)">Tolak</button>
+                    </td>
+                <?php elseif ($row['status'] == 0): ?>
+                    <td>Anda menolak banding ini.</td>
+                <?php elseif ($row['status'] == 1): ?>
+                    <td>Anda menyetujui banding ini</td>
+                <?php endif; ?>
+            </tr>
+        <?php endwhile; ?>
+    <?php else: ?>
+        <tr>
+            <td colspan="6" style="text-align: center; font-weight: bold;">Tidak ada pengajuan banding</td>
+        </tr>
+    <?php endif; ?>
+</tbody>
                 </table>
             </div>
         </div>
@@ -203,35 +198,42 @@ WHERE u.user_id = ?
         <div id="message" style="margin-top: 20px; color: green; text-align: center;"></div>
         <script>
             const handleAppealAction = (idBanding, status) => {
-                fetch('update_banding.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            id_banding: idBanding,
-                            status: status
-                        }),
-                    })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        const messageBox = document.getElementById('message');
-                        if (data.success) {
-                            messageBox.style.color = 'green';
-                        } else {
-                            messageBox.style.color = 'red';
-                        }
-                        messageBox.textContent = data.message;
+    fetch('update_banding.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id_banding: idBanding,
+                status: status
+            }),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            const messageBox = document.getElementById('message');
+            if (data.success) {
+                messageBox.style.color = 'green';
+                messageBox.textContent = data.message;
 
-                        // Optionally, reload or update the table row
-                        setTimeout(() => {
-                            location.reload(); // Reload after 2 seconds
-                        }, 2000);
-                    })
-                    .catch((error) => {
-                        console.error('Error:', error);
-                    });
-            };
+                // Find the corresponding table row and update it
+                const row = document.querySelector(`tr[data-id="${idBanding}"]`);
+                if (row) {
+                    const actionCell = row.querySelector('td:last-child');
+                    if (status === 0) {
+                        actionCell.textContent = "Anda menolak banding ini.";
+                    } else if (status === 1) {
+                        actionCell.textContent = "Anda menyetujui banding ini.";
+                    }
+                }
+            } else {
+                messageBox.style.color = 'red';
+                messageBox.textContent = data.message;
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+};
             const updateBanding = (id, status) => {
                 fetch('update_banding.php', {
                         method: 'POST',
