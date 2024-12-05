@@ -43,13 +43,17 @@ $query = "SELECT
     p.bukti, 
     p.tingkat_pelanggaran,
     p.jenis_pelanggaran,
-    p.tanggal_pelanggaran, 
+    p.tanggal_pelanggaran,
+    b.alasan AS laporan_banding,
+    b.kesepakatan AS status_banding,
     p.status 
 FROM dbo.Pelanggaran p
 JOIN dbo.Mahasiswa m ON m.nim = p.nim_pelanggar
 JOIN dbo.Users u ON m.user_id = u.user_id
 JOIN dbo.Users u2 ON p.reported_by_id = u2.user_id
+LEFT JOIN dbo.Banding b ON b.id_pelanggaran = p.id_pelanggaran
 ORDER BY p.id_pelanggaran DESC
+
 ";
 
 $stmt = sqlsrv_query($conn, $query);
@@ -193,7 +197,10 @@ if ($stmt === false) {
                             <th>Tingkat Pelanggaran</th>
                             <th>Jenis Pelanggaran</th>
                             <th>Tanggal Pelanggaran</th>
+                            <th>Laporan Banding</th>
+                            <th>Status Banding</th>
                             <th>Status</th>
+                            <th>Edit</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -213,6 +220,18 @@ if ($stmt === false) {
                                 <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
                                 <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
                                 <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('Y-m-d')) ?></td>
+                                <td><?php 
+                                    if($row['laporan_banding']): echo $row['laporan_banding'];
+                                    else: echo 'Belum ada banding';  endif;?></td>
+                                <td><?php 
+                                    if($row['status_banding'] = null){
+                                        echo 'Belum ada banding';
+                                    }elseif($row['status_banding'] == 0){
+                                        echo 'Ditolak pelapor';
+                                    }elseif($row['status_banding'] == 1){
+                                        echo 'Diterima pelapor';
+                                    }
+                                ?></td>
                                 <td>
                                     <select name="status[<?= $row['id_pelanggaran'] ?>]">
                                         <option value="Pending" <?= $row['status'] == 'Pending' ? 'selected' : '' ?>>Pending</option>
@@ -220,6 +239,12 @@ if ($stmt === false) {
                                         <option value="Rejected" <?= $row['status'] == 'Rejected' ? 'selected' : '' ?>>Rejected</option>
                                     </select>
                                 </td>
+                                <td><?php
+                                    $url = "admin_editLaporan.php?id_pelanggaran=" . urlencode($row['id_pelanggaran']);
+                                    echo "<a href='{$url}' class='save-btn'>Edit</a>";
+                                    ?>
+                                </td>
+
                             </tr>
                         <?php endwhile; ?>
                     </tbody>

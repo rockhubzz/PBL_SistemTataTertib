@@ -1,7 +1,7 @@
 <?php
 // Start the session
 session_start();
-if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
+if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
     $idEdit = isset($_GET['id_pelanggaran']) ? intval($_GET['id_pelanggaran']) : null;
 
 
@@ -274,51 +274,58 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
     </head>
 
     <body>
-        <!-- Sidebar -->
-        <div class="sidebar" id="sidebar">
-            <div class="logo">
-                <img src="img/logoPoltek.png" alt="Logo">
-            </div>
-            <div class="menu">
-                <a href="dosenMenu.php" class="<?= ($current_page == 'dosenMenu.php') ? 'active' : '' ?>">
-                    <i class="fas fa-home"></i><span>Dashboard</span>
-                </a>
-                <a href="dsn_buatLaporan.php" class="<?= ($current_page == 'dsn_buatLaporan.php') ? 'active' : '' ?>">
-                    <i class="fas fa-user"></i><span>Buat Laporan</span>
-                </a>
-                <a href="dsn_listLaporan.php" class="<?= ($current_page == 'dsn_listLaporan.php') ? 'active' : '' ?>">
-                    <i class="fas fa-book"></i><span>List Laporan</span>
-                </a>
-                <a href="dsn_laporanBanding.php" class="<?= ($current_page == 'mhs_laporanBanding.php') ? 'active' : '' ?>">
-                    <i class="fas fa-balance-scale"></i><span>Laporan Banding</span>
-                </a>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <img src="img/LogoPLTK.png" alt="Logo">
+    </div>
+    <div class="menu">
+        <a href="AdminMenu.php" class="<?= ($current_page == 'AdminMenu.php') ? 'active' : '' ?>">
+            <i class="fas fa-home"></i><span>Dashboard</span>
+        </a>
+        <a href="admin_kelolaMhs.php" class="<?= ($current_page == 'admin_kelolaMhs.php') ? 'active' : '' ?>">
+            <i class="fas fa-user"></i><span>Data Mahasiswa</span>
+        </a>
+        <a href="admin_kelolaDsn.php" class="<?= ($current_page == 'admin_kelolaDsn.php') ? 'active' : '' ?>">
+            <i class="fas fa-book"></i><span>Data Dosen</span>
+        </a>
+        <a href="admin_laporanMasuk.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
+            <i class="fas fa-warning"></i><span>Laporan Masuk</span>
+        </a>
+        <a href="admin_editPlg.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
+            <i class="fas fa-edit"></i><span>Edit Pelanggaran</span>
+        </a>
+        <a href="admin_editSanksi.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
+            <i class="fas fa-gavel"></i><span>Edit Sanksi</span>
+        </a>
 
-            </div>
-        </div>
-        <!-- Topbar -->
-        <div class="topbar" id="topbar">
-            <div class="profile-notifications">
-                <div class="notifications" id="notification-icon">
-                    <i class="fas fa-bell"></i>
-                    <div class="notification-dropdown" id="notification-dropdown">
-                        <h4>Notifikasi</h4>
-                        <ul>
-                            <li>Pelanggaran baru oleh mahasiswa A.</li>
-                            <li>Dosen B mengajukan revisi data.</li>
-                            <li>Pengingat rapat pukul 10.00.</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="profile dropdown">
-                    <img src="img/profile.png" alt="Profile Picture">
-                    <div class="dropdown-menu">
-                        <a href="update_profile.php">Change Password</a>
-                        <a href="logout.php">Log Out</a>
-                    </div>
-                    <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
+    </div>
+</div>
+
+    <!-- Topbar -->
+    <div class="topbar" id="topbar">
+        <div class="profile-notifications">
+            <div class="notifications" id="notification-icon">
+                <i class="fas fa-bell"></i>
+                <div class="notification-dropdown" id="notification-dropdown">
+                    <h4>Notifikasi</h4>
+                    <ul>
+                        <li>Pelanggaran baru oleh mahasiswa A.</li>
+                        <li>Dosen B mengajukan revisi data.</li>
+                        <li>Pengingat rapat pukul 10.00.</li>
+                    </ul>
                 </div>
             </div>
+            <div class="profile dropdown">
+                <img src="img/profile.png" alt="Profile Picture">
+                <div class="dropdown-menu">
+                    <a href="update_profile.php">Change Password</a>
+                    <a href="logout.php">Log Out</a>
+                </div>
+                <h3 id="profile-name" style="color: white"><?php echo $_SESSION['profile_name']; ?></h3>
+            </div>
         </div>
+    </div>
 
         <!-- Main Content -->
         <div class="main">

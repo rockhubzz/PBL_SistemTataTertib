@@ -403,7 +403,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
                 <a href="dsn_listLaporan.php" class="<?= ($current_page == 'dsn_listLaporan.php') ? 'active' : '' ?>">
                     <i class="fas fa-book"></i><span>List Laporan</span>
                 </a>
-                <a href="dsn_laporanBanding.php" class="<?= ($current_page == 'laporan_banding.php') ? 'active' : '' ?>">
+                <a href="dsn_laporanBanding.php" class="<?= ($current_page == 'mhs_laporanBanding.php') ? 'active' : '' ?>">
                     <i class="fas fa-balance-scale"></i><span>Laporan Banding</span>
                 </a>
 
