@@ -73,7 +73,6 @@ if (!$conn) {
                 </div>
                 <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
             </div>
-        </div>
     </div>
     <!-- Main Content -->
     <div class="main" id="main">

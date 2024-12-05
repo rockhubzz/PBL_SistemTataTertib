@@ -120,18 +120,6 @@ if (!$stmt) {
     </div>
     <!-- Topbar -->
     <div class="topbar" id="topbar">
-        <div class="profile-notifications">
-            <div class="notifications" id="notification-icon">
-                <i class="fas fa-bell"></i>
-                <div class="notification-dropdown" id="notification-dropdown">
-                    <h4>Notifikasi</h4>
-                    <ul>
-                        <li>Pelanggaran baru oleh mahasiswa A.</li>
-                        <li>Dosen B mengajukan revisi data.</li>
-                        <li>Pengingat rapat pukul 10.00.</li>
-                    </ul>
-                </div>
-            </div>
             <div class="profile dropdown">
                 <img src="img/profile.png" alt="Profile Picture">
                 <div class="dropdown-menu">
@@ -140,7 +128,6 @@ if (!$stmt) {
                 </div>
                 <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
             </div>
-        </div>
     </div>
 
     <!-- Main Content -->
@@ -169,20 +156,6 @@ if (!$stmt) {
             </table>
         </div>
     </div>
-
-    <!-- Toggle Button -->
-    <button class="toggle-btn" id="toggle-btn">&lt;</button>
-
-    <script>
-        const sidebar = document.getElementById('sidebar');
-        const toggleBtn = document.getElementById('toggle-btn');
-
-        // Sidebar toggle functionality
-        toggleBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('collapsed');
-            toggleBtn.textContent = sidebar.classList.contains('collapsed') ? '>' : '<';
-        });
-    </script>
 </body>
 
 </html>
