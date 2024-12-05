@@ -111,6 +111,10 @@ if (!$stmt) {
         <a href="admin_SPMasuk.php" class="<?= ($current_page == 'admin_SPMasuk.php') ? 'active' : '' ?>">
             <i class="fas fa-envelope"></i><span>SP Masuk</span>
         </a>
+        <a href="admin_buatAkun.php" class="<?= ($current_page == 'admin_SPMasuk.php') ? 'active' : '' ?>">
+            <i class="fas fa-plus"></i><span>Buat Akun</span>
+        </a>
+
 
 
     </div>

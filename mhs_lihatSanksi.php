@@ -39,6 +39,7 @@ WHERE p.nim_pelanggar = (
     SELECT nim 
     FROM dbo.Mahasiswa 
     WHERE user_id = ?)
+ORDER BY tingkat_pelanggaran
     ";
     $params = [$_SESSION['user_key']];
     $stmt = sqlsrv_query($conn, $query, $params);

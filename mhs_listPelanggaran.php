@@ -32,7 +32,7 @@ SELECT
 p.id_pelanggaran, 
 p.jenis_pelanggaran, 
             p.tingkat_pelanggaran,
-            p.tanggal_pelanggaran, 
+            p.tanggal_pelanggaran,
             p.status,
             m.nim, 
             u.nama AS nama_mahasiswa 
@@ -189,55 +189,61 @@ p.jenis_pelanggaran,
             <th>Tanggal</th>
             <th>Status</th>
             <th>Status Banding</th>
+            <th>Alasan Banding</th>
             <th>Aksi</th>
         </tr>
     </thead>
     <tbody>
-        <?php if (!empty($filteredViolations)): ?>
-            <?php foreach ($filteredViolations as $pelanggaran): ?>
-                <?php
-                // Query to get the banding status for the current id_pelanggaran
-                $bandingQuery = "
-                SELECT kesepakatan 
+    <?php if (!empty($filteredViolations)): ?>
+        <?php foreach ($filteredViolations as $pelanggaran): ?>
+            <?php
+            // Query to get the banding status for the current id_pelanggaran
+            $bandingQuery = "
+                SELECT kesepakatan, alasan
                 FROM dbo.Banding 
-                    WHERE id_pelanggaran = ?
-                    ";
-                    $params = [$pelanggaran['id_pelanggaran']];
-                $bandingStmt = sqlsrv_query($conn, $bandingQuery, $params);
+                WHERE id_pelanggaran = ?
+            ";
+            $params = [$pelanggaran['id_pelanggaran']];
+            $bandingStmt = sqlsrv_query($conn, $bandingQuery, $params);
 
-                // Default status
-                $bandingStatus = "Belum Ada Banding";
+            // Default status
+            $bandingStatus = "Belum Ada Banding";
+            $alasan = "-";
 
-                if ($bandingStmt && $row = sqlsrv_fetch_array($bandingStmt, SQLSRV_FETCH_ASSOC)) {
-                    if ($row['kesepakatan'] === null) {
-                        $bandingStatus = "Pending";
-                    } elseif ($row['kesepakatan'] == 0) {
-                        $bandingStatus = "Ditolak";
-                    } elseif ($row['kesepakatan'] == 1) {
-                        $bandingStatus = "Diterima";
-                    }
+            // Fetch banding status if available
+            if ($bandingStmt && $row = sqlsrv_fetch_array($bandingStmt, SQLSRV_FETCH_ASSOC)) {
+                $alasan = !empty($row['alasan']) ? htmlspecialchars($row['alasan']) : "-";
+                if ($row['kesepakatan'] === null) {
+                    $bandingStatus = "Pending";
+                } elseif ($row['kesepakatan'] == 0) {
+                    $bandingStatus = "Ditolak";
+                } elseif ($row['kesepakatan'] == 1) {
+                    $bandingStatus = "Diterima";
                 }
-                ?>
-                <tr>
-                    <td><?= htmlspecialchars($pelanggaran['id_pelanggaran']) ?></td>
-                    <td><?= htmlspecialchars($pelanggaran['jenis_pelanggaran']) ?></td>
-                    <td><?= htmlspecialchars($pelanggaran['tanggal_pelanggaran']->format('d-m-Y')) ?></td>
-                    <td><?= htmlspecialchars($pelanggaran['status']) ?></td>
-                    <td><?= htmlspecialchars($bandingStatus) ?></td>
-                    <td>
-                        <?php 
-                        $url = "mhs_ajukanBanding.php?id_pelanggaran=" . urlencode($pelanggaran['id_pelanggaran']);
-                        echo "<a href='{$url}' class='view-btn'>Ajukan Banding</a>";
-                        ?>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        <?php else: ?>
+            }
+            ?>
             <tr>
-                <td colspan="7">Tidak ada pelanggaran pada tingkat ini.</td>
+                <td><?= htmlspecialchars($pelanggaran['id_pelanggaran']) ?></td>
+                <td><?= htmlspecialchars($pelanggaran['jenis_pelanggaran']) ?></td>
+                <td><?= htmlspecialchars($pelanggaran['tanggal_pelanggaran']->format('d-m-Y')) ?></td>
+                <td><?= htmlspecialchars($pelanggaran['status']) ?></td>
+                <td><?= htmlspecialchars($bandingStatus) ?></td>
+                <td><?= $alasan ?></td>
+                <td>
+                    <?php if ($bandingStatus === "Belum Ada Banding"): ?>
+                        <a href="mhs_ajukanBanding.php?id_pelanggaran=<?= urlencode($pelanggaran['id_pelanggaran']) ?>" class="view-btn">Ajukan Banding</a>
+                    <?php else: ?>
+                        <a class="view-btn" style="background-color: grey; cursor: not-allowed;" disabled>Ajukan Banding</a>
+                    <?php endif; ?>
+                </td>
             </tr>
-        <?php endif; ?>
-    </tbody>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <tr>
+            <td colspan="7">Tidak ada pelanggaran pada tingkat ini.</td>
+        </tr>
+    <?php endif; ?>
+</tbody>
 </table>
 </div>
 
