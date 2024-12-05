@@ -1,7 +1,6 @@
 <?php
 session_start();
 if(!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin"){
-
 // Include database configuration
 $config = parse_ini_file('db_config.ini');
 
@@ -18,18 +17,13 @@ if (!$conn) {
     die("Connection failed: " . print_r(sqlsrv_errors(), true));
 }
 
-// Fetch dosen data
+// Fetch mahasiswa data
 $query = "
-    SELECT 
-        d.nip, 
-        u.nama AS nama, 
-        d.department AS jurusan 
-    FROM 
-        dbo.Dosen d
-    INNER JOIN 
-        dbo.Users u 
-    ON 
-        d.user_id = u.user_id
+SELECT s.id_sp, s.id_pelanggaran, s.nim_pembuat,
+	(SELECT nama FROM Users WHERE user_id = 4) AS nama,
+	p.tingkat_pelanggaran, p.jenis_pelanggaran, s.path_file
+FROM SP s
+JOIN Pelanggaran p ON p.id_pelanggaran = s.id_pelanggaran
 ";
 $stmt = sqlsrv_query($conn, $query);
 
@@ -39,14 +33,15 @@ if (!$stmt) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Dosen</title>
+    <title>Kelola Mahasiswa</title>
     <link rel="stylesheet" href="style/MenuStyles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-       .table-container {
+        .table-container {
             padding: 20px;
             margin: 20px;
             border-radius: 8px;
@@ -60,7 +55,8 @@ if (!$stmt) {
             margin-top: 10px;
         }
 
-        th, td {
+        th,
+        td {
             padding: 10px;
             border: 1px solid #ddd;
             text-align: center;
@@ -81,28 +77,43 @@ if (!$stmt) {
             flex-direction: column;
             gap: 20px;
         }
+
+        #selectedMenu {
+            background-color: #353f4f;
+        }
+
+        .view-btn {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
     </style>
 </head>
+
 <body>
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-    <div class="logo">
-        <img src="img/LogoPLTK.png" alt="Logo">
-    </div>
-    <div class="menu">
-        <a href="AdminMenu.php" class="<?= ($current_page == 'AdminMenu.php') ? 'active' : '' ?>">
-            <i class="fas fa-home"></i><span>Dashboard</span>
-        </a>
-        <a href="admin_kelolaMhs.php" class="<?= ($current_page == 'admin_kelolaMhs.php') ? 'active' : '' ?>">
-            <i class="fas fa-user"></i><span>Data Mahasiswa</span>
-        </a>
-        <a href="admin_kelolaDsn.php" class="<?= ($current_page == 'admin_kelolaDsn.php') ? 'active' : '' ?>">
-            <i class="fas fa-book"></i><span>Data Dosen</span>
-        </a>
-        <a href="admin_laporanMasuk.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
-            <i class="fas fa-warning"></i><span>Laporan Masuk</span>
-        </a>
-        <a href="admin_editPlg.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
+        <div class="logo">
+            <img src="img/LogoPLTK.png" alt="Logo">
+        </div>
+        <div class="menu">
+            <a href="AdminMenu.php" class="<?= ($current_page == 'AdminMenu.php') ? 'active' : '' ?>">
+                <i class="fas fa-home"></i><span>Dashboard</span>
+            </a>
+            <a href="admin_kelolaMhs.php" class="<?= ($current_page == 'admin_kelolaMhs.php') ? 'active' : '' ?>">
+                <i class="fas fa-user"></i><span>Data Mahasiswa</span>
+            </a>
+            <a href="admin_kelolaDsn.php" class="<?= ($current_page == 'admin_kelolaDsn.php') ? 'active' : '' ?>">
+                <i class="fas fa-book"></i><span>Data Dosen</span>
+            </a>
+            <a href="admin_laporanMasuk.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
+                <i class="fas fa-warning"></i><span>Laporan Masuk</span>
+            </a>
+            <a href="admin_editPlg.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
             <i class="fas fa-edit"></i><span>Edit Pelanggaran</span>
         </a>
         <a href="admin_editSanksi.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
@@ -113,8 +124,8 @@ if (!$stmt) {
         </a>
 
 
+        </div>
     </div>
-</div>
     <!-- Topbar -->
     <div class="topbar" id="topbar">
             <div class="profile dropdown">
@@ -126,24 +137,29 @@ if (!$stmt) {
                 <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
             </div>
     </div>
+
     <!-- Main Content -->
     <div class="main" id="main">
-        <h2>Data Dosen</h2>
+        <h2>Data Mahasiswa</h2>
         <div class="table-container">
             <table>
                 <thead>
                     <tr>
-                        <th>NIP</th>
+                        <th>NIM</th>
                         <th>Nama</th>
-                        <th>Jurusan</th>
+                        <th>Tingkat Pelanggaran</th>
+                        <th>Jenis Pelanggaran</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)): ?>
                         <tr>
-                            <td><?= htmlspecialchars($row['nip']) ?></td>
+                            <td><?= htmlspecialchars($row['nim_pembuat']) ?></td>
                             <td><?= htmlspecialchars($row['nama']) ?></td>
-                            <td><?= htmlspecialchars($row['jurusan']) ?></td>
+                            <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
+                            <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
+                            <td><a href="<?= htmlspecialchars($row['path_file']) ?>" class="view-btn">Lihat SP</a> </td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>
@@ -151,8 +167,8 @@ if (!$stmt) {
         </div>
     </div>
 </body>
-</html>
 
+</html>
 <?php
     }else{
     header("location: logout.php");

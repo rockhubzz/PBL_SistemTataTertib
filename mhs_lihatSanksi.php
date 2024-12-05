@@ -21,19 +21,27 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
 
     // Fetch data for the table
     $query = "
-        SELECT 
-            p.tingkat_pelanggaran, 
-            p.jenis_pelanggaran, 
-            s.sanksi
-        FROM dbo.Pelanggaran p
-        JOIN dbo.Sanksi s ON p.tingkat_pelanggaran = s.tingkat_pelanggaran
-        WHERE p.nim_pelanggar = (
-            SELECT nim 
-            FROM dbo.Mahasiswa 
-            WHERE user_id = 4
-        )
+SELECT 
+    p.id_pelanggaran AS id_pelanggaran,
+    p.tingkat_pelanggaran, 
+    p.jenis_pelanggaran, 
+    s.sanksi,
+    (SELECT COUNT(*) 
+     FROM dbo.SP sp 
+     WHERE sp.id_pelanggaran = p.id_pelanggaran) AS sp_count,
+    (SELECT sp.path_file
+     FROM dbo.SP sp
+     WHERE sp.id_pelanggaran = p.id_pelanggaran) AS sp_path_file
+FROM dbo.Pelanggaran p
+JOIN dbo.Sanksi s 
+    ON p.tingkat_pelanggaran = s.tingkat_pelanggaran
+WHERE p.nim_pelanggar = (
+    SELECT nim 
+    FROM dbo.Mahasiswa 
+    WHERE user_id = ?)
     ";
-    $stmt = sqlsrv_query($conn, $query);
+    $params = [$_SESSION['user_key']];
+    $stmt = sqlsrv_query($conn, $query, $params);
 
     if ($stmt === false) {
         die("Query failed: " . print_r(sqlsrv_errors(), true));
@@ -85,6 +93,20 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+
+        .view-btn, .disabled-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .disabled-btn {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -98,7 +120,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
                 <a href="mhs_listPelanggaran.php"><i class="fas fa-exclamation-circle"></i><span>Lihat Pelanggaran</span></a>
                 <a href="mhs_buatLaporan.php"><i class="fas fa-file-alt"></i><span>Buat Laporan</span></a>
                 <a href="mhs_listLaporan.php"><i class="fas fa-book"></i><span>Lihat Laporan</span></a>
-                <a href="mhs_laporanBanding.php" class="active"><i class="fas fa-balance-scale"></i><span>Laporan Banding</span></a>
+                <a href="mhs_laporanBanding.php"><i class="fas fa-balance-scale"></i><span>Laporan Banding</span></a>
                 <a href="mhs_lihatSanksi.php" class="active"><i class="fas fa-exclamation-triangle"></i><span>Lihat Sanksi</span></a>
             </div>
         </div>
@@ -106,18 +128,6 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
         <!-- Topbar -->
         <div class="topbar" id="topbar">
             <div class="profile-notifications">
-                <h2>Laporan untuk Anda</h2>
-                <div class="notifications" id="notification-icon">
-                    <i class="fas fa-bell"></i>
-                    <div class="notification-dropdown" id="notification-dropdown">
-                        <h4>Notifikasi</h4>
-                        <ul>
-                            <li>Pelanggaran baru oleh mahasiswa A.</li>
-                            <li>Dosen B mengajukan revisi data.</li>
-                            <li>Pengingat rapat pukul 10.00.</li>
-                        </ul>
-                    </div>
-                </div>
                 <div class="profile dropdown">
                     <img src="img/profile.png" alt="Profile Picture">
                     <div class="dropdown-menu">
@@ -138,6 +148,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
                         <th>Tingkat Pelanggaran</th>
                         <th>Jenis Pelanggaran</th>
                         <th>Sanksi</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -146,6 +157,13 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
                             <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
                             <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
                             <td><?= htmlspecialchars($row['sanksi']) ?></td>
+                            <td>
+                                <?php if ($row['sp_count'] > 0): ?>
+                                    <a href="uploads/<?php echo $row['sp_path_file']; ?>" class="view-btn">Lihat SP</a>
+                                <?php else: ?>
+                                    <a href="mhs_uploadPernyataan.php?id_pelanggaran=<?php echo $row['id_pelanggaran'] ?>" class="view-btn">Upload Surat Pernyataan</a>
+                                <?php endif; ?>
+                            </td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>

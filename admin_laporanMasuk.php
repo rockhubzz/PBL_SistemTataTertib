@@ -152,6 +152,10 @@ if ($stmt === false) {
         <a href="admin_editSanksi.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
             <i class="fas fa-gavel"></i><span>Edit Sanksi</span>
         </a>
+        <a href="admin_SPMasuk.php" class="<?= ($current_page == 'admin_SPMasuk.php') ? 'active' : '' ?>">
+            <i class="fas fa-envelope"></i><span>SP Masuk</span>
+        </a>
+
 
         </div>
     </div>
