@@ -150,7 +150,8 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
                 <a href="mhs_listPelanggaran.php"><i class="fas fa-exclamation-circle"></i><span>Lihat Pelanggaran</span></a>
                 <a href="mhs_buatLaporan.php"><i class="fas fa-file-alt"></i><span>Buat Laporan</span></a>
                 <a href="mhs_listLaporan.php"><i class="fas fa-book"></i><span>Lihat Laporan</span></a>
-                <a href="laporan_banding.php" class="active"><i class="fas fa-balance-scale"></i><span>Laporan Banding</span></a>
+                <a href="mhs_laporanBanding.php" class="active"><i class="fas fa-balance-scale"></i><span>Laporan Banding</span></a>
+                <a href="mhs_lihatSanksi.php" class="active"><i class="fas fa-exclamation-triangle"></i><span>Lihat Sanksi</span></a>
             </div>
         </div>
 

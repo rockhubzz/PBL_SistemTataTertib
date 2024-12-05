@@ -255,8 +255,11 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
                 <a href="mhs_listLaporan.php" class="<?= ($current_page == 'buat_laporan.php') ? 'active' : '' ?>">
                     <i class="fas fa-book"></i><span>Lihat Laporan</span>
                 </a>
-                <a href="laporan_banding.php" class="<?= ($current_page == 'laporan_banding.php') ? 'active' : '' ?>">
+                <a href="mhs_laporanBanding.php" class="<?= ($current_page == 'mhs_laporanBanding.php') ? 'active' : '' ?>">
                     <i class="fas fa-balance-scale"></i><span>Laporan Banding</span>
+                </a>
+                <a href="mhs_lihatSanksi.php" class="<?= ($current_page == 'mhs_laporanBanding.php') ? 'active' : '' ?>">
+                    <i class="fas fa-exclamation-triangle"></i><span>Lihat Sanksi</span>
                 </a>
             </div>
         </div>

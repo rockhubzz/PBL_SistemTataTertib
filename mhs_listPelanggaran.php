@@ -70,7 +70,7 @@ p.jenis_pelanggaran,
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         body{
-            overflow: scroll;
+            overflow: auto;
         }
         .filter-section {
             margin: 20px auto;
@@ -142,8 +142,11 @@ p.jenis_pelanggaran,
             <a href="mhs_listLaporan.php" class="<?= ($current_page == 'buat_laporan.php') ? 'active' : '' ?>">
                 <i class="fas fa-book"></i><span>Lihat Laporan</span>
             </a>
-            <a href="laporan_banding.php" class="<?= ($current_page == 'laporan_banding.php') ? 'active' : '' ?>">
+            <a href="mhs_laporanBanding.php" class="<?= ($current_page == 'mhs_laporanBanding.php') ? 'active' : '' ?>">
                 <i class="fas fa-balance-scale"></i><span>Laporan Banding</span>
+            </a>
+            <a href="mhs_lihatSanksi.php" class="<?= ($current_page == 'mhs_laporanBanding.php') ? 'active' : '' ?>">
+                <i class="fas fa-exclamation-triangle"></i><span>Lihat Sanksi</span>
             </a>
         </div>
     </div>
@@ -195,7 +198,6 @@ p.jenis_pelanggaran,
     <thead>
         <tr>
             <th>ID Pelanggaran</th>
-            <th>Tingkat Pelanggaran</th>
             <th>Jenis Pelanggaran</th>
             <th>Tanggal</th>
             <th>Status</th>
@@ -231,7 +233,6 @@ p.jenis_pelanggaran,
                 ?>
                 <tr>
                     <td><?= htmlspecialchars($pelanggaran['id_pelanggaran']) ?></td>
-                    <td><?= htmlspecialchars($pelanggaran['tingkat_pelanggaran']) ?></td>
                     <td><?= htmlspecialchars($pelanggaran['jenis_pelanggaran']) ?></td>
                     <td><?= htmlspecialchars($pelanggaran['tanggal_pelanggaran']->format('Y-m-d')) ?></td>
                     <td><?= htmlspecialchars($pelanggaran['status']) ?></td>
