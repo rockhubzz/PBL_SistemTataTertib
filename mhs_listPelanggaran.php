@@ -153,20 +153,7 @@ p.jenis_pelanggaran,
     
     <!-- Topbar -->
     <div class="topbar" id="topbar">
-        <div class="profile-notifications">
-            <h2>Laporan untuk Anda</h2>
-            <div class="notifications" id="notification-icon">
-                <i class="fas fa-bell"></i>
-                <div class="notification-dropdown" id="notification-dropdown">
-                    <h4>Notifikasi</h4>
-                    <ul>
-                        <li>Pelanggaran baru oleh mahasiswa A.</li>
-                        <li>Dosen B mengajukan revisi data.</li>
-                        <li>Pengingat rapat pukul 10.00.</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="profile dropdown">
+                <div class="profile dropdown">
                 <img src="img/profile.png" alt="Profile Picture">
                 <div class="dropdown-menu">
                     <a href="update_profile.php">Change Password</a>
