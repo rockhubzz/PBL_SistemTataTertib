@@ -21,7 +21,7 @@ if (!$conn) {
 $query = "
 SELECT s.id_sp, s.id_pelanggaran, s.nim_pembuat,
 	(SELECT nama FROM Users WHERE user_id = 4) AS nama,
-	p.tingkat_pelanggaran, p.jenis_pelanggaran, s.path_file
+	p.tingkat_pelanggaran, p.jenis_pelanggaran, s.tanggal_dibuat, s.path_file
 FROM SP s
 JOIN Pelanggaran p ON p.id_pelanggaran = s.id_pelanggaran
 ";
@@ -149,6 +149,7 @@ if (!$stmt) {
                         <th>Nama</th>
                         <th>Tingkat Pelanggaran</th>
                         <th>Jenis Pelanggaran</th>
+                        <th>Tanggal Dibuat</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -159,6 +160,7 @@ if (!$stmt) {
                             <td><?= htmlspecialchars($row['nama']) ?></td>
                             <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
                             <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
+                            <td><?= htmlspecialchars($row['tanggal_dibuat']->format('d-m-Y')) ?></td>
                             <td><a href="<?= htmlspecialchars($row['path_file']) ?>" class="view-btn">Lihat SP</a> </td>
                         </tr>
                     <?php endwhile; ?>

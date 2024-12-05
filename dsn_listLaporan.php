@@ -186,7 +186,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
                                 <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
                                 </td>
                                 <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
-                                <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('Y-m-d')) ?></td>
+                                <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('d-m-Y')) ?></td>
                                 <td><?= htmlspecialchars($row['status']) ?></td>
                                 <td><?php
                                     $url = "dsn_editLaporan.php?id_pelanggaran=" . urlencode($row['id_pelanggaran']);

@@ -345,7 +345,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
                                 type="date"
                                 id="tanggal_pelanggaran"
                                 name="tanggal_pelanggaran"
-                                value="<?= isset($row['tanggal_pelanggaran']) ? htmlspecialchars($row['tanggal_pelanggaran']->format('Y-m-d')) : '' ?>"
+                                value="<?= isset($row['tanggal_pelanggaran']) ? htmlspecialchars($row['tanggal_pelanggaran']->format('d-m-Y')) : '' ?>"
                                 required>
                         </div>
                         <div class="form-group">

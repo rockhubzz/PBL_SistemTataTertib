@@ -217,19 +217,22 @@ if ($stmt === false) {
                                 </td>
                                 <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
                                 <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
-                                <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('Y-m-d')) ?></td>
-                                <td><?php 
-                                    if($row['laporan_banding']): echo $row['laporan_banding'];
-                                    else: echo 'Belum ada banding';  endif;?></td>
-                                <td><?php 
-                                    if($row['status_banding'] = null){
-                                        echo 'Belum ada banding';
-                                    }elseif($row['status_banding'] == 0){
-                                        echo 'Ditolak pelapor';
-                                    }elseif($row['status_banding'] == 1){
-                                        echo 'Diterima pelapor';
+                                <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('d-m-Y')) ?></td>
+                                <?php 
+                                    if($row['laporan_banding']){
+                                         echo '<td>'.$row['laporan_banding'].'</td>';
+                                         if($row['status_banding']== null){
+                                             echo '<td>Pending</td>';
+                                         }elseif($row['status_banding'] == 0){
+                                             echo '<td>Ditolak pelapor</td>';
+                                         }elseif($row['status_banding'] == 1){
+                                             echo '<td>Diterima pelapor</td>';
+                                         }
                                     }
-                                ?></td>
+                                    else{
+                                        echo '<td>-</td>';
+                                        echo '<td>-</td>';
+                                    }?>
                                 <td>
                                     <select name="status[<?= $row['id_pelanggaran'] ?>]">
                                         <option value="Pending" <?= $row['status'] == 'Pending' ? 'selected' : '' ?>>Pending</option>

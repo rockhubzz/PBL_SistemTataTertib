@@ -221,7 +221,7 @@ p.jenis_pelanggaran,
                 <tr>
                     <td><?= htmlspecialchars($pelanggaran['id_pelanggaran']) ?></td>
                     <td><?= htmlspecialchars($pelanggaran['jenis_pelanggaran']) ?></td>
-                    <td><?= htmlspecialchars($pelanggaran['tanggal_pelanggaran']->format('Y-m-d')) ?></td>
+                    <td><?= htmlspecialchars($pelanggaran['tanggal_pelanggaran']->format('d-m-Y')) ?></td>
                     <td><?= htmlspecialchars($pelanggaran['status']) ?></td>
                     <td><?= htmlspecialchars($bandingStatus) ?></td>
                     <td>
