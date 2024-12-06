@@ -44,118 +44,59 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
         die("Query failed: " . print_r(sqlsrv_errors(), true));
     }
 ?>
-    <!DOCTYPE html>
-    <html lang="en">
-
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Data Laporan</title>
-        <link rel="stylesheet" href="style/MenuStyles.css">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-        <style>
-            .content-table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 20px;
-            }
-
-            .content-table,
-            th,
-            td {
-                border: 1px solid #ccc;
-            }
-
-            th,
-            td {
-                padding: 12px;
-                text-align: left;
-                background-color: #254989;
-            }
-
-            th {
-                background-color: #007bff;
-                color: white;
-            }
-
-            tr:nth-child(even) {
-                background-color: #f2f2f2;
-            }
-
-            .dashboard-content {
-                display: flex;
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            #selectedMenu {
-                background-color: #353f4f;
-            }
-
-            .view-btn {
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                padding: 5px 10px;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-
-            .view-btn:hover {
-                background-color: #45a049;
-            }
-        </style>
-    </head>
-
-    <body>
-        <!-- Sidebar -->
-        <div class="sidebar" id="sidebar">
-            <div class="logo">
-                <img src="img/logoPoltek.png" alt="Logo">
-            </div>
-            <div class="menu">
-                <a href="dosenMenu.php" class="<?= ($current_page == 'dosenMenu.php') ? 'active' : '' ?>">
-                    <i class="fas fa-home"></i><span>Dashboard</span>
-                </a>
-                <a href="dsn_buatLaporan.php" class="<?= ($current_page == 'dsn_buatLaporan.php') ? 'active' : '' ?>">
-                    <i class="fas fa-user"></i><span>Buat Laporan</span>
-                </a>
-                <a href="dsn_listLaporan.php" class="<?= ($current_page == 'dsn_listLaporan.php') ? 'active' : '' ?>">
-                    <i class="fas fa-book"></i><span>List Laporan</span>
-                </a>
-                <a href="dsn_laporanBanding.php" class="<?= ($current_page == 'mhs_laporanBanding.php') ? 'active' : '' ?>">
-                    <i class="fas fa-balance-scale"></i><span>Laporan Banding</span>
-                </a>
-
-            </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin</title>
+    <link rel="stylesheet" href="style/AdminStyles.css">
+    <link rel="stylesheet" href="style/DListLprnMain.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="sidebar" id="sidebar">
+    <div class="logo">
+        <img src="img/LogoPLTK.png" alt="Logo">
+    </div>
+    <div class="menu">
+        <a href="dosenMenu.php" class="menu-item">
+            <i class="fas fa-home"></i><span>Dashboard</span>
+        </a>
+        <a href="dsn_buatLaporan.php" class="menu-item">
+            <i class="fas fa-user"></i><span>Buat Laporan</span>
+        </a>
+        <a href="dsn_listLaporan.php" class="menu-item">
+            <i class="fas fa-book"></i><span>List Laporan</span>
+        </a>
+        <a href="dsn_laporanBanding.php" class="menu-item">
+            <i class="fas fa-balance-scale"></i><span>Laporan Banding</span>
+        </a>
+    </div>
+    <div class="profile">
+    <img src="img/profile.png" alt="Profile">
+    <span class="username"><h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3></span>
+    <div class="dropdown-content">
+        <a href="update_profile.php">Change Password</a>
+        <a href="logout.php">Logout</a>
+    </div>
+</div>
+</div>
+    <!-- Header -->
+    <div class="header" id="header">
+        <button class="toggle-btn" id="toggleSidebar">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="title">
+            <h1>Sistem Tata Tertib</h1>
+            <h2>List Laporan</h2>
         </div>
-        <!-- Topbar -->
-        <div class="topbar" id="topbar">
-            <div class="profile-notifications">
-                <div class="notifications" id="notification-icon">
-                    <i class="fas fa-bell"></i>
-                    <div class="notification-dropdown" id="notification-dropdown">
-                        <h4>Notifikasi</h4>
-                        <ul>
-                            <li>Pelanggaran baru oleh mahasiswa A.</li>
-                            <li>Dosen B mengajukan revisi data.</li>
-                            <li>Pengingat rapat pukul 10.00.</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="profile dropdown">
-                    <img src="img/profile.png" alt="Profile Picture">
-                    <div class="dropdown-menu">
-                        <a href="update_profile.php">Change Password</a>
-                        <a href="logout.php">Log Out</a>
-                    </div>
-                    <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
-                </div>
-            </div>
+    </div>
+    <!-- Main Content -->
+    <div class="main" id="main">
+    <div class="table-container">
+    <div class="report-section">
         </div>
-
-        <!-- Main Content -->
-        <div class="main" id="main">
             <h2>Data Laporan</h2>
             <div class="dashboard-content">
                 <table class="content-table">
@@ -186,7 +127,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
                                 <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
                                 </td>
                                 <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
-                                <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('d-m-Y')) ?></td>
+                                <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('Y-m-d')) ?></td>
                                 <td><?= htmlspecialchars($row['status']) ?></td>
                                 <td><?php
                                     $url = "dsn_editLaporan.php?id_pelanggaran=" . urlencode($row['id_pelanggaran']);
@@ -200,25 +141,26 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
                 </table>
             </div>
         </div>
+        </div>
+    
+    <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const toggleBtn = document.querySelector(".toggle-btn");
+                const sidebar = document.querySelector(".sidebar");
+                const main = document.querySelector(".main");
+                const header = document.querySelector(".header");
 
-        <!-- Toggle Button -->
-        <button class="toggle-btn" id="toggle-btn">&lt;</button>
-
-        <script>
-            const sidebar = document.getElementById('sidebar');
-            const toggleBtn = document.getElementById('toggle-btn');
-
-            // Sidebar toggle functionality
-            toggleBtn.addEventListener('click', () => {
-                sidebar.classList.toggle('collapsed');
-                toggleBtn.textContent = sidebar.classList.contains('collapsed') ? '>' : '<';
+                toggleBtn.addEventListener("click", () => {
+                    sidebar.classList.toggle("collapsed");
+                    main.classList.toggle("collapsed");
+                    header.classList.toggle("collapsed");
+                });
             });
-        </script>
-    </body>
-
-    </html>
+    </script>
+</body>
+</html>
 <?php
-} else {
+    }else{
     header("location: logout.php");
 }
 ?>

@@ -104,227 +104,61 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Edit Laporan</title>
-        <link rel="stylesheet" href="style/MenuStyles.css">
+        <title>Dashboard Admin</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style/AEditLprnMain.css">
+        <link rel="stylesheet" href="style/AdminStyles.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-        <style>
-            /* Basic fixes for dropdown and layout */
-            .dropdown {
-                position: relative;
-                display: inline-block;
-            }
-
-            /* General form styling */
-            /* General form styling */
-            .form-container {
-                background-color: #f9f9f9;
-                /* Light background for contrast */
-                border-radius: 8px;
-                /* Rounded corners */
-                padding: 20px;
-                /* Spacing inside the container */
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                /* Subtle shadow for depth */
-                max-width: 800px;
-                /* Increased width of the form container */
-                margin: auto;
-                /* Center the form on the page */
-            }
-
-            /* Form group styling */
-            .form-group {
-                margin-bottom: 15px;
-                /* Space between form groups */
-            }
-
-            /* Label styling */
-            .form-group label {
-                font-weight: bold;
-                /* Bold labels for clarity */
-                margin-bottom: 5px;
-                /* Space between label and input */
-                display: block;
-                /* Make labels block elements */
-            }
-
-            /* Input and select styling */
-            input[type="text"],
-            input[type="date"],
-            select {
-                width: 100%;
-                /* Full width inputs */
-                padding: 10px;
-                /* Padding inside inputs for better touch target */
-                border: 1px solid #ccc;
-                /* Light border color */
-                border-radius: 4px;
-                /* Rounded input corners */
-                box-sizing: border-box;
-                /* Include padding in width calculation */
-            }
-
-            /* Input focus styling */
-            input[type="text"]:focus,
-            input[type="date"]:focus,
-            select:focus {
-                border-color: #007bff;
-                /* Change border color on focus */
-                outline: none;
-                /* Remove default outline */
-            }
-
-            /* Button styling */
-            .submit-btn {
-                background-color: #007bff;
-                /* Primary button color */
-                color: white;
-                /* Text color for buttons */
-                padding: 10px 15px;
-                /* Padding inside buttons */
-                border: none;
-                /* Remove default button border */
-                border-radius: 4px;
-                /* Rounded button corners */
-                cursor: pointer;
-                /* Pointer cursor on hover */
-                font-size: 16px;
-                /* Increase font size for buttons */
-            }
-
-            .submit-btn:hover {
-                background-color: #0056b3;
-                /* Darken button on hover */
-            }
-
-            /* Success message styling */
-            .success-message {
-                color: green;
-                /* Green text for success messages */
-                margin-bottom: 15px;
-                /* Space below success message */
-            }
-
-            .dropdown-menu {
-                display: none;
-                position: absolute;
-                top: 100%;
-                right: 0;
-                background-color: white;
-                border: 1px solid #ccc;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                border-radius: 5px;
-                z-index: 10;
-            }
-
-            .dropdown-menu a {
-                display: block;
-                padding: 10px;
-                text-decoration: none;
-                color: black;
-            }
-
-            .dropdown-menu a:hover {
-                background-color: #f1f1f1;
-            }
-
-            .dropdown:hover .dropdown-menu {
-                display: block;
-            }
-
-            .notification-dropdown {
-                display: none;
-                position: absolute;
-                top: 100%;
-                right: 0;
-                background-color: white;
-                border: 1px solid #ccc;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                border-radius: 5px;
-                z-index: 10;
-                width: 300px;
-            }
-
-            .notification-dropdown.visible {
-                display: block;
-            }
-
-            .notification-dropdown ul {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
-
-            .notification-dropdown ul li {
-                padding: 10px;
-                border-bottom: 1px solid #ddd;
-            }
-
-            .notification-dropdown ul li:last-child {
-                border-bottom: none;
-            }
-
-            .collapsed {
-                display: none;
-            }
-
-            label {
-                color: black;
-            }
-        </style>
     </head>
 
     <body>
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="logo">
-            <img src="img/LogoPLTK.png" alt="Logo">
-    </div>
-    <div class="menu">
-        <a href="AdminMenu.php" class="<?= ($current_page == 'AdminMenu.php') ? 'active' : '' ?>">
-            <i class="fas fa-home"></i><span>Dashboard</span>
-        </a>
-        <a href="admin_kelolaMhs.php" class="<?= ($current_page == 'admin_kelolaMhs.php') ? 'active' : '' ?>">
-            <i class="fas fa-user"></i><span>Data Mahasiswa</span>
-        </a>
-        <a href="admin_kelolaDsn.php" class="<?= ($current_page == 'admin_kelolaDsn.php') ? 'active' : '' ?>">
-            <i class="fas fa-book"></i><span>Data Dosen</span>
-        </a>
-        <a href="admin_laporanMasuk.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
-            <i class="fas fa-warning"></i><span>Laporan Masuk</span>
-        </a>
-        <a href="admin_editPlg.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
-            <i class="fas fa-edit"></i><span>Edit Pelanggaran</span>
-        </a>
-        <a href="admin_editSanksi.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
-            <i class="fas fa-gavel"></i><span>Edit Sanksi</span>
-        </a>
-        <a href="admin_SPMasuk.php" class="<?= ($current_page == 'admin_SPMasuk.php') ? 'active' : '' ?>">
-            <i class="fas fa-envelope"></i><span>SP Masuk</span>
-        </a>
-        <a href="admin_buatAkun.php" class="<?= ($current_page == 'admin_SPMasuk.php') ? 'active' : '' ?>">
-            <i class="fas fa-user-cog"></i><span>Manage Akun</span>
-        </a>
-
-
-
-    </div>
-</div>
-
-    <!-- Topbar -->
-    <div class="topbar" id="topbar">
-            <div class="profile dropdown">
-                <img src="img/profile.png" alt="Profile Picture">
-                <div class="dropdown-menu">
-                    <a href="update_profile.php">Change Password</a>
-                    <a href="logout.php">Log Out</a>
-                </div>
-                <h3 id="profile-name" style="color: white"><?php echo $_SESSION['profile_name']; ?></h3>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <img src="img/LogoPLTK.png" alt="Logo">
             </div>
-    </div>
-
+            <div class="menu">
+                <a href="AdminMenu.php" class="menu-item">
+                    <i class="fas fa-home"></i><span>Dashboard</span>
+                </a>
+                <a href="admin_kelolaMhs.php" class="menu-item">
+                    <i class="fas fa-user"></i><span>Data Mahasiswa</span>
+                </a>
+                <a href="admin_kelolaDsn.php" class="menu-item">
+                    <i class="fas fa-book"></i><span>Data Dosen</span>
+                </a>
+                <a href="admin_laporanMasuk.php" class="menu-item">
+                    <i class="fas fa-warning"></i><span>Laporan Masuk</span>
+                </a>
+                <a href="admin_editPlg.php" class="menu-item">
+                    <i class="fas fa-exclamation-circle"></i><span>Edit Pelanggaran</span>
+                </a>
+                <a href="admin_editSanksi.php" class="menu-item">
+                    <i class="fas fa-gavel"></i><span>Edit Sanksi</span>
+                </a>
+            </div>
+            <div class="profile">
+                <img src="img/profile.png" alt="Profile">
+                <span class="username">
+                    <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
+                </span>
+                <div class="dropdown-content">
+                    <a href="update_profile.php">Change Password</a>
+                    <a href="logout.php">Logout</a>
+                </div>
+            </div>
+        </div>
+        <!-- Header -->
+        <div class="header" id="header">
+            <button class="toggle-btn" id="toggleSidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="title">
+                <h1>Sistem Tata Tertib</h1>
+                <h2>Edit Laporan</h2>
+            </div>
+        </div>
         <!-- Main Content -->
         <div class="main">
-            <h2>Edit Laporan</h2>
             <div class="form-container">
                 <?php if (isset($_GET['success'])): ?>
                     <p class="success-message">Laporan berhasil dibuat!</p>
@@ -349,7 +183,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
                                 type="date"
                                 id="tanggal_pelanggaran"
                                 name="tanggal_pelanggaran"
-                                value="<?= isset($row['tanggal_pelanggaran']) ? htmlspecialchars($row['tanggal_pelanggaran']->format('d-m-Y')) : '' ?>"
+                                value="<?= isset($row['tanggal_pelanggaran']) ? htmlspecialchars($row['tanggal_pelanggaran']->format('Y-m-d')) : '' ?>"
                                 required>
                         </div>
                         <div class="form-group">
@@ -377,14 +211,11 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
                 </form>
             </div>
         </div>
-
         <!-- Close database connection -->
         <?php sqlsrv_close($conn); ?>
-    </body>
 
-    </html>
-    <script>
-        function checkNim() {
+        <script>
+                    function checkNim() {
             var nim = document.getElementById('nim_pelanggar').value;
             if (nim.trim() === '') {
                 alert('Please enter a NIM or name to check.');
@@ -443,7 +274,23 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
             populateJenisPelanggaran();
             document.getElementById('tingkat_pelanggaran').addEventListener('change', populateJenisPelanggaran);
         });
-    </script>
+
+            document.addEventListener("DOMContentLoaded", function() {
+                const toggleBtn = document.querySelector(".toggle-btn");
+                const sidebar = document.querySelector(".sidebar");
+                const main = document.querySelector(".main");
+                const header = document.querySelector(".header");
+
+                toggleBtn.addEventListener("click", () => {
+                    sidebar.classList.toggle("collapsed");
+                    main.classList.toggle("collapsed");
+                    header.classList.toggle("collapsed");
+                });
+            });
+        </script>
+    </body>
+
+    </html>
 <?php
 } else {
     header("location: logout.php");

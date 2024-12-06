@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Sistem Tata Tertib Mahasiswa</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1E3A8A;
+            padding: 10px 20px;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .left {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar img {
+            height: 50px;
+        }
+
+        .navbar .left .title {
+            margin-left: 20px;
+        }
+
+        .navbar .left .title h1 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .navbar .left .title h2 {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .navbar .right {
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-left: 20px;
+        }
+
+        .navbar nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 16px;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .navbar nav a:hover {
+            color: #2563EB;
+        }
+
+        /* Main Section */
+        .main-content {
+            padding: 40px;
+            text-align: center;
+            background-color: #ffffff;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #1E3A8A;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #666;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            background-color: #fff;
+            padding: 30px;
+            max-width: 700px;
+            margin: 0 auto;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .contact-form button {
+            background-color: #2563EB;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .contact-form button:hover {
+            background-color: #1E3A8A;
+        }
+
+        /* Contact Information */
+        .contact-info {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+
+        .contact-info div {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 200px;
+        }
+
+        .contact-info div h3 {
+            color: #2563EB;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .contact-info div p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #1E3A8A;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .navbar .left {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .navbar .right {
+                margin-top: 10px;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .contact-info div {
+                margin-bottom: 20px;
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="left">
+            <img src="img/logoPoltek.png" alt="Logo Polinema" width="100px">
+            <div class="title">
+                <h1>Politeknik Negeri Malang</h1>
+                <h2>Jurusan Teknologi Informasi</h2>
+            </div>
+        </div>
+        <div class="right">
+            <p>Contact Us</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>Contact Us</h1>
+        <p>We'd love to hear from you! Please feel free to reach out to us with any questions, suggestions, or inquiries.</p>
+
+        <!-- Contact Form -->
+        <div class="contact-form">
+            <form action="#">
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <textarea rows="5" placeholder="Your Message" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="contact-info">
+            <div>
+                <h3>Phone</h3>
+                <p>(0341) 123-4567</p>
+            </div>
+            <div>
+                <h3>Email</h3>
+                <p>contact@polinema.ac.id</p>
+            </div>
+            <div>
+                <h3>Address</h3>
+                <p>Jalan Soekarno-Hatta No. 9, Malang, Indonesia</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        &copy; 2024 Sistem Tata Tertib Mahasiswa. Semua Hak Dilindungi.
+    </div>
+
+</body>
+</html>

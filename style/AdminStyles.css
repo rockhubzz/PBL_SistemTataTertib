@@ -1,0 +1,287 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+/* Header Styles */
+.header {
+    position: fixed;
+    top: 0;
+    left: 250px;
+    height: 80px;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 900;
+    border-bottom: 3px solid #2575fc;
+    transition: left 0.3s ease, width 0.3s ease;
+    width: calc(100% - 250px);
+}
+
+.header .toggle-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.header .title {
+    flex: 1;
+}
+
+.header.collapsed {
+    left: 80px;
+    width: calc(100% - 80px);
+}
+
+/* Sidebar Styles */
+.sidebar {
+    position: fixed;
+    top: 0;/* Sidebar Styles */
+    left: 0;/* Sidebar Styles */
+    height: 100vh;
+    width: 250px;
+    background-color: #27365a;
+    color: white;
+    transition: width 0.3s ease;
+    overflow: hidden;
+    z-index: 1000;
+}
+.sidebar.collapsed {
+    width: 80px;
+}
+.sidebar .menu {
+    padding: 20px 0;
+}
+.sidebar .menu .menu-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    color: white; /* warna semua menu */
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+/* Sidebar Menu */
+.sidebar .menu .menu-item:hover {
+    background-color: #ff9800; /* Hover menu */
+    color: white;
+}
+.sidebar .menu .menu-item i {
+    font-size: 18px;
+    margin-right: 15px;
+}
+/* Sidebar Collapsed: Menu Items Centered */
+.sidebar.collapsed .menu .menu-item {
+    justify-content: center; /* Pusatkan ikon menu */
+    padding: 15px 0; /* Hilangkan padding kiri */
+}
+.sidebar.collapsed .menu .menu-item i {
+    margin-right: 0; /* Hilangkan jarak kanan ikon */
+}
+/* Sembunyikan Teks Menu */
+.sidebar.collapsed .menu .menu-item span {
+    display: none;
+}
+
+.sidebar .profile {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Letakkan di tengah saat sidebar mengecil */
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: calc(100% - 40px);
+    padding: 10px;
+    background-color: #27365a;
+    border-radius: 8px;
+    transition: left 0.3s ease, justify-content 0.3s ease;
+}
+/* Animasi dan Respons Logo Profil */
+.sidebar .profile img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.sidebar .profile img:hover {
+    transform: rotate(10deg) scale(1.1);
+    box-shadow: 0 4px 8px rgba(190, 24, 24, 0.2);
+}
+.sidebar.collapsed .profile img {
+    width: 40px;
+    height: 40px;
+    margin-right: 0;
+}
+.sidebar.collapsed .profile {
+    left: 0;
+    width: 80px;
+    justify-content: center;
+}
+/* Nama Pengguna */
+.sidebar .profile .username {
+    color: white; /* Warna teks */
+    font-size: 16px; /* Ukuran font */
+    font-weight: bold; /* Teks tebal */
+    overflow: hidden; /* Pastikan teks yang panjang tidak keluar */
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    transition: opacity 0.3s ease, width 0.3s ease;
+}
+.sidebar.collapsed .profile .username {
+    opacity: 0;
+    width: 0;
+}
+
+.sidebar .profile span {
+    display: block;
+    margin-bottom: 5px; /*jarak text dropdown profile*/
+}
+/* Dropdown Content Adjustments */
+.sidebar .profile .dropdown {
+    position: relative;
+}
+
+.sidebar .profile .dropdown-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+}
+/* Dropdown saat sidebar dalam mode normal */
+.sidebar .profile .dropdown-content {
+    display: none;
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: #27365a;
+    color: white;
+    border-radius: 10px;
+    border: 2px solid #b1593e;
+    box-shadow: 0 0 10px rgba(255, 87, 34, 0.5);
+    z-index: 9999;
+    width: 180px;
+    opacity: 0;
+    transition: all 0.5s ease;
+    animation: float 3s ease-in-out infinite;
+}
+/* Dropdown saat sidebar diminimalkan */
+.sidebar.collapsed .profile .dropdown-content {
+    position: fixed; /* Menggunakan posisi tetap */
+    left: 170px; /* Geser ke kanan dari sidebar */
+    top: calc(50% - 30px); /* Atur posisi vertikal berdasarkan profil */
+    background: #27365a;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: all 0.5s ease;
+    margin-top: 250px;
+    width: 180px;
+    height: 90px;
+}
+
+/* Tampilkan dropdown saat hover */
+.sidebar .profile:hover .dropdown-content,
+.sidebar.collapsed .profile:hover .dropdown-content {
+    display: block;
+    opacity: 1;
+    transform: translateY(-50%);
+}
+.sidebar .profile:hover .dropdown-content {
+    display: block;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+/* Dropdown Links */
+.sidebar .profile .dropdown-content a {
+    padding: 12px 20px;
+    text-decoration: none;
+    color: white;
+    display: block;
+    text-align: center;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+.sidebar .profile .dropdown-content a:hover {
+    background-color: #ff9800;
+    transform: scale(1.05);
+    border-radius: 5px;
+}
+/* Show Dropdown on Hover */
+.sidebar .profile img:hover + .dropdown-content,
+.sidebar .profile .dropdown-content:hover {
+    display: block; /* Tampilkan dropdown saat mouse mendekati logo profil */
+}
+/* Logo Image */
+.sidebar .logo {
+    position: relative; /* Dibutuhkan untuk posisi dropdown relatif ke logo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+}
+.sidebar .logo img {
+    max-width: 50%;
+    height: auto;
+    cursor: pointer;
+}
+.sidebar .profile img {
+    border-radius: 50%;
+    border: 3px solid #ff9800;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 15px 15px rgba(255, 152, 0, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 152, 0, 0);
+    }
+}
+.sidebar .profile .dropdown-content {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    50% {
+        transform: translateX(-50%) translateY(-5px);
+    }
+}
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+    .main {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+    }
+
+    .header {
+        left: 80px;
+        width: calc(100% - 80px);
+    }
+}
+
