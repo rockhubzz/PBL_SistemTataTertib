@@ -50,92 +50,56 @@ WHERE u.user_id = ?
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Data Banding</title>
-        <link rel="stylesheet" href="style/MenuStyles.css">
+        <title>Dashboard Admin</title>
+        <link rel="stylesheet" href="style/AdminStyles.css">
+        <link rel="stylesheet" href="style/DLaporanBandingMain.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-        <style>
-            .content-table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 20px;
-            }
-
-            .content-table,
-            th,
-            td {
-                border: 1px solid #ccc;
-            }
-
-            th,
-            td {
-                padding: 12px;
-                text-align: left;
-                background-color: #244785;
-            }
-
-            th {
-                background-color: #007bff;
-                color: white;
-            }
-
-            tr:nth-child(even) {
-                background-color: #f2f2f2;
-            }
-
-            .dashboard-content {
-                display: flex;
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            #selectedMenu {
-                background-color: #353f4f;
-            }
-
-            .view-btn {
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                padding: 5px 10px;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-
-            .view-btn:hover {
-                background-color: #45a049;
-            }
-        </style>
     </head>
 
     <body>
-        <!-- Sidebar -->
         <div class="sidebar" id="sidebar">
             <div class="logo">
-                <img src="img/logoPoltek.png" alt="Logo">
+                <img src="img/LogoPLTK.png" alt="Logo">
             </div>
             <div class="menu">
-                <a href="dosenMenu.php"><i class="fas fa-home"></i><span>Dashboard</span></a>
-                <a href="dsn_buatLaporan.php"><i class="fas fa-user"></i><span>Buat Laporan</span></a>
-                <a href="dsn_listLaporan.php"><i class="fas fa-book"></i><span>List Laporan</span></a>
-                <a href="dsn_laporanBanding.php"><i class="fas fa-balance-scale"></i><span>Laporan Banding</span></a>
+                <a href="dosenMenu.php" class="menu-item">
+                    <i class="fas fa-home"></i><span>Dashboard</span>
+                </a>
+                <a href="dsn_buatLaporan.php" class="menu-item">
+                    <i class="fas fa-user"></i><span>Buat Laporan</span>
+                </a>
+                <a href="dsn_listLaporan.php" class="menu-item">
+                    <i class="fas fa-book"></i><span>List Laporan</span>
+                </a>
+                <a href="dsn_laporanBanding.php" class="menu-item">
+                    <i class="fas fa-balance-scale"></i><span>Laporan Banding</span>
+                </a>
+            </div>
+            <div class="profile">
+                <img src="img/profile.png" alt="Profile">
+                <span class="username">
+                    <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
+                </span>
+                <div class="dropdown-content">
+                    <a href="update_profile.php">Change Password</a>
+                    <a href="logout.php">Logout</a>
+                </div>
             </div>
         </div>
-        <!-- Topbar -->
-        <div class="topbar" id="topbar">
-            <div class="profile-notifications">
-                <div class="profile dropdown">
-                    <img src="img/profile.png" alt="Profile Picture">
-                    <div class="dropdown-menu">
-                        <a href="update_profile.php">Change Password</a>
-                        <a href="logout.php">Log Out</a>
-                    </div>
-                    <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
-                </div>
+        <!-- Header -->
+        <div class="header" id="header">
+            <button class="toggle-btn" id="toggleSidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="title">
+                <h1>Sistem Tata Tertib</h1>
+                <h2>Data Banding</h2>
             </div>
         </div>
         <!-- Main Content -->
         <div class="main" id="main">
-            <h2>Data Banding</h2>
+        <div class="table-container">
+        <div class="report-section">
             <div class="dashboard-content">
                 <table class="content-table">
                     <thead>
@@ -149,76 +113,75 @@ WHERE u.user_id = ?
                         </tr>
                     </thead>
                     <tbody>
-    <?php if (sqlsrv_has_rows($stmt)): ?>
-        <?php while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)): ?>
-            <tr data-id="<?= htmlspecialchars($row['id_banding']) ?>">
-                <td><?= htmlspecialchars($row['id_banding']) ?></td>
-                <td><?= htmlspecialchars($row['id_pelanggaran']) ?></td>
-                <td><?= htmlspecialchars($row['Nama Pengaju']) ?></td>
-                <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
-                <td><?= htmlspecialchars($row['Alasan']) ?></td>
-                <?php if ($row['status'] === null): ?>
-                    <td>
-                        <button class="view-btn" onclick="handleAppealAction(<?= $row['id_banding'] ?>, 1)">Setuju</button>
-                        <button class="view-btn" style="background-color: red" onclick="handleAppealAction(<?= $row['id_banding'] ?>, 0)">Tolak</button>
-                    </td>
-                <?php elseif ($row['status'] == 0): ?>
-                    <td>Anda menolak banding ini.</td>
-                <?php elseif ($row['status'] == 1): ?>
-                    <td>Anda menyetujui banding ini</td>
-                <?php endif; ?>
-            </tr>
-        <?php endwhile; ?>
-    <?php else: ?>
-        <tr>
-            <td colspan="6" style="text-align: center; font-weight: bold;">Tidak ada pengajuan banding</td>
-        </tr>
-    <?php endif; ?>
-</tbody>
+                        <?php if (sqlsrv_has_rows($stmt)): ?>
+                            <?php while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)): ?>
+                                <tr data-id="<?= htmlspecialchars($row['id_banding']) ?>">
+                                    <td><?= htmlspecialchars($row['id_banding']) ?></td>
+                                    <td><?= htmlspecialchars($row['id_pelanggaran']) ?></td>
+                                    <td><?= htmlspecialchars($row['Nama Pengaju']) ?></td>
+                                    <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
+                                    <td><?= htmlspecialchars($row['Alasan']) ?></td>
+                                    <?php if ($row['status'] === null): ?>
+                                        <td>
+                                            <button class="view-btn" onclick="handleAppealAction(<?= $row['id_banding'] ?>, 1)">Setuju</button>
+                                            <button class="view-btn" style="background-color: red" onclick="handleAppealAction(<?= $row['id_banding'] ?>, 0)">Tolak</button>
+                                        </td>
+                                    <?php elseif ($row['status'] == 0): ?>
+                                        <td>Anda menolak banding ini.</td>
+                                    <?php elseif ($row['status'] == 1): ?>
+                                        <td>Anda menyetujui banding ini</td>
+                                    <?php endif; ?>
+                                </tr>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="6" style="text-align: center; font-weight: bold;">Tidak ada pengajuan banding</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
                 </table>
             </div>
         </div>
-        <!-- Toggle Button -->
-        <button class="toggle-btn" id="toggle-btn">&lt;</button>
-        <div id="message" style="margin-top: 20px; color: green; text-align: center;"></div>
+        </div>
+        </div>
         <script>
             const handleAppealAction = (idBanding, status) => {
-    fetch('update_banding.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id_banding: idBanding,
-                status: status
-            }),
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            const messageBox = document.getElementById('message');
-            if (data.success) {
-                messageBox.style.color = 'green';
-                messageBox.textContent = data.message;
+                fetch('update_banding.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            id_banding: idBanding,
+                            status: status
+                        }),
+                    })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        const messageBox = document.getElementById('message');
+                        if (data.success) {
+                            messageBox.style.color = 'green';
+                            messageBox.textContent = data.message;
 
-                // Find the corresponding table row and update it
-                const row = document.querySelector(`tr[data-id="${idBanding}"]`);
-                if (row) {
-                    const actionCell = row.querySelector('td:last-child');
-                    if (status === 0) {
-                        actionCell.textContent = "Anda menolak banding ini.";
-                    } else if (status === 1) {
-                        actionCell.textContent = "Anda menyetujui banding ini.";
-                    }
-                }
-            } else {
-                messageBox.style.color = 'red';
-                messageBox.textContent = data.message;
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-};
+                            // Find the corresponding table row and update it
+                            const row = document.querySelector(`tr[data-id="${idBanding}"]`);
+                            if (row) {
+                                const actionCell = row.querySelector('td:last-child');
+                                if (status === 0) {
+                                    actionCell.textContent = "Anda menolak banding ini.";
+                                } else if (status === 1) {
+                                    actionCell.textContent = "Anda menyetujui banding ini.";
+                                }
+                            }
+                        } else {
+                            messageBox.style.color = 'red';
+                            messageBox.textContent = data.message;
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            };
             const updateBanding = (id, status) => {
                 fetch('update_banding.php', {
                         method: 'POST',
@@ -245,15 +208,19 @@ WHERE u.user_id = ?
                     })
                     .catch(error => console.error('Error:', error));
             };
+        </script>
+        <script>
+            const toggleSidebar = document.getElementById('toggleSidebar');
+            const sidebar = document.getElementById('sidebar');
+            const header = document.getElementById('header');
+            const main = document.getElementById('main');
 
-            const toggleSidebar = () => {
-                const sidebar = document.getElementById('sidebar');
-                const toggleBtn = document.getElementById('toggle-btn');
+            toggleSidebar.addEventListener('click', () => {
                 sidebar.classList.toggle('collapsed');
-                toggleBtn.textContent = sidebar.classList.contains('collapsed') ? '>' : '<';
-            };
-
-            document.getElementById('toggle-btn').addEventListener('click', toggleSidebar);
+                main.classList.toggle('collapsed');
+                header.classList.toggle('collapsed');
+                console.log('Sidebar collapsed:', sidebar.classList.contains('collapsed'));
+            });
         </script>
     </body>
 

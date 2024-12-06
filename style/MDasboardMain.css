@@ -1,0 +1,89 @@
+
+.main {
+    margin-top: 100px;
+    margin-left: 250px;
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+}
+.main.collapsed {
+    margin-left: 80px;
+}
+.table-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow-x: auto; /* Scroll horizontal jika tabel terlalu lebar */
+}
+table {
+    width: 100%;
+    border-collapse: collapse; /* Hilangkan spasi antar border */
+    text-align: center; /* Teks pada header rata tengah */
+    border: 1px solid #ccc; /* Border global di seluruh tabel */
+}
+
+th, td {
+    padding: 15px;
+    border: 1px solid #ddd; /* Menambahkan garis pada setiap sel */
+    white-space: nowrap; /* Membuat isi sel tetap dalam satu baris */
+}
+
+th {
+    background-color: #007bff; /* Warna latar belakang header tabel */
+    color: white; /* Warna teks header */
+    font-weight: bold; /* Menebalkan teks header */
+    text-align: center; /* Teks pada header rata tengah */
+}
+
+td {
+    background-color: #f9f9f9; /* Warna latar belakang default */
+}
+
+tr:nth-child(even) td {
+    background-color: #f1f1f1; /* Warna latar belakang untuk baris genap */
+}
+
+tr:hover td {
+    background-color: #e1e1e1; /* Warna latar belakang saat hover */
+}
+
+.view-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.view-btn:hover {
+    background-color: #45a049;
+}
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+    table {
+        font-size: 14px; /* Sesuaikan ukuran font pada layar kecil */
+    }
+
+    th, td {
+        padding: 10px; /* Kurangi padding pada layar kecil */
+    }
+}
+/* Responsiveness */
+@media (max-width: 768px) {
+    .main {
+        margin-left: 80px;
+    }
+
+    .main .announcement {
+        flex: 1 1 100%;
+    }
+
+}
+
+@media (max-width: 480px) {
+    .card {
+        flex: 1 1 100%;
+        min-width: 200px;
+    }
+}

@@ -79,180 +79,136 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
         die("Query failed: " . print_r(sqlsrv_errors(), true));
     }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Opsi Pelanggaran</title>
-    <link rel="stylesheet" href="style/MenuStyles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        body{
-            overflow: auto;
-        }
-        .main h2,h3,label{
-            color: black;
-        }
-        .table-container {
-            padding: 50px;
-            margin: 20px;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+    <!DOCTYPE html>
+    <html lang="en">
 
-        .form-container{
-            padding: 20px;
-            margin: 20px;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard Admin</title>
+        <link rel="stylesheet" href="style/AEditPlgMain.css">
+        <link rel="stylesheet" href="style/AdminStyles.css">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    </head>
 
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        .deskripsi{
-            width: 500px;
-        }
-
-        .tingkat{
-            width: 60px;
-            text-align: center;
-        }
-
-        th, td {
-            padding: 10px;
-            width: max-content;
-            border: 1px solid #ddd;
-            text-align: center;
-        }
-
-        th {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .btn {
-            padding: 5px 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="logo">
-            <img src="img/LogoPLTK.png" alt="Logo">
-    </div>
-    <div class="menu">
-        <a href="AdminMenu.php" class="<?= ($current_page == 'AdminMenu.php') ? 'active' : '' ?>">
-            <i class="fas fa-home"></i><span>Dashboard</span>
-        </a>
-        <a href="admin_kelolaMhs.php" class="<?= ($current_page == 'admin_kelolaMhs.php') ? 'active' : '' ?>">
-            <i class="fas fa-user"></i><span>Data Mahasiswa</span>
-        </a>
-        <a href="admin_kelolaDsn.php" class="<?= ($current_page == 'admin_kelolaDsn.php') ? 'active' : '' ?>">
-            <i class="fas fa-book"></i><span>Data Dosen</span>
-        </a>
-        <a href="admin_laporanMasuk.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
-            <i class="fas fa-warning"></i><span>Laporan Masuk</span>
-        </a>
-        <a href="admin_editPlg.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
-            <i class="fas fa-edit"></i><span>Edit Pelanggaran</span>
-        </a>
-        <a href="admin_editSanksi.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
-            <i class="fas fa-gavel"></i><span>Edit Sanksi</span>
-        </a>
-        <a href="admin_SPMasuk.php" class="<?= ($current_page == 'admin_SPMasuk.php') ? 'active' : '' ?>">
-            <i class="fas fa-envelope"></i><span>SP Masuk</span>
-        </a>
-        <a href="admin_buatAkun.php" class="<?= ($current_page == 'admin_SPMasuk.php') ? 'active' : '' ?>">
-            <i class="fas fa-user-cog"></i><span>Manage Akun</span>
-        </a>
-
-
-
-    </div>
-</div>
-
-    <!-- Topbar -->
-    <div class="topbar" id="topbar">
-            <div class="profile dropdown">
-                <img src="img/profile.png" alt="Profile Picture">
-                <div class="dropdown-menu">
-                    <a href="update_profile.php">Change Password</a>
-                    <a href="logout.php">Log Out</a>
-                </div>
-                <h3 id="profile-name" style="color: white"><?php echo $_SESSION['profile_name']; ?></h3>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <img src="img/LogoPLTK.png" alt="Logo">
             </div>
-    </div>
-    <div class="main">
-        <h2 style="color: white">Manage Opsi Pelanggaran</h2>
-        <!-- Create Form -->
-        <div class="form-container">
-            <h3>Buat Opsi Pelanggaran</h3><br>
-            <form method="POST" action="">
-                <label for="tingkat_pelanggaran">Tingkat Pelanggaran:</label>
-                <input type="number" id="tingkat_pelanggaran" name="tingkat_pelanggaran" required>
-                <br><br>
-                <label for="deskripsi">Deskripsi:</label>
-                <input type="text" id="deskripsi" name="deskripsi" required>
-                <br><br>
-                <button type="submit" name="create" class="btn">Create</button>
-            </form>
+            <div class="menu">
+                <a href="AdminMenu.php" class="menu-item">
+                    <i class="fas fa-home"></i><span>Dashboard</span>
+                </a>
+                <a href="admin_kelolaMhs.php" class="menu-item">
+                    <i class="fas fa-user"></i><span>Data Mahasiswa</span>
+                </a>
+                <a href="admin_kelolaDsn.php" class="menu-item">
+                    <i class="fas fa-book"></i><span>Data Dosen</span>
+                </a>
+                <a href="admin_laporanMasuk.php" class="menu-item">
+                    <i class="fas fa-warning"></i><span>Laporan Masuk</span>
+                </a>
+                <a href="admin_editPlg.php" class="menu-item">
+                    <i class="fas fa-exclamation-circle"></i><span>Edit Pelanggaran</span>
+                </a>
+                <a href="admin_editSanksi.php" class="menu-item">
+                    <i class="fas fa-gavel"></i><span>Edit Sanksi</span>
+                </a>
+            </div>
+            <div class="profile">
+                <img src="img/profile.png" alt="Profile">
+                <span class="username">
+                    <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
+                </span>
+                <div class="dropdown-content">
+                    <a href="update_profile.php">Change Password</a>
+                    <a href="logout.php">Logout</a>
+                </div>
+            </div>
         </div>
+        <!-- Header -->
+        <div class="header" id="header">
+            <button class="toggle-btn" id="toggleSidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="title">
+                <h1>Sistem Tata Tertib</h1>
+                <h2>Buat Opsi Pelanggaran</h2>
+            </div>
+        </div>
+        <!-- Main Content -->
+        <div class="main">
+            <h2 style="color: black">Manage Opsi Pelanggaran</h2>
+            <!-- Create Form -->
+            <div class="form-container">
+                <form method="POST" action="">
+                    <label for="tingkat_pelanggaran">Tingkat Pelanggaran:</label>
+                    <input type="number" id="tingkat_pelanggaran" name="tingkat_pelanggaran" required>
+                    <br><br>
+                    <label for="deskripsi">Deskripsi:</label>
+                    <input type="text" id="deskripsi" name="deskripsi" required>
+                    <br><br>
+                    <button type="submit" name="create" class="btn">Create</button>
+                </form>
+            </div>
 
-        <!-- Display Data -->
-        <div class="table-container">
-            <h3>Daftar Opsi Pelanggaran</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Tingkat Pelanggaran</th>
-                        <th>Deskripsi</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)): ?>
+            <!-- Display Data -->
+            <div class="table-container">
+                <h3>Daftar Opsi Pelanggaran</h3>
+                <table>
+                    <thead>
                         <tr>
-                            <form method="POST" action="">
-                                <td>
-                                    <input type="number" name="tingkat_pelanggaran" class="tingkat" value="<?= $row['tingkat_pelanggaran'] ?>" required>
-                                </td>
-                                <td>
-                                    <input type="hidden" name="deskripsi_original" value="<?= htmlspecialchars($row['deskripsi']) ?>">
-                                    <input type="text" name="deskripsi" class="deskripsi" value="<?= htmlspecialchars($row['deskripsi']) ?>" required>
-                                </td>
-                                <td>
-                                    <button type="submit" name="update" class="btn">Update</button>
-                                    <a href="?delete=<?= urlencode($row['deskripsi']) ?>" class="btn" onclick="return confirm('Are you sure?')" style="background-color: red">Delete</a>
-                                </td>
-                            </form>
+                            <th>Tingkat Pelanggaran</th>
+                            <th>Deskripsi</th>
+                            <th>Actions</th>
                         </tr>
-                    <?php endwhile; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)): ?>
+                            <tr>
+                                <form method="POST" action="">
+                                    <td>
+                                        <input type="number" name="tingkat_pelanggaran" class="tingkat" value="<?= $row['tingkat_pelanggaran'] ?>" required>
+                                    </td>
+                                    <td>
+                                        <input type="hidden" name="deskripsi_original" value="<?= htmlspecialchars($row['deskripsi']) ?>">
+                                        <input type="text" name="deskripsi" class="deskripsi" value="<?= htmlspecialchars($row['deskripsi']) ?>" required>
+                                    </td>
+                                    <td>
+                                        <button type="submit" name="update"
+                                         class="btn">Update</button>
+                                        <a href="?delete=<?= urlencode($row['deskripsi']) ?>"
+                                        class="btn delete-btn"
+                                        onclick="return confirm('Are you sure?')">Delete</a>
+                                    </td>
+                                </form>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
+        <!-- Close database connection -->
+        <?php sqlsrv_close($conn); ?>
 
-    <?php sqlsrv_close($conn); ?>
-</body>
-</html>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const toggleBtn = document.querySelector(".toggle-btn");
+                const sidebar = document.querySelector(".sidebar");
+                const main = document.querySelector(".main");
+                const header = document.querySelector(".header");
+
+                toggleBtn.addEventListener("click", () => {
+                    sidebar.classList.toggle("collapsed");
+                    main.classList.toggle("collapsed");
+                    header.classList.toggle("collapsed");
+                });
+            });
+        </script>
+    </body>
+
+    </html>
 <?php
 } else {
     header("location: logout.php");

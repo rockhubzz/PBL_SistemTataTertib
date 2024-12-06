@@ -1,0 +1,80 @@
+/* Main Content Area */
+.main {
+    margin-top: 100px;
+    margin-left: 250px;
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+}
+
+.main.collapsed {
+    margin-left: 80px;
+}
+
+/* Table Styles */
+.table-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow-x: auto; /* Scroll horizontal jika tabel terlalu lebar */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse; /* Hilangkan spasi antar border */
+    text-align: center; /* Teks rata tengah */
+    border: 1px solid #ccc; /* Border global di seluruh tabel */
+}
+
+th, td {
+    padding: 15px;
+    border: 1px solid #ddd; /* Border pada setiap sel */
+    white-space: nowrap; /* Isi tetap satu baris */
+}
+
+th {
+    background-color: #007bff; /* Warna header */
+    color: white;
+    font-weight: bold; /* Teks tebal */
+}
+
+td {
+    background-color: #f9f9f9; /* Warna default sel */
+}
+
+tr:nth-child(even) td {
+    background-color: #f1f1f1; /* Warna baris genap */
+}
+
+tr:hover td {
+    background-color: #e1e1e1; /* Warna hover */
+}
+
+/* Button Styles */
+.view-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.view-btn:hover {
+    background-color: #45a049; /* Warna hover */
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+    table {
+        font-size: 14px; /* Ukuran font lebih kecil */
+    }
+
+    th, td {
+        padding: 10px; /* Padding lebih kecil */
+    }
+
+    .main {
+        margin-left: 80px;
+    }
+}

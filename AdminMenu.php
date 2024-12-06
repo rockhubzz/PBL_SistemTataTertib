@@ -32,78 +32,88 @@ if (!$conn) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin</title>
-    <link rel="stylesheet" href="style/MenuStyles.css">
+    <link rel="stylesheet" href="style/AdminStyles.css">
+    <link rel="stylesheet" href="style/ADasboardMain.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
+<div class="sidebar" id="sidebar">
     <div class="logo">
-        <img src="img/logoPoltek.png" alt="Logo">
+        <img src="img/LogoPLTK.png" alt="Logo">
     </div>
     <div class="menu">
-        <a href="AdminMenu.php" class="<?= ($current_page == 'AdminMenu.php') ? 'active' : '' ?>">
+        <a href="AdminMenu.php" class="menu-item">
             <i class="fas fa-home"></i><span>Dashboard</span>
         </a>
-        <a href="admin_kelolaMhs.php" class="<?= ($current_page == 'admin_kelolaMhs.php') ? 'active' : '' ?>">
+        <a href="admin_kelolaMhs.php" class="menu-item">
             <i class="fas fa-user"></i><span>Data Mahasiswa</span>
         </a>
-        <a href="admin_kelolaDsn.php" class="<?= ($current_page == 'admin_kelolaDsn.php') ? 'active' : '' ?>">
+        <a href="admin_kelolaDsn.php" class="menu-item">
             <i class="fas fa-book"></i><span>Data Dosen</span>
         </a>
-        <a href="admin_laporanMasuk.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
+        <a href="admin_laporanMasuk.php" class="menu-item">
             <i class="fas fa-warning"></i><span>Laporan Masuk</span>
         </a>
-        <a href="admin_editPlg.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
-            <i class="fas fa-edit"></i><span>Edit Pelanggaran</span>
+        <a href="admin_editPlg.php" class="menu-item">
+            <i class="fas fa-exclamation-circle"></i><span>Edit Pelanggaran</span>
         </a>
-        <a href="admin_editSanksi.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
+        <a href="admin_editSanksi.php" class="menu-item">
             <i class="fas fa-gavel"></i><span>Edit Sanksi</span>
         </a>
-        <a href="admin_SPMasuk.php" class="<?= ($current_page == 'admin_SPMasuk.php') ? 'active' : '' ?>">
-            <i class="fas fa-envelope"></i><span>SP Masuk</span>
-        </a>
-        <a href="admin_buatAkun.php" class="<?= ($current_page == 'admin_SPMasuk.php') ? 'active' : '' ?>">
-            <i class="fas fa-user-cog"></i><span>Manage Akun</span>
-        </a>
+    </div>
+    <div class="profile">
+    <img src="img/profile.png" alt="Profile">
+    <span class="username"><h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3></span>
+    <div class="dropdown-content">
+        <a href="update_profile.php">Change Password</a>
+        <a href="logout.php">Logout</a>
     </div>
 </div>
-    <!-- Topbar -->
-    <div class="topbar" id="topbar">
-            <div class="profile dropdown">
-                <img src="img/profile.png" alt="Profile Picture">
-                <div class="dropdown-menu">
-                    <a href="update_profile.php">Change Password</a>
-                    <a href="logout.php">Log Out</a>
-                </div>
-                <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
-            </div>
+</div>
+    <!-- Header -->
+    <div class="header" id="header">
+        <button class="toggle-btn" id="toggleSidebar">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="title">
+            <h1>Sistem Tata Tertib</h1>
+            <h2>Dashboard Admin</h2>
+        </div>
     </div>
     <!-- Main Content -->
     <div class="main" id="main">
         <div class="announcement">
-            <div>
-                <h2>Pengumuman Penting</h2>
-                <p>Terdapat pelanggaran baru yang memerlukan perhatian Anda.</p>
-            </div>
+            <h2>Pengumuman Penting</h2>
+            <p>Terdapat pelanggaran baru yang memerlukan perhatian Anda.</p>
             <button>Detail</button>
         </div>
-        <div class="dashboard-content">
-            <div class="card">
-                <h3>Total Mahasiswa</h3>
-                <p><?php echo $jml_mhs ?></p>
-            </div>
-            <div class="card">
-                <h3>Total Pelanggaran</h3>
-                <p><?php echo $jml_plg ?></p>
-            </div>
-            <div class="card">
-                <h3>Total Dosen</h3>
-                <p><?php echo $jml_dsn ?></p>
-            </div>
+        <div class="card">
+            <h3>Total Mahasiswa</h3>
+            <p><?php echo $jml_mhs ?></p>
+        </div>
+        <div class="card">
+            <h3>Total Pelanggaran</h3>
+            <p><?php echo $jml_plg ?></p>
+        </div>
+        <div class="card">
+            <h3>Total Dosen</h3>
+            <p><?php echo $jml_dsn ?></p>
         </div>
     </div>
+
+    <script>
+        const toggleSidebar = document.getElementById('toggleSidebar');
+        const sidebar = document.getElementById('sidebar');
+        const header = document.getElementById('header');
+        const main = document.getElementById('main');
+
+        toggleSidebar.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            main.classList.toggle('collapsed');
+            header.classList.toggle('collapsed');
+        });
+        
+    </script>
 </body>
 </html>
 <?php

@@ -1,0 +1,144 @@
+/* Main Content Area */
+.main {
+    margin-top: 100px; /* Untuk memberi ruang di bawah header */
+    margin-left: 250px; /* Margin saat sidebar lebar penuh */
+    padding: 20px;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+    width: calc(100% - 250px); /* Sesuaikan lebar konten agar tidak melampaui layar */
+}
+
+.main.collapsed {
+    margin-left: 80px; /* Margin saat sidebar menyusut */
+    width: calc(100% - 80px); /* Menyesuaikan dengan sidebar kecil */
+}
+
+/* Table Container Styling */
+.table-container {
+    background-color: #f9f9f9; /* Warna latar belakang yang lebih lembut */
+    padding: 20px;
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow-x: auto; /* Scroll horizontal jika diperlukan */
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+th {
+    background-color: #007bff;
+    color: white; /* warna text pada tabel atas*/
+}
+
+tr:hover {
+    background-color: #e0e0e0; /* Warna saat hover */
+}
+tr:hover td {
+    background-color: #f1f1f1; /* Warna lebih terang saat hover */
+    transition: background-color 0.3s;
+}
+
+
+/* Form Container Styling */
+.form-container {
+    padding: 20px;
+    margin: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Header Styling */
+.header {
+    position: fixed;
+    top: 0;
+    left: 250px;
+    height: 80px;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 900;
+    border-bottom: 3px solid #2575fc;
+    transition: left 0.3s ease, width 0.3s ease;
+    width: calc(100% - 250px);
+}
+
+.header.collapsed {
+    left: 80px;
+    width: calc(100% - 80px);
+}
+
+/* Toggle Button Styling */
+.header .toggle-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.header .title {
+    flex: 1;
+}
+
+/* Button Styling */
+.btn {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+/* Deskripsi Input Width */
+.deskripsi {
+    width: 500px;
+}
+
+/* Tingkat Input Width */
+.tingkat {
+    width: 60px;
+    text-align: center;
+}
+
+/* Save Button */
+.save-btn {
+    background-color: #27365a;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.save-btn:hover {
+    background-color: #1b2540;
+}
+/* Delete Button Styling */
+.btn.delete-btn {
+    background-color: red;
+    color: white;
+}
+
+.btn.delete-btn:hover {
+    background-color: darkred; /* Warna lebih gelap saat hover */
+    color: white;
+}
+

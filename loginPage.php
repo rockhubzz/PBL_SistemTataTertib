@@ -6,25 +6,6 @@
   <title>Login</title>
   <link rel="stylesheet" href="style/LoginStyles.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    /* Add this CSS to ensure footer is at the bottom */
-    html, body {
-      height: 100%; /* Full height for body */
-      margin: 0; /* Remove default margin */
-    }
-    .container {
-      display: flex;
-      flex-direction: column; /* Stack children vertically */
-      min-height: 100vh; /* Full viewport height */
-    }
-    .content {
-      flex: 1; /* Allow content to grow and fill space */
-    }
-    footer {
-      text-align: center; /* Center text in footer */
-      padding: 10px; /* Padding for footer */
-    }
-  </style>
 </head>
 <body>
   <!-- Container -->
@@ -84,10 +65,11 @@
           <?php endif; ?>
         </div>
 
-        <!-- Additional Logo -->
-        <div class="extra-logo">
-          <img src="img/LogoPLTK.png" alt="Logo Politeknik" class="extra-logo-img">
-        </div>
+
+      </div>
+      <!-- Additional Logo -->
+      <div class="extra-logo">
+        <img src="img/LogoPLTK.png" alt="Logo Politeknik" class="extra-logo-img">
       </div>
     </div>
 

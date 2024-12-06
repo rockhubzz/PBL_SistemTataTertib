@@ -1,6 +1,7 @@
 <?php
 // Start session
 session_start();
+// Fetch current username and role
 
 // Check if user is logged in
 if (!isset($_SESSION['user_key'])) {
@@ -29,6 +30,7 @@ $user_key = $_SESSION['user_key'];
 $message = "";
 
 // Fetch current username
+
 $current_username = "";
 $query = "SELECT username FROM dbo.Users WHERE user_id = ?";
 $stmt = sqlsrv_query($conn, $query, array($user_key));
@@ -62,95 +64,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style/Password.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>Update Profile</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .update-container {
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 400px;
-        }
-        .update-container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .update-container input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .update-container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            border: none;
-            color: white;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .update-container button:hover {
-            background-color: #0056b3;
-        }
-        .message {
-            text-align: center;
-            margin-bottom: 10px;
-            font-weight: bold;
-            color: green;
-        }
-        .error-message {
-            text-align: center;
-            margin-bottom: 10px;
-            font-weight: bold;
-            color: red;
-        }
-        .login-link {
-            margin-top: 10px;
-            text-align: center;
-        }
-        .login-link a {
-            text-decoration: none;
-            color: #007bff;
-        }
-        .login-link a:hover {
-            text-decoration: underline;
-        }
-    </style>
 </head>
+
 <body>
-    <div class="update-container">
-        <h2>Update Password</h2>
+<div class="update-container">
+        <!-- Back Button -->
+        <button class="back-button" onclick="history.back()">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <!-- Profile Update Form -->
+        <h2>Change Password</h2>
         <?php if ($message): ?>
             <div class="<?= strpos($message, 'successfully') !== false ? 'message' : 'error-message' ?>">
                 <?= htmlspecialchars($message) ?>
             </div>
         <?php endif; ?>
         <form action="update_profile.php" method="post">
-            <label for="new_password">New Password:</label>
-            <input type="password" name="new_password" id="new_password" required>
-            <label for="confirm_password">Confirm Password:</label>
-            <input type="password" name="confirm_password" id="confirm_password" required>
-            <button type="submit">Update</button>
+            <div class="form-group">
+                <label for="new_password"><i class="fas fa-key"></i> New Password:</label>
+                <input type="password" name="new_password" id="new_password" placeholder="Enter new password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm_password"><i class="fas fa-lock"></i> Confirm Password:</label>
+                <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm your password" required>
+            </div>
+            <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Update</button>
         </form>
-    </div>
-    <div class="login-link">
-        <a href="loginPage.php">Kembali ke login</a>
+
+        <!-- Back to Login Link -->
+        <div class="actions">
+            <a href="loginPage.php">Back to Login</a>
+        </div>
     </div>
 </body>
+
 </html>

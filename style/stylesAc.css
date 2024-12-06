@@ -42,7 +42,7 @@ header nav a.btn:hover {
 body {
     font-family: 'Poppins', Arial, sans-serif; /* Font modern */
     color: white;
-    background: url('po.jpg') center center/cover no-repeat, rgba(59, 78, 135, 0.9);
+    background: url('img/po.jpg') center center/cover no-repeat, rgba(59, 78, 135, 0.9);
     background-blend-mode: overlay;
 }
 /* About and Contact Content */

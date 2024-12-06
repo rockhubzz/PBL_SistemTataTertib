@@ -1,0 +1,125 @@
+/* Main Content */
+.main {
+    display: flex; /* Flexbox to arrange elements */
+    flex-wrap: wrap;
+    justify-content: space-between; /* Ensure elements are spaced well */
+    margin-left: 250px;
+    margin-top: 80px;
+    padding: 20px;
+    gap: 30px; /* Increased gap between items */
+    transition: margin-left 0.3s ease;
+}
+
+.main.collapsed {
+    margin-left: 80px;
+}
+
+/* Announcement */
+.main .announcement {
+    flex: 1 1 100%; /* Make the announcement span the full width */
+    background-color: #ffeb3b; /* Light yellow background */
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+    transition: box-shadow 0.3s ease-in-out;
+    font-size: 18px; /* Adjust font size for readability */
+}
+
+.main .announcement h2 {
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+.main .announcement p {
+    color: #555;
+}
+
+.main .announcement:hover {
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2); /* Shadow more dramatic on hover */
+}
+
+.main .announcement button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.main .announcement button:hover {
+    background-color: #0056b3;
+}
+
+/* Card Layout */
+.card {
+    background-color: #007bff;
+    color: white;
+    padding: 20px;
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    flex: 1 1 30%; /* Flex to ensure cards take equal space */
+    min-width: 250px; /* Minimum width for responsiveness */
+    height: 180px;
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Slight raise effect on hover */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+}
+
+.card h3 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 22px;
+    font-weight: normal;
+}
+
+/* Header */
+.header {
+    position: fixed;
+    top: 0;
+    left: 250px;
+    height: 80px;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 900;
+    border-bottom: 3px solid #2575fc;
+    transition: left 0.3s ease, width 0.3s ease;
+    width: calc(100% - 250px);
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .main {
+        margin-left: 80px;
+    }
+
+    .main .announcement {
+        flex: 1 1 100%;
+    }
+
+    .card {
+        flex: 1 1 45%; /* Two cards per row on smaller screens */
+        min-width: 220px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        flex: 1 1 100%; /* One card per row on very small screens */
+        min-width: 200px;
+    }
+}
