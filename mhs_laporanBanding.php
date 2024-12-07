@@ -50,190 +50,148 @@ WHERE u.user_id = ?
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Data Banding</title>
-        <link rel="stylesheet" href="style/MenuStyles.css">
+        <title>Dashboard Admin</title>
+        <link rel="stylesheet" href="style/AdminStyles.css">
+        <link rel="stylesheet" href="style/MLaporanBandingMain.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-        <style>
-            .content-table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 20px;
-            }
-
-            .content-table,
-            th,
-            td {
-                border: 1px solid #ccc;
-            }
-
-            th,
-            td {
-                padding: 12px;
-                text-align: left;
-                background-color: #244785;
-            }
-
-            th {
-                background-color: #007bff;
-                color: white;
-            }
-
-            tr:nth-child(even) {
-                background-color: #f2f2f2;
-            }
-
-            .dashboard-content {
-                display: flex;
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            #selectedMenu {
-                background-color: #353f4f;
-            }
-
-            .view-btn {
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                padding: 5px 10px;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-
-            .view-btn:hover {
-                background-color: #45a049;
-            }
-        </style>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="//cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     </head>
 
     <body>
-        <!-- Sidebar -->
         <div class="sidebar" id="sidebar">
             <div class="logo">
-                <img src="img/logoPoltek.png" alt="Logo">
+                <img src="img/LogoPLTK.png" alt="Logo">
             </div>
             <div class="menu">
-                <a href="Mahasiswa.php"><i class="fas fa-home"></i><span>Dashboard</span></a>
-                <a href="mhs_listPelanggaran.php"><i class="fas fa-exclamation-circle"></i><span>Lihat Pelanggaran</span></a>
-                <a href="mhs_buatLaporan.php"><i class="fas fa-file-alt"></i><span>Buat Laporan</span></a>
-                <a href="mhs_listLaporan.php"><i class="fas fa-book"></i><span>Lihat Laporan</span></a>
-                <a href="mhs_laporanBanding.php" class="active"><i class="fas fa-balance-scale"></i><span>Laporan Banding</span></a>
-                <a href="mhs_lihatSanksi.php" class="active"><i class="fas fa-exclamation-triangle"></i><span>Lihat Sanksi</span></a>
+                <a href="Mahasiswa.php" class="menu-item">
+                    <i class="fas fa-home"></i><span>Dashboard</span>
+                </a>
+                <a href="mhs_listPelanggaran.php" class="menu-item">
+                    <i class="fas fa-exclamation-circle"></i><span>Lihat Pelanggaran</span>
+                </a>
+                <a href="mhs_buatLaporan.php" class="menu-item">
+                    <i class="fas fa-file-alt"></i><span>Buat Laporan</span>
+                </a>
+                <a href="mhs_listLaporan.php" class="menu-item">
+                    <i class="fas fa-book"></i><span>Lihat Laporan</span>
+                </a>
+                <a href="mhs_laporanBanding.php" class="menu-item">
+                    <i class="fas fa-balance-scale"></i><span>Laporan Banding</span>
+                </a>
+                <a href="mhs_lihatSanksi.php" class="menu-item">
+                    <i class="fas fa-exclamation-triangle"></i><span>Lihat Sanksi</span>
+                </a>
+            </div>
+            <div class="profile">
+                <img src="img/profile.png" alt="Profile">
+                <span class="username">
+                    <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
+                </span>
+                <div class="dropdown-content">
+                    <a href="update_profile.php">Change Password</a>
+                    <a href="logout.php">Logout</a>
+                </div>
             </div>
         </div>
-
-        <!-- Topbar -->
-        <div class="topbar" id="topbar">
-            <div class="profile-notifications">
-                <h2>Laporan untuk Anda</h2>
-                <div class="notifications" id="notification-icon">
-                    <i class="fas fa-bell"></i>
-                    <div class="notification-dropdown" id="notification-dropdown">
-                        <h4>Notifikasi</h4>
-                        <ul>
-                            <li>Pelanggaran baru oleh mahasiswa A.</li>
-                            <li>Dosen B mengajukan revisi data.</li>
-                            <li>Pengingat rapat pukul 10.00.</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="profile dropdown">
-                    <img src="img/profile.png" alt="Profile Picture">
-                    <div class="dropdown-menu">
-                        <a href="update_profile.php">Change Password</a>
-                        <a href="logout.php">Log Out</a>
-                    </div>
-                    <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
-                </div>
+        <!-- Header -->
+        <div class="header" id="header">
+            <button class="toggle-btn" id="toggleSidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="title">
+                <h1>Sistem Tata Tertib</h1>
+                <h2>Laporan Banding</h2>
             </div>
         </div>
         <!-- Main Content -->
         <div class="main" id="main">
-            <h2>Data Banding</h2>
-            <div class="dashboard-content">
-                <table class="content-table">
-                    <thead>
-                        <tr>
-                            <th>ID Banding</th>
-                            <th>ID Pelanggaran</th>
-                            <th>Pengaju</th>
-                            <th>Jenis Pelanggaran</th>
-                            <th>Alasan Banding</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-    <?php if (sqlsrv_has_rows($stmt)): ?>
-        <?php while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)): ?>
-            <tr data-id="<?= htmlspecialchars($row['id_banding']) ?>">
-                <td><?= htmlspecialchars($row['id_banding']) ?></td>
-                <td><?= htmlspecialchars($row['id_pelanggaran']) ?></td>
-                <td><?= htmlspecialchars($row['Nama Pengaju']) ?></td>
-                <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
-                <td><?= htmlspecialchars($row['Alasan']) ?></td>
-                <?php if ($row['status'] === null): ?>
-                    <td>
-                        <button class="view-btn" onclick="handleAppealAction(<?= $row['id_banding'] ?>, 1)">Setuju</button>
-                        <button class="view-btn" style="background-color: red" onclick="handleAppealAction(<?= $row['id_banding'] ?>, 0)">Tolak</button>
-                    </td>
-                <?php elseif ($row['status'] == 0): ?>
-                    <td>Anda menolak banding ini.</td>
-                <?php elseif ($row['status'] == 1): ?>
-                    <td>Anda menyetujui banding ini</td>
-                <?php endif; ?>
-            </tr>
-        <?php endwhile; ?>
-    <?php else: ?>
-        <tr>
-            <td colspan="6" style="text-align: center; font-weight: bold;">Tidak ada pengajuan banding</td>
-        </tr>
-    <?php endif; ?>
-</tbody>
-                </table>
+            <div class="table-container">
+                <div class="report-section">
+                    <div class="dashboard-content">
+                        <table id="Tabel">
+                            <thead>
+                                <tr>
+                                    <th>ID Banding</th>
+                                    <th>ID Pelanggaran</th>
+                                    <th>Pengaju</th>
+                                    <th>Jenis Pelanggaran</th>
+                                    <th>Alasan Banding</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (sqlsrv_has_rows($stmt)): ?>
+                                    <?php while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)): ?>
+                                        <tr data-id="<?= htmlspecialchars($row['id_banding']) ?>">
+                                            <td><?= htmlspecialchars($row['id_banding']) ?></td>
+                                            <td><?= htmlspecialchars($row['id_pelanggaran']) ?></td>
+                                            <td><?= htmlspecialchars($row['Nama Pengaju']) ?></td>
+                                            <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
+                                            <td><?= htmlspecialchars($row['Alasan']) ?></td>
+                                            <?php if ($row['status'] === null): ?>
+                                                <td>
+                                                    <button class="view-btn" onclick="handleAppealAction(<?= $row['id_banding'] ?>, 1)">Setuju</button>
+                                                    <button class="view-btn" style="background-color: red" onclick="handleAppealAction(<?= $row['id_banding'] ?>, 0)">Tolak</button>
+                                                </td>
+                                            <?php elseif ($row['status'] == 0): ?>
+                                                <td>Anda menolak banding ini.</td>
+                                            <?php elseif ($row['status'] == 1): ?>
+                                                <td>Anda menyetujui banding ini</td>
+                                            <?php endif; ?>
+                                        </tr>
+                                    <?php endwhile; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="6" style="text-align: center; font-weight: bold;">Tidak ada pengajuan banding</td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- Toggle Button -->
-        <button class="toggle-btn" id="toggle-btn">&lt;</button>
-        <div id="message" style="margin-top: 20px; color: green; text-align: center;"></div>
         <script>
             const handleAppealAction = (idBanding, status) => {
-    fetch('update_banding.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id_banding: idBanding,
-                status: status
-            }),
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            const messageBox = document.getElementById('message');
-            if (data.success) {
-                messageBox.style.color = 'green';
-                messageBox.textContent = data.message;
+                fetch('update_banding.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            id_banding: idBanding,
+                            status: status
+                        }),
+                    })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        const messageBox = document.getElementById('message');
+                        if (data.success) {
+                            messageBox.style.color = 'green';
+                            messageBox.textContent = data.message;
 
-                // Find the corresponding table row and update it
-                const row = document.querySelector(`tr[data-id="${idBanding}"]`);
-                if (row) {
-                    const actionCell = row.querySelector('td:last-child');
-                    if (status === 0) {
-                        actionCell.textContent = "Anda menolak banding ini.";
-                    } else if (status === 1) {
-                        actionCell.textContent = "Anda menyetujui banding ini.";
-                    }
-                }
-            } else {
-                messageBox.style.color = 'red';
-                messageBox.textContent = data.message;
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-};
+                            // Find the corresponding table row and update it
+                            const row = document.querySelector(`tr[data-id="${idBanding}"]`);
+                            if (row) {
+                                const actionCell = row.querySelector('td:last-child');
+                                if (status === 0) {
+                                    actionCell.textContent = "Anda menolak banding ini.";
+                                } else if (status === 1) {
+                                    actionCell.textContent = "Anda menyetujui banding ini.";
+                                }
+                            }
+                        } else {
+                            messageBox.style.color = 'red';
+                            messageBox.textContent = data.message;
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            };
             const updateBanding = (id, status) => {
                 fetch('update_banding.php', {
                         method: 'POST',
@@ -261,19 +219,33 @@ WHERE u.user_id = ?
                     .catch(error => console.error('Error:', error));
             };
 
-            const toggleSidebar = () => {
-                const sidebar = document.getElementById('sidebar');
-                const toggleBtn = document.getElementById('toggle-btn');
-                sidebar.classList.toggle('collapsed');
-                toggleBtn.textContent = sidebar.classList.contains('collapsed') ? '>' : '<';
-            };
+            const toggleSidebar = document.getElementById('toggleSidebar');
+            const sidebar = document.getElementById('sidebar');
+            const header = document.getElementById('header');
+            const main = document.getElementById('main');
 
-            document.getElementById('toggle-btn').addEventListener('click', toggleSidebar);
+            toggleSidebar.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+                main.classList.toggle('collapsed');
+                header.classList.toggle('collapsed');
+            });
+            $(document).ready(function() {
+                $('#Tabel').DataTable({
+                    paging: true,
+                    searching: true,
+                    ordering: true,
+                    info: true,
+                    language: {
+                        url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json"
+                    }
+                });
+            });
         </script>
     </body>
 
     </html>
 <?php
+    sqlsrv_close($conn);
 } else {
     header("location: logout.php");
 }
