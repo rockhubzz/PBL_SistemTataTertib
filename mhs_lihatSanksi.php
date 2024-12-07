@@ -138,12 +138,10 @@ ORDER BY tingkat_pelanggaran
             </table>
         </div>
     </div>
-
     <!-- Close database connection -->
     <?php sqlsrv_close($conn); ?>
         </div>
         </div>
-
         <script>
             const toggleSidebar = document.getElementById('toggleSidebar');
             const sidebar = document.getElementById('sidebar');
@@ -157,7 +155,6 @@ ORDER BY tingkat_pelanggaran
             });
         </script>
     </body>
-
     </html>
 <?php
 } else {
