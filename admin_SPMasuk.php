@@ -31,121 +31,75 @@ if (!$stmt) {
     die("Query failed: " . print_r(sqlsrv_errors(), true));
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
+    <!DOCTYPE html>
+    <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Mahasiswa</title>
-    <link rel="stylesheet" href="style/MenuStyles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .table-container {
-            padding: 20px;
-            margin: 20px;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard Admin</title>
+        <link rel="stylesheet" href="style/AdminStyles.css">
+        <link rel="stylesheet" href="style/ASPMasukMain.css">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    </head>
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        th,
-        td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: center;
-            color: black;
-        }
-
-        th {
-            background-color: #007bff;
-            color: white;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        .dashboard-content {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        #selectedMenu {
-            background-color: #353f4f;
-        }
-
-        .view-btn {
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    </style>
-</head>
-
-<body>
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="logo">
-            <img src="img/LogoPLTK.png" alt="Logo">
-        </div>
-        <div class="menu">
-            <a href="AdminMenu.php" class="<?= ($current_page == 'AdminMenu.php') ? 'active' : '' ?>">
-                <i class="fas fa-home"></i><span>Dashboard</span>
-            </a>
-            <a href="admin_kelolaMhs.php" class="<?= ($current_page == 'admin_kelolaMhs.php') ? 'active' : '' ?>">
-                <i class="fas fa-user"></i><span>Data Mahasiswa</span>
-            </a>
-            <a href="admin_kelolaDsn.php" class="<?= ($current_page == 'admin_kelolaDsn.php') ? 'active' : '' ?>">
-                <i class="fas fa-book"></i><span>Data Dosen</span>
-            </a>
-            <a href="admin_laporanMasuk.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
-                <i class="fas fa-warning"></i><span>Laporan Masuk</span>
-            </a>
-            <a href="admin_editPlg.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
-            <i class="fas fa-edit"></i><span>Edit Pelanggaran</span>
-        </a>
-        <a href="admin_editSanksi.php" class="<?= ($current_page == 'admin_laporanMasuk.php') ? 'active' : '' ?>">
-            <i class="fas fa-gavel"></i><span>Edit Sanksi</span>
-        </a>
-        <a href="admin_SPMasuk.php" class="<?= ($current_page == 'admin_SPMasuk.php') ? 'active' : '' ?>">
-            <i class="fas fa-envelope"></i><span>SP Masuk</span>
-        </a>
-        <a href="admin_buatAkun.php" class="<?= ($current_page == 'admin_SPMasuk.php') ? 'active' : '' ?>">
-            <i class="fas fa-user-cog"></i><span>Manage Akun</span>
-        </a>
-
-
-
-        </div>
-    </div>
-    <!-- Topbar -->
-    <div class="topbar" id="topbar">
-            <div class="profile dropdown">
-                <img src="img/profile.png" alt="Profile Picture">
-                <div class="dropdown-menu">
-                    <a href="update_profile.php">Change Password</a>
-                    <a href="logout.php">Log Out</a>
-                </div>
-                <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <img src="img/LogoPLTK.png" alt="Logo">
             </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="main" id="main">
-        <h2>Data Mahasiswa</h2>
-        <div class="table-container">
+            <div class="menu">
+                <a href="AdminMenu.php" class="menu-item">
+                    <i class="fas fa-home"></i><span>Dashboard</span>
+                </a>
+                <a href="admin_kelolaMhs.php" class="menu-item">
+                    <i class="fas fa-user"></i><span>Data Mahasiswa</span>
+                </a>
+                <a href="admin_kelolaDsn.php" class="menu-item">
+                    <i class="fas fa-book"></i><span>Data Dosen</span>
+                </a>
+                <a href="admin_laporanMasuk.php" class="menu-item">
+                    <i class="fas fa-warning"></i><span>Laporan Masuk</span>
+                </a>
+                <a href="admin_editPlg.php" class="menu-item">
+                    <i class="fas fa-exclamation-circle"></i><span>Edit Pelanggaran</span>
+                </a>
+                <a href="admin_editSanksi.php" class="menu-item">
+                    <i class="fas fa-gavel"></i><span>Edit Sanksi</span>
+                </a>
+                <a href="admin_SPMasuk.php" class="menu-item">
+                    <i class="fas fa-envelope"></i><span>SP masuk</span>
+                </a>
+                <a href="admin_buatAkun.php" class="menu-item">
+                    <i class="fas fa-user-cog"></i><span>Manage Akun</span>
+                </a>
+            </div>
+            <div class="profile">
+                <img src="img/profile.png" alt="Profile">
+                <span class="username">
+                    <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
+                </span>
+                <div class="dropdown-content">
+                    <a href="update_profile.php">Change Password</a>
+                    <a href="logout.php">Logout</a>
+                </div>
+            </div>
+        </div>
+        <!-- Header -->
+        <div class="header" id="header">
+            <button class="toggle-btn" id="toggleSidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="title">
+                <h1>Sistem Tata Tertib</h1>
+                <h2>SP Masuk</h2>
+            </div>
+        </div>
+        <!-- Main Content -->
+        <div class="main" id="main">
+            <div class="content-container">
+            <h2>Data Mahasiswa</h2>
+            <div class="table-container">
             <table>
                 <thead>
                     <tr>
@@ -172,11 +126,24 @@ if (!$stmt) {
             </table>
         </div>
     </div>
-</body>
 
-</html>
+            <script>
+                const toggleSidebar = document.getElementById('toggleSidebar');
+                const sidebar = document.getElementById('sidebar');
+                const header = document.getElementById('header');
+                const main = document.getElementById('main');
+
+                toggleSidebar.addEventListener('click', () => {
+                    sidebar.classList.toggle('collapsed');
+                    main.classList.toggle('collapsed');
+                    header.classList.toggle('collapsed');
+                });
+            </script>
+    </body>
+
+    </html>
 <?php
-    }else{
+} else {
     header("location: logout.php");
 }
 ?>

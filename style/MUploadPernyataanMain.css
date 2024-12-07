@@ -1,0 +1,91 @@
+
+.main {
+    margin-top: 100px;
+    margin-left: 250px;
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+}
+.main.collapsed {
+    margin-left: 80px;
+}
+/* Styling untuk table-container */
+.table-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow-x: auto; /* Scroll horizontal jika tabel terlalu lebar */
+    margin-top: 30px;
+}
+/* Styling form-container */
+.form-container {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 40px auto;
+    font-size: 16px;
+}
+
+/* Styling form-group untuk input */
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Styling untuk input */
+input[type="text"],
+input[type="file"],
+select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #f1f1f1;
+    font-size: 14px;
+}
+
+/* Styling untuk tombol submit */
+.submit-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Styling untuk pesan sukses */
+.success-message {
+    color: green;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Styling untuk file-info */
+.file-info {
+    margin-top: 10px;
+    color: green;
+    font-size: 14px;
+}
+/* Responsiveness */
+@media (max-width: 768px) {
+    .main {
+        margin-left: 80px;
+    }
+
+    .main .announcement {
+        flex: 1 1 100%;
+    }
+
+}

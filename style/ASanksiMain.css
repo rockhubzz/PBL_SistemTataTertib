@@ -111,11 +111,9 @@ th {
     border-radius: 5px;
     cursor: pointer;
 }
-
 .btn:hover {
     background-color: #0056b3;
 }
-
 textarea {
     width: 500px;
     height: 100px;

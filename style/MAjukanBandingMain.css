@@ -81,12 +81,10 @@
     .sidebar .menu-item span {
         display: none;
     }
-
     .header {
         left: 80px;
         width: calc(100% - 80px);
     }
-
     .main {
         margin-left: 80px;
     }

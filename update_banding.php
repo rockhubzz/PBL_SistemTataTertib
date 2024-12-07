@@ -14,7 +14,6 @@ if (!$conn) {
     echo json_encode(['success' => false, 'message' => 'Database connection failed.']);
     exit;
 }
-
 $data = json_decode(file_get_contents('php://input'), true);
 $id_banding = $data['id_banding'];
 $status = $data['status'];

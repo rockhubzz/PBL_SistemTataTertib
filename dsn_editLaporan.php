@@ -213,7 +213,6 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
                     alert('Please enter a NIM or name to check.');
                     return;
                 }
-
                 // Create a form to submit via AJAX or redirect with GET parameters
                 var form = document.createElement('form');
                 form.method = 'POST';

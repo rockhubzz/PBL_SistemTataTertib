@@ -135,6 +135,12 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
                 <a href="admin_editSanksi.php" class="menu-item">
                     <i class="fas fa-gavel"></i><span>Edit Sanksi</span>
                 </a>
+                <a href="admin_SPMasuk.php" class="menu-item">
+                    <i class="fas fa-envelope"></i><span>SP masuk</span>
+                </a>
+                <a href="admin_buatAkun.php" class="menu-item">
+                    <i class="fas fa-user-cog"></i><span>Manage Akun</span>
+                </a>
             </div>
             <div class="profile">
                 <img src="img/profile.png" alt="Profile">

@@ -71,10 +71,6 @@ ORDER BY p.id_pelanggaran DESC
         <link rel="stylesheet" href="style/ALaporanMskMain.css">
         <link rel="stylesheet" href="style/AdminStyles.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-        <link rel="stylesheet" href="//cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     </head>
 
     <body>
@@ -100,6 +96,12 @@ ORDER BY p.id_pelanggaran DESC
                 </a>
                 <a href="admin_editSanksi.php" class="menu-item">
                     <i class="fas fa-gavel"></i><span>Edit Sanksi</span>
+                </a>
+                <a href="admin_SPMasuk.php" class="menu-item">
+                    <i class="fas fa-envelope"></i><span>SP masuk</span>
+                </a>
+                <a href="admin_buatAkun.php" class="menu-item">
+                    <i class="fas fa-user-cog"></i><span>Manage Akun</span>
                 </a>
             </div>
             <div class="profile">
@@ -127,7 +129,7 @@ ORDER BY p.id_pelanggaran DESC
         <div class="main">
             <div class="table-container">
                 <form method="POST" action="">
-                    <table id="Tabel">
+                    <table>
                         <thead>
                             <tr>
                                 <th>ID Pelanggaran</th>
@@ -181,7 +183,8 @@ ORDER BY p.id_pelanggaran DESC
                                             <option value="Rejected" <?= $row['status'] == 'Rejected' ? 'selected' : '' ?>>Rejected</option>
                                         </select>
                                     </td>
-                                    <td><?php
+                                    <td
+                                        ><?php
                                         $url = "admin_editLaporan.php?id_pelanggaran=" . urlencode($row['id_pelanggaran']);
                                         echo "<a href='{$url}'class='save-btn'>Edit</a>";
                                         ?>
@@ -208,17 +211,6 @@ ORDER BY p.id_pelanggaran DESC
                     sidebar.classList.toggle("collapsed");
                     main.classList.toggle("collapsed");
                     header.classList.toggle("collapsed");
-                });
-            });
-            $(document).ready(function() {
-                $('#Tabel').DataTable({
-                    paging: true,
-                    searching: true,
-                    ordering: true,
-                    info: true,
-                    language: {
-                        url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json"
-                    }
                 });
             });
         </script>

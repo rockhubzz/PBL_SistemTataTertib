@@ -48,99 +48,66 @@ ORDER BY tingkat_pelanggaran
         die("Query failed: " . print_r(sqlsrv_errors(), true));
     }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Pelanggaran dan Sanksi</title>
-    <link rel="stylesheet" href="style/MenuStyles.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!DOCTYPE html>
+    <html lang="en">
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow: auto;
-        }
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard Admin</title>
+        <link rel="stylesheet" href="style/AdminStyles.css">
+        <link rel="stylesheet" href="style/MSanksiMain.css">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    </head>
 
-        .table-container {
-            padding: 20px;
-            margin: 20px;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        th, td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: center;
-            color: black;
-        }
-
-        th {
-            background-color: #007bff;
-            color: white;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        .view-btn, .disabled-btn {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .disabled-btn {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-    </style>
-</head>
-<body>
-        <!-- Sidebar -->
+    <body>
         <div class="sidebar" id="sidebar">
             <div class="logo">
-                <img src="img/logoPoltek.png" alt="Logo">
+                <img src="img/LogoPLTK.png" alt="Logo">
             </div>
             <div class="menu">
-                <a href="Mahasiswa.php"><i class="fas fa-home"></i><span>Dashboard</span></a>
-                <a href="mhs_listPelanggaran.php"><i class="fas fa-exclamation-circle"></i><span>Lihat Pelanggaran</span></a>
-                <a href="mhs_buatLaporan.php"><i class="fas fa-file-alt"></i><span>Buat Laporan</span></a>
-                <a href="mhs_listLaporan.php"><i class="fas fa-book"></i><span>Lihat Laporan</span></a>
-                <a href="mhs_laporanBanding.php"><i class="fas fa-balance-scale"></i><span>Laporan Banding</span></a>
-                <a href="mhs_lihatSanksi.php" class="active"><i class="fas fa-exclamation-triangle"></i><span>Lihat Sanksi</span></a>
+                <a href="Mahasiswa.php" class="menu-item">
+                    <i class="fas fa-home"></i><span>Dashboard</span>
+                </a>
+                <a href="mhs_listPelanggaran.php" class="menu-item">
+                    <i class="fas fa-exclamation-circle"></i><span>Lihat Pelanggaran</span>
+                </a>
+                <a href="mhs_buatLaporan.php" class="menu-item">
+                    <i class="fas fa-file-alt"></i><span>Buat Laporan</span>
+                </a>
+                <a href="mhs_listLaporan.php" class="menu-item">
+                    <i class="fas fa-book"></i><span>Lihat Laporan</span>
+                </a>
+                <a href="mhs_laporanBanding.php" class="menu-item">
+                    <i class="fas fa-balance-scale"></i><span>Laporan Banding</span>
+                </a>
+                <a href="mhs_lihatSanksi.php" class="menu-item">
+                    <i class="fas fa-exclamation-triangle"></i><span>Lihat Sanksi</span>
+                </a>
             </div>
-        </div>
-
-        <!-- Topbar -->
-        <div class="topbar" id="topbar">
-            <div class="profile-notifications">
-                <div class="profile dropdown">
-                    <img src="img/profile.png" alt="Profile Picture">
-                    <div class="dropdown-menu">
-                        <a href="update_profile.php">Change Password</a>
-                        <a href="logout.php">Log Out</a>
-                    </div>
+            <div class="profile">
+                <img src="img/profile.png" alt="Profile">
+                <span class="username">
                     <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
+                </span>
+                <div class="dropdown-content">
+                    <a href="update_profile.php">Change Password</a>
+                    <a href="logout.php">Logout</a>
                 </div>
             </div>
         </div>
-
-    <div class="main">
+        <!-- Header -->
+        <div class="header" id="header">
+            <button class="toggle-btn" id="toggleSidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="title">
+                <h1>Sistem Tata Tertib</h1>
+                <h2>Data Pelanggaran dan Sanksi</h2>
+            </div>
+        </div>
+        <!-- Main Content -->
+        <div class="main" id="main">
         <h2>Data Pelanggaran dan Sanksi</h2>
         <div class="table-container">
             <table>
@@ -174,8 +141,24 @@ ORDER BY tingkat_pelanggaran
 
     <!-- Close database connection -->
     <?php sqlsrv_close($conn); ?>
-</body>
-</html>
+        </div>
+        </div>
+
+        <script>
+            const toggleSidebar = document.getElementById('toggleSidebar');
+            const sidebar = document.getElementById('sidebar');
+            const header = document.getElementById('header');
+            const main = document.getElementById('main');
+
+            toggleSidebar.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+                main.classList.toggle('collapsed');
+                header.classList.toggle('collapsed');
+            });
+        </script>
+    </body>
+
+    </html>
 <?php
 } else {
     header("location: logout.php");

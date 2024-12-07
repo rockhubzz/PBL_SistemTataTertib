@@ -15,8 +15,6 @@
     margin-left: 80px; /* Sesuaikan margin ketika sidebar kecil */
     width: calc(100% - 80px); /* Sesuaikan lebar konten */
 }
-
-
 /* Heading utama dalam .main */
 .main h2 {
     margin-bottom: 20px;

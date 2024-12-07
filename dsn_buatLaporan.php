@@ -284,8 +284,6 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
                         alert('Error checking NIM: ' + error.message);
                     }
                 }
-
-
             document.addEventListener("DOMContentLoaded", function() {
                 const toggleBtn = document.querySelector(".toggle-btn");
                 const sidebar = document.querySelector(".sidebar");

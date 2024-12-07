@@ -64,15 +64,12 @@
             <p style="color: red;">Username atau password salah. Silakan coba lagi.</p>
           <?php endif; ?>
         </div>
-
-
       </div>
       <!-- Additional Logo -->
       <div class="extra-logo">
         <img src="img/LogoPLTK.png" alt="Logo Politeknik" class="extra-logo-img">
       </div>
     </div>
-
     <!-- Footer -->
     <footer>
       <p>&copy; 2024 Politeknik Negeri Malang. All rights reserved.</p>

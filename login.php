@@ -1,13 +1,10 @@
 <?php
 // Start session
 session_start();
-
 // Initialize variables
 $errorMessage = "";
-
 // Database connection
 $config = parse_ini_file('db_config.ini');
-
 // Extract connection details
 $serverName = $config['serverName'];
 $connectionInfo = array(
@@ -15,13 +12,10 @@ $connectionInfo = array(
     "UID" => $config['username'],
     "PWD" => $config['password']
 );
-
 $conn = sqlsrv_connect($serverName, $connectionInfo);
-
 if (!$conn) {
     die("Connection failed: " . print_r(sqlsrv_errors(), true));
 }
-
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate inputs

@@ -20,7 +20,6 @@ $connectionInfo = array(
     "PWD" => $config['password']
 );
 $conn = sqlsrv_connect($serverName, $connectionInfo);
-
 if (!$conn) {
     die("Connection failed: " . print_r(sqlsrv_errors(), true));
 }
@@ -38,12 +37,10 @@ if ($stmt && sqlsrv_has_rows($stmt)) {
     $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
     $current_username = $row['username'];
 }
-
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $new_password = $_POST['new_password'];
     $confirm_password = $_POST['confirm_password'];
-
     // Check if passwords match
     if ($new_password === $confirm_password) {
         // Update password
@@ -61,10 +58,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -72,14 +67,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>Update Profile</title>
 </head>
-
 <body>
 <div class="update-container">
         <!-- Back Button -->
         <button class="back-button" onclick="history.back()">
             <i class="fas fa-times"></i>
         </button>
-
         <!-- Profile Update Form -->
         <h2>Change Password</h2>
         <?php if ($message): ?>
@@ -98,12 +91,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Update</button>
         </form>
-
         <!-- Back to Login Link -->
         <div class="actions">
             <a href="loginPage.php">Back to Login</a>
         </div>
     </div>
 </body>
-
 </html>

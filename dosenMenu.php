@@ -154,8 +154,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
             main.classList.toggle('collapsed');
             header.classList.toggle('collapsed');
             console.log('Sidebar collapsed:', sidebar.classList.contains('collapsed'));
-        });
-        
+        });  
     </script>
 </body>
 </html>

@@ -1,0 +1,83 @@
+
+/* Main content area */
+.main {
+    margin-top: 100px;
+    margin-left: 250px;
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+}
+
+.main.collapsed {
+    margin-left: 80px;
+}
+.table-container {
+    padding: 20px;
+    margin: 20px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Agar border tidak terpotong */
+}
+
+/* Styling tabel */
+table {
+    width: 100%;
+    border-collapse: collapse; /* Menghapus jarak antar sel */
+    margin-top: 10px;
+    background-color: #fff;
+    font-family: 'Arial', sans-serif;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Menambahkan warna latar belakang pada header */
+th {
+    background-color: #007bff;
+    color: #ffffff;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+
+/* Efek hover pada baris tabel */
+tr:hover {
+    background-color: #e7f3ff;
+    transition: background-color 0.3s ease;
+}
+
+.dashboard-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#selectedMenu {
+    background-color: #353f4f;
+}
+
+.view-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.view-btn:hover {
+    background-color: #218838;
+}
+
+/* Menambahkan efek tombol hover */
+.view-btn:focus, .view-btn:hover {
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}

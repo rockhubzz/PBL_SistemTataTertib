@@ -78,7 +78,6 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
     if ($stmt === false) {
         die("Query failed: " . print_r(sqlsrv_errors(), true));
     }
-
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -90,11 +89,6 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
         <link rel="stylesheet" href="style/AEditPlgMain.css">
         <link rel="stylesheet" href="style/AdminStyles.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-        <link rel="stylesheet" href="//cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
     </head>
 
     <body>
@@ -120,6 +114,12 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
                 </a>
                 <a href="admin_editSanksi.php" class="menu-item">
                     <i class="fas fa-gavel"></i><span>Edit Sanksi</span>
+                </a>
+                <a href="admin_SPMasuk.php" class="menu-item">
+                    <i class="fas fa-envelope"></i><span>SP masuk</span>
+                </a>
+                <a href="admin_buatAkun.php" class="menu-item">
+                    <i class="fas fa-user-cog"></i><span>Manage Akun</span>
                 </a>
             </div>
             <div class="profile">
@@ -162,7 +162,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
             <!-- Display Data -->
             <div class="table-container">
                 <h3>Daftar Opsi Pelanggaran</h3>
-                <table id="Tabel">
+                <table>
                     <thead>
                         <tr>
                             <th>Tingkat Pelanggaran</th>
@@ -183,10 +183,10 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
                                     </td>
                                     <td>
                                         <button type="submit" name="update"
-                                            class="btn">Update</button>
+                                         class="btn">Update</button>
                                         <a href="?delete=<?= urlencode($row['deskripsi']) ?>"
-                                            class="btn delete-btn"
-                                            onclick="return confirm('Are you sure?')">Delete</a>
+                                        class="btn delete-btn"
+                                        onclick="return confirm('Are you sure?')">Delete</a>
                                     </td>
                                 </form>
                             </tr>
@@ -209,17 +209,6 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
                     sidebar.classList.toggle("collapsed");
                     main.classList.toggle("collapsed");
                     header.classList.toggle("collapsed");
-                });
-            });
-            $(document).ready(function() {
-                $('#Tabel').DataTable({
-                    paging: true,
-                    searching: false,
-                    ordering: false,
-                    info: true,
-                    language: {
-                        url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json"
-                    }
                 });
             });
         </script>

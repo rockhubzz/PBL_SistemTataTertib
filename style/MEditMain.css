@@ -1,0 +1,95 @@
+/* Main Content - Default State */
+.main {
+    width: calc(100% - 250px); /* Lebar default saat sidebar penuh */
+    margin-left: 250px; /* Margin sesuai ukuran sidebar default */
+    margin-top: 80px;
+    padding: 30px;
+    background-color: #f4f4f8;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    transition: margin-left 0.3s ease, width 0.3s ease; /* Transisi untuk smooth effect */
+}
+
+/* Ketika Sidebar Dimimalkan */
+.sidebar.collapsed ~ .main {
+    margin-left: 80px; /* Sesuaikan margin ketika sidebar kecil */
+    width: calc(100% - 80px); /* Sesuaikan lebar konten */
+}
+
+
+/* Heading utama dalam .main */
+.main h2 {
+    margin-bottom: 20px;
+    color: #007bff;
+    font-size: 24px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Card Style for Forms */
+.form-container {
+    padding: 25px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); /* Efek bayangan halus */
+}
+
+.form-container .form-group {
+    margin-bottom: 20px; /* Memberikan jarak antar elemen form */
+}
+
+
+.form-container label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #555555; /* Warna teks gelap */
+}
+
+/* Input Fields */
+.form-container input,
+.form-container select {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: 'Poppins', sans-serif;
+    background-color: #fdfdfd;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.form-container input:focus,
+.form-container select:focus {
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.25); /* Efek glow biru */
+    border-color: #007bff;
+}
+
+/* Submit Button - Modern */
+.submit-btn {
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 12px 18px;
+    font-family: 'Poppins', sans-serif;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px); /* Efek hover */
+}
+
+/* Form */
+form {
+    width: 100%; /* Lebar penuh untuk formulir */
+}
+
+/* Success Message */
+.success-message {
+    background-color: #d4edda; /* Hijau terang untuk latar */
+    color: #155724; /* Hijau gelap untuk teks */
+    padding: 10px; /* Tambahkan jarak dalam */
+    border: 1px solid #c3e6cb; /* Batas hijau muda */
+    border-radius: 4px; /* Sudut membulat */
+    margin-bottom: 20px; /* Jarak bawah */
+    text-align: center; /* Pesan di tengah */
+}

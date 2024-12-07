@@ -69,7 +69,6 @@ tr:hover td {
     transition: left 0.3s ease, width 0.3s ease;
     width: calc(100% - 250px);
 }
-
 /* Button Style */
 .save-btn {
     background-color: #007bff;
@@ -79,7 +78,6 @@ tr:hover td {
     border-radius: 5px;
     cursor: pointer;
 }
-
 .save-btn:hover {
     background-color: #0056b3; /* Warna lebih gelap */
     transform: scale(1.05); /* Sedikit memperbesar */

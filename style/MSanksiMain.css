@@ -3,6 +3,7 @@
     margin-left: 250px;
     padding: 20px;
     transition: margin-left 0.3s ease;
+    text-align: justify;
 }
 .main.collapsed {
     margin-left: 80px;
@@ -16,7 +17,7 @@
 table {
     width: 100%;
     border-collapse: collapse;
-    text-align: left;
+    text-align: justify;
 }
 th, td {
     padding: 15px;
@@ -120,4 +121,17 @@ textarea {
     width: 500px;
     height: 100px;
     resize: none;
+}
+/* Button Styles */
+.view-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.view-btn:hover {
+    background-color: #45a049; /* Warna hover */
 }
