@@ -104,90 +104,92 @@ WHERE u.user_id = ?
         </div>
         <!-- Main Content -->
         <div class="main" id="main">
-        <div class="table-container">
-        <div class="report-section">
-        <div class="dashboard-content">
-                <table class="content-table">
-                    <thead>
-                        <tr>
-                            <th>ID Banding</th>
-                            <th>ID Pelanggaran</th>
-                            <th>Pengaju</th>
-                            <th>Jenis Pelanggaran</th>
-                            <th>Alasan Banding</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-    <?php if (sqlsrv_has_rows($stmt)): ?>
-        <?php while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)): ?>
-            <tr data-id="<?= htmlspecialchars($row['id_banding']) ?>">
-                <td><?= htmlspecialchars($row['id_banding']) ?></td>
-                <td><?= htmlspecialchars($row['id_pelanggaran']) ?></td>
-                <td><?= htmlspecialchars($row['Nama Pengaju']) ?></td>
-                <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
-                <td><?= htmlspecialchars($row['Alasan']) ?></td>
-                <?php if ($row['status'] === null): ?>
-                    <td>
-                        <button class="view-btn" onclick="handleAppealAction(<?= $row['id_banding'] ?>, 1)">Setuju</button>
-                        <button class="view-btn" style="background-color: red" onclick="handleAppealAction(<?= $row['id_banding'] ?>, 0)">Tolak</button>
-                    </td>
-                <?php elseif ($row['status'] == 0): ?>
-                    <td>Anda menolak banding ini.</td>
-                <?php elseif ($row['status'] == 1): ?>
-                    <td>Anda menyetujui banding ini</td>
-                <?php endif; ?>
-            </tr>
-        <?php endwhile; ?>
-    <?php else: ?>
-        <tr>
-            <td colspan="6" style="text-align: center; font-weight: bold;">Tidak ada pengajuan banding</td>
-        </tr>
-    <?php endif; ?>
-</tbody>
-                </table>
+            <div class="table-container">
+                <div class="report-section">
+                    <div class="dashboard-content">
+                        <table class="content-table">
+                            <thead>
+                                <tr>
+                                    <th>ID Banding</th>
+                                    <th>ID Pelanggaran</th>
+                                    <th>Pengaju</th>
+                                    <th>Jenis Pelanggaran</th>
+                                    <th>Alasan Banding</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (sqlsrv_has_rows($stmt)): ?>
+                                    <?php while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)): ?>
+                                        <tr data-id="<?= htmlspecialchars($row['id_banding']) ?>">
+                                            <td><?= htmlspecialchars($row['id_banding']) ?></td>
+                                            <td><?= htmlspecialchars($row['id_pelanggaran']) ?></td>
+                                            <td><?= htmlspecialchars($row['Nama Pengaju']) ?></td>
+                                            <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
+                                            <td><?= htmlspecialchars($row['Alasan']) ?></td>
+                                            <?php if ($row['status'] === null): ?>
+                                                <td>
+                                                    <button class="view-btn" onclick="handleAppealAction(<?= $row['id_banding'] ?>, 1)">Setuju</button>
+                                                    <button class="view-btn" style="background-color: red" onclick="handleAppealAction(<?= $row['id_banding'] ?>, 0)">Tolak</button>
+                                                </td>
+                                            <?php elseif ($row['status'] == 0): ?>
+                                                <td>Anda menolak banding ini.</td>
+                                            <?php elseif ($row['status'] == 1): ?>
+                                                <td>Anda menyetujui banding ini</td>
+                                            <?php endif; ?>
+                                        </tr>
+                                    <?php endwhile; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="6" style="text-align: center; font-weight: bold;">Tidak ada pengajuan banding</td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-        </div>
-        </div>
+        <button class="toggle-btn" id="toggle-btn">&lt;</button>
+        <div id="message" style="margin-top: 20px; color: green; text-align: center;"></div>
         <script>
             const handleAppealAction = (idBanding, status) => {
-    fetch('update_banding.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id_banding: idBanding,
-                status: status
-            }),
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            const messageBox = document.getElementById('message');
-            if (data.success) {
-                messageBox.style.color = 'green';
-                messageBox.textContent = data.message;
+                fetch('update_banding.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            id_banding: idBanding,
+                            status: status
+                        }),
+                    })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        const messageBox = document.getElementById('message');
+                        if (data.success) {
+                            messageBox.style.color = 'green';
+                            messageBox.textContent = data.message;
 
-                // Find the corresponding table row and update it
-                const row = document.querySelector(`tr[data-id="${idBanding}"]`);
-                if (row) {
-                    const actionCell = row.querySelector('td:last-child');
-                    if (status === 0) {
-                        actionCell.textContent = "Anda menolak banding ini.";
-                    } else if (status === 1) {
-                        actionCell.textContent = "Anda menyetujui banding ini.";
-                    }
-                }
-            } else {
-                messageBox.style.color = 'red';
-                messageBox.textContent = data.message;
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-};
+                            // Find the corresponding table row and update it
+                            const row = document.querySelector(`tr[data-id="${idBanding}"]`);
+                            if (row) {
+                                const actionCell = row.querySelector('td:last-child');
+                                if (status === 0) {
+                                    actionCell.textContent = "Anda menolak banding ini.";
+                                } else if (status === 1) {
+                                    actionCell.textContent = "Anda menyetujui banding ini.";
+                                }
+                            }
+                        } else {
+                            messageBox.style.color = 'red';
+                            messageBox.textContent = data.message;
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            };
             const updateBanding = (id, status) => {
                 fetch('update_banding.php', {
                         method: 'POST',
