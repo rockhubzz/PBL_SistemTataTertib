@@ -172,7 +172,7 @@ ORDER BY p.id_pelanggaran DESC
                                         else: echo 'Belum ada banding';
                                         endif; ?></td>
                                     <td><?php
-                                        if ($row['status_banding'] = null) {
+                                        if ($row['status_banding'] == null) {
                                             echo 'Belum ada banding';
                                         } elseif ($row['status_banding'] == 0) {
                                             echo 'Ditolak pelapor';
