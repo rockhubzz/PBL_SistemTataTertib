@@ -104,7 +104,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dashboard Admin</title>
+        <title>Edit Laporan</title>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="style/AEditLprnMain.css">
         <link rel="stylesheet" href="style/AdminStyles.css">
