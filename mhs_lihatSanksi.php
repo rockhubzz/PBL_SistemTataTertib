@@ -58,6 +58,10 @@ ORDER BY tingkat_pelanggaran
         <link rel="stylesheet" href="style/AdminStyles.css">
         <link rel="stylesheet" href="style/MSanksiMain.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="//cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     </head>
 
     <body>
@@ -108,38 +112,38 @@ ORDER BY tingkat_pelanggaran
         </div>
         <!-- Main Content -->
         <div class="main" id="main">
-        <h2>Data Pelanggaran dan Sanksi</h2>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Tingkat Pelanggaran</th>
-                        <th>Jenis Pelanggaran</th>
-                        <th>Sanksi</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)): ?>
+            <h2>Data Pelanggaran dan Sanksi</h2>
+            <div class="table-container">
+                <table id="Tabel">
+                    <thead>
                         <tr>
-                            <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
-                            <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
-                            <td><?= htmlspecialchars($row['sanksi']) ?></td>
-                            <td>
-                                <?php if ($row['sp_count'] > 0): ?>
-                                    <a href="uploads/<?php echo $row['sp_path_file']; ?>" class="view-btn">Lihat SP</a>
-                                <?php else: ?>
-                                    <a href="mhs_uploadPernyataan.php?id_pelanggaran=<?php echo $row['id_pelanggaran'] ?>" class="view-btn">Upload Surat Pernyataan</a>
-                                <?php endif; ?>
-                            </td>
+                            <th>Tingkat Pelanggaran</th>
+                            <th>Jenis Pelanggaran</th>
+                            <th>Sanksi</th>
+                            <th>Aksi</th>
                         </tr>
-                    <?php endwhile; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
+                                <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
+                                <td><?= htmlspecialchars($row['sanksi']) ?></td>
+                                <td>
+                                    <?php if ($row['sp_count'] > 0): ?>
+                                        <a href="uploads/<?php echo $row['sp_path_file']; ?>" class="view-btn">Lihat SP</a>
+                                    <?php else: ?>
+                                        <a href="mhs_uploadPernyataan.php?id_pelanggaran=<?php echo $row['id_pelanggaran'] ?>" class="view-btn">Upload Surat Pernyataan</a>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-    <!-- Close database connection -->
-    <?php sqlsrv_close($conn); ?>
+        <!-- Close database connection -->
+        <?php sqlsrv_close($conn); ?>
         </div>
         </div>
         <script>
@@ -153,8 +157,20 @@ ORDER BY tingkat_pelanggaran
                 main.classList.toggle('collapsed');
                 header.classList.toggle('collapsed');
             });
+            $(document).ready(function() {
+                $('#Tabel').DataTable({
+                    paging: true,
+                    searching: true,
+                    ordering: true,
+                    info: true,
+                    language: {
+                        url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json"
+                    }
+                });
+            });
         </script>
     </body>
+
     </html>
 <?php
 } else {

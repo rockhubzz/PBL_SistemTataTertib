@@ -50,6 +50,10 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
         <link rel="stylesheet" href="style/AdminStyles.css">
         <link rel="stylesheet" href="style/MDasboardMain.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="//cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     </head>
 
     <body>
@@ -100,37 +104,37 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
         </div>
         <!-- Main Content -->
         <div class="main" id="main">
-        <div class="table-container">
-        <div class="report-section">
-            <table class="report-table">
-                <thead>
-                    <tr>
-                        <th>Tingkat Pelanggaran</th>
-                        <th>Jumlah</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($violations as $violation): ?>
-                        <tr>
-                            <td>Tingkat <?= htmlspecialchars($violation['tingkat_pelanggaran']) ?></td>
-                            <td><?= htmlspecialchars($violation['jumlah_pelanggaran']) ?></td>
-                            <td>
-                                <?php
-                                if ($violation['jumlah_pelanggaran'] != 0) {
-                                    $url = "mhs_listPelanggaran.php?tingkat_pelanggaran=" . urlencode($violation['tingkat_pelanggaran']);
-                                    echo "<a href='{$url}' class='view-btn'>Lihat Laporan</a>";
-                                } else {
-                                    echo "<button class='disabled-btn'>Lihat Laporan</button>";
-                                }
-                                ?>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-        </div>
+            <div class="table-container">
+                <div class="report-section">
+                    <table id="Tabel">
+                        <thead>
+                            <tr>
+                                <th>Tingkat Pelanggaran</th>
+                                <th>Jumlah</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($violations as $violation): ?>
+                                <tr>
+                                    <td>Tingkat <?= htmlspecialchars($violation['tingkat_pelanggaran']) ?></td>
+                                    <td><?= htmlspecialchars($violation['jumlah_pelanggaran']) ?></td>
+                                    <td>
+                                        <?php
+                                        if ($violation['jumlah_pelanggaran'] != 0) {
+                                            $url = "mhs_listPelanggaran.php?tingkat_pelanggaran=" . urlencode($violation['tingkat_pelanggaran']);
+                                            echo "<a href='{$url}' class='view-btn'>Lihat Laporan</a>";
+                                        } else {
+                                            echo "<button class='disabled-btn'>Lihat Laporan</button>";
+                                        }
+                                        ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         <script>
             const toggleSidebar = document.getElementById('toggleSidebar');
@@ -142,6 +146,17 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
                 sidebar.classList.toggle('collapsed');
                 main.classList.toggle('collapsed');
                 header.classList.toggle('collapsed');
+            });
+            $(document).ready(function() {
+                $('#Tabel').DataTable({
+                    paging: false,
+                    searching: false,
+                    ordering: false,
+                    info: true,
+                    language: {
+                        url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json"
+                    }
+                });
             });
         </script>
     </body>
