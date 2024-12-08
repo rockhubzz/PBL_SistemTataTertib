@@ -75,6 +75,10 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
         <link rel="stylesheet" href="style/AdminStyles.css">
         <link rel="stylesheet" href="style/AbuatAkunMain.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="//cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     </head>
 
     <body>
@@ -132,68 +136,68 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
         <!-- Main Content -->
         <div class="main" id="main">
             <div class="content-container">
-            <div class="user-list-container">
-            <h2>Daftar User</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>User ID</th>
-                        <th>Nama</th>
-                        <th>Role</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php while ($row = sqlsrv_fetch_array($stmtSelect, SQLSRV_FETCH_ASSOC)): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($row['user_id']); ?></td>
-                            <td><?php echo htmlspecialchars($row['nama']); ?></td>
-                            <td><?php echo htmlspecialchars($row['role']); ?></td>
-                            <td>
-                                <form method="POST" style="display: inline;">
-                                    <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($row['user_id']); ?>">
-                                    <button type="submit" name="delete_user" class="delete-btn">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                    <?php endwhile; ?>
-                </tbody>
-            </table>
+                <div class="user-list-container">
+                    <h2>Daftar User</h2>
+                    <table id="Tabel">
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Nama</th>
+                                <th>Role</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while ($row = sqlsrv_fetch_array($stmtSelect, SQLSRV_FETCH_ASSOC)): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($row['user_id']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['nama']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['role']); ?></td>
+                                    <td>
+                                        <form method="POST" style="display: inline;">
+                                            <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($row['user_id']); ?>">
+                                            <button type="submit" name="delete_user" class="delete-btn">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php endwhile; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="form-container">
+                    <h2>Tambah User</h2>
+                    <?php if (isset($_GET['success'])): ?>
+                        <p class="success-message">User berhasil ditambahkan!</p>
+                    <?php endif; ?>
+                    <?php if (isset($_GET['deleted'])): ?>
+                        <p class="delete-message">User berhasil dihapus!</p>
+                    <?php endif; ?>
+                    <form method="POST">
+                        <div class="form-group">
+                            <label for="role">Role</label>
+                            <select id="role" name="role" required>
+                                <option value="" disabled selected>Select Role</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Dosen">Dosen</option>
+                                <option value="Mahasiswa">Mahasiswa</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nim_nip">NIM/NIP</label>
+                            <input type="text" id="nim_nip" name="nim_nip" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nama">Nama</label>
+                            <input type="text" id="nama" name="nama" required>
+                        </div>
+
+                        <button type="submit" name="submit_user" class="submit-btn">Tambah User</button>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="form-container">
-            <h2>Tambah User</h2>
-            <?php if (isset($_GET['success'])): ?>
-                <p class="success-message">User berhasil ditambahkan!</p>
-            <?php endif; ?>
-            <?php if (isset($_GET['deleted'])): ?>
-                <p class="delete-message">User berhasil dihapus!</p>
-            <?php endif; ?>
-            <form method="POST">
-                <div class="form-group">
-                    <label for="role">Role</label>
-                    <select id="role" name="role" required>
-                        <option value="" disabled selected>Select Role</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Dosen">Dosen</option>
-                        <option value="Mahasiswa">Mahasiswa</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="nim_nip">NIM/NIP</label>
-                    <input type="text" id="nim_nip" name="nim_nip" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="nama">Nama</label>
-                    <input type="text" id="nama" name="nama" required>
-                </div>
-
-                <button type="submit" name="submit_user" class="submit-btn">Tambah User</button>
-            </form>
-        </div>
-    </div>
-</div>
 
         <?php sqlsrv_close($conn); ?>
 
@@ -207,6 +211,17 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
                 sidebar.classList.toggle('collapsed');
                 main.classList.toggle('collapsed');
                 header.classList.toggle('collapsed');
+            });
+            $(document).ready(function() {
+                $('#Tabel').DataTable({
+                    paging: true,
+                    searching: true,
+                    ordering: true,
+                    info: true,
+                    language: {
+                        url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json"
+                    }
+                });
             });
         </script>
     </body>
