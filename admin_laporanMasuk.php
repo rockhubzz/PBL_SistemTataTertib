@@ -166,7 +166,7 @@ ORDER BY p.id_pelanggaran DESC
                                     </td>
                                     <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
                                     <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
-                                    <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('Y-m-d')) ?></td>
+                                    <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('d-m-Y')) ?></td>
                                     <td><?php
                                         if ($row['laporan_banding']): echo $row['laporan_banding'];
                                         else: echo 'Belum ada banding';
