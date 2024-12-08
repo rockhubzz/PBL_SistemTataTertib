@@ -44,7 +44,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
         $userID = $_POST['user_id'];
 
         // Execute delete query
-        $queryDelete = "EXEC DelUser @UserID = ?";
+        $queryDelete = "EXEC HapusAkun @UserID = ?";
         $paramsDelete = [$userID];
 
         $stmtDelete = sqlsrv_query($conn, $queryDelete, $paramsDelete);
