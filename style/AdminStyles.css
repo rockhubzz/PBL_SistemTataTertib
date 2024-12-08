@@ -101,11 +101,10 @@ body {
     align-items: center;
     justify-content: center; /* Letakkan di tengah saat sidebar mengecil */
     position: absolute;
-    bottom: 20px;
+    bottom: 5px;
     left: 20px;
     width: calc(100% - 40px);
     padding: 10px;
-    background-color: #27365a;
     border-radius: 8px;
     transition: left 0.3s ease, justify-content 0.3s ease;
 }
