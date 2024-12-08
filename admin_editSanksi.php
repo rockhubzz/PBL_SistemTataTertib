@@ -148,7 +148,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
             </button>
             <div class="title">
                 <h1>Sistem Tata Tertib</h1>
-                <h2>Manage Sanksi</h2>
+                <h2>Edit Sanksi</h2>
             </div>
         </div>
         <!-- Main Content -->
