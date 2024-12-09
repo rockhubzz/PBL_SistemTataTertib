@@ -106,3 +106,26 @@ tr:hover td {
 .view-btn:hover {
     background-color: #45a049;
 }
+.view-btn, .delete-btn {
+    display: inline-block; /* Align buttons horizontally */
+    margin-right: 5px; /* Add space between buttons */
+    background-color: #4CAF50; /* Color for Edit (green) */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.view-btn:hover {
+    background-color: #45a049; /* Hover effect for Edit button */
+}
+
+.delete-btn {
+    background-color: #f44336; /* Color for Hapus (red) */
+}
+
+.delete-btn:hover {
+    background-color: #e53935; /* Hover effect for Hapus button */
+}
