@@ -123,7 +123,13 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
                                 <td><?= htmlspecialchars($row['nim']) ?></td>
                                 <td><?= htmlspecialchars($row['nama']) ?></td>
                                 <td><?= htmlspecialchars($row['jumlah_pelanggaran']) ?></td>
-                                <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
+                                <?php
+                                if($row['tingkat_pelanggaran']){
+                                    echo '<td>' . htmlspecialchars($row['tingkat_pelanggaran']) .'</td>';
+                                }else{
+                                    echo "<td>Tidak ada pelanggaran</td>";
+                                }
+                                ?>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
