@@ -4,7 +4,7 @@
     flex-wrap: wrap;
     justify-content: space-between; /* Ensure elements are spaced well */
     margin-left: 250px;
-    margin-top: 80px;
+    margin-top: 50px;
     padding: 20px;
     gap: 30px; /* Increased gap between items */
     transition: margin-left 0.3s ease;
@@ -53,9 +53,20 @@
     background-color: #0056b3;
 }
 
-/* Card Layout */
+.cards {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsif */
+    width: 100%; /* Pastikan kartu menyesuaikan dengan kontainer utama */
+}
+
 .card {
-    background-color: #007bff;
+    border-radius: 12px;
+    align-items: center;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: linear-gradient(135deg, #6a89cc, #82ccdd);
     color: white;
     padding: 20px;
     border-radius: 12px; /* Rounded corners */
@@ -63,26 +74,34 @@
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
-    flex: 1 1 30%; /* Flex to ensure cards take equal space */
-    min-width: 250px; /* Minimum width for responsiveness */
-    height: 180px;
+    flex: 1 1 30%; /* Pastikan kartu mengambil lebar penuh seperti info-box */
+    max-width: 100%; /* Mencegah melampaui lebar */
+}
+
+.card .icon {
+    font-size: 50px;
+    color: white;
 }
 
 .card:hover {
-    transform: translateY(-5px); /* Slight raise effect on hover */
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+    transform: translateY(-5px); /* Efek hover */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* Shadow lebih kuat */
 }
 
-.card h3 {
+.card .details h3 {
+    margin: 0;
+    font-size: 18px;
+    color: white;
+}
+
+.card .details p {
+    margin: 5px 0 0;
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: 10px;
+    color: white;
 }
 
-.card p {
-    font-size: 22px;
-    font-weight: normal;
-}
+  
 
 /* Header */
 .header {
@@ -123,3 +142,42 @@
         min-width: 200px;
     }
 }
+
+.info-box {
+    display: flex;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: -30px;
+  }
+  
+  .info-box .info-image {
+    max-width: 100px;
+    margin-right: 20px;
+  }
+  
+  .info-box h3 {
+    margin: 0;
+    font-size: 24px;
+  }
+
+  .charts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  canvas {
+    max-width: 400px; /* Maksimal lebar */
+    max-height: 400px; /* Maksimal tinggi */
+    width: 100%;      /* Ukuran penuh responsif */
+    height: auto;     /* Pertahankan rasio */
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+  }
+  

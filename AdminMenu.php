@@ -25,6 +25,32 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
     $jml_mhs = $row['jml_mhs'];
     $jml_plg = $row['jml_pelanggaran'];
     $jml_dsn = $row['jml_dosen'];
+
+        // Query untuk mendapatkan statistik tingkat pelanggaran
+        $query_tingkat = "
+        SELECT tingkat_pelanggaran, COUNT(*) as jumlah
+        FROM dbo.Pelanggaran
+        GROUP BY tingkat_pelanggaran";
+
+    $stmt_tingkat = sqlsrv_query($conn, $query_tingkat);
+    if ($stmt_tingkat === false) {
+        die("Error executing tingkat query: " . print_r(sqlsrv_errors(), true));
+    }
+
+    $tingkat = [];
+    while ($row_tingkat = sqlsrv_fetch_array($stmt_tingkat, SQLSRV_FETCH_ASSOC)) {
+        $tingkat[] = $row_tingkat;
+    }
+
+    // Encode data statistik tingkat pelanggaran untuk digunakan di frontend (JSON)
+    $json_tingkat = json_encode($tingkat);
+
+    // Menutup koneksi SQL Server
+    sqlsrv_close($conn);
+} else {
+    // Jika pengguna tidak memiliki session atau bukan admin, arahkan ke halaman logout
+    header("location: logout.php");
+}
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -35,9 +61,12 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
         <title>Dashboard Admin</title>
         <link rel="stylesheet" href="style/AdminStyles.css">
         <link rel="stylesheet" href="style/ADasboardMain.css">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     </head>
-
+    <script>
+    console.log(statsData); // Untuk memastikan data yang diterima
+    </script>
     <body>
         <div class="sidebar" id="sidebar">
             <div class="logo">
@@ -92,21 +121,137 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
         </div>
         <!-- Main Content -->
         <div class="main" id="main">
-            <div class="card">
-                <h3>Total Mahasiswa</h3>
-                <p><?php echo $jml_mhs ?></p>
+        <div class="cards"></div>
+        <div class="card">
+            <div class="icon">
+              <i class="fas fa-user-graduate"></i>
             </div>
-            <div class="card">
-                <h3>Total Pelanggaran</h3>
-                <p><?php echo $jml_plg ?></p>
+            <div class="details">
+              <h3>Total Mahasiswa</h3>
+              <p><?php echo $jml_mhs ?></p>
             </div>
+          </div>
             <div class="card">
-                <h3>Total Dosen</h3>
-                <p><?php echo $jml_dsn ?></p>
+            <div class="icon">
+              <i class="fas fa-chalkboard-teacher"></i>
             </div>
+            <div class="details">
+              <h3>Total Dosen</h3>
+              <p><?php echo $jml_dsn ?></p>
+            </div>
+          </div>
+            <div class="card">
+            <div class="icon">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="details">
+              <h3>Total Pelanggaran</h3>
+              <p><?php echo $jml_plg ?></p>
+            </div>
+          </div>
+
+                  <!-- Section 1: Informasi Penting -->
+        <div class="important-info">
+          <div class="info-box">
+            <img src="img/LogoPLTK.png" alt="Tata Tertib" class="info-image">
+            <h3>Pentingnya Tata Tertib</h3>
+            <p>
+              Tata tertib membantu menciptakan lingkungan yang kondusif untuk belajar. 
+              Pelanggaran tata tertib dapat mempengaruhi akademik dan reputasi mahasiswa.
+            </p>
+          </div>
         </div>
+                <!-- Section 2: Grafik Statistik -->
+<!-- Section untuk Grafik Statistik Pelanggaran -->
+<div class="statistics">
+    <h3>Statistik Pelanggaran</h3>
+    <div class="charts">
+        <!-- Pie chart untuk kategori pelanggaran -->
+        <canvas id="violationsPieChart" width="400" height="400"></canvas>
+        <!-- Bar chart untuk kategori pelanggaran -->
+        <canvas id="violationsBarChart" width="400" height="400"></canvas>
+        <!-- Bar chart untuk tingkat pelanggaran -->
+        <canvas id="violationsLevelBarChart" width="400" height="400"></canvas>
+    </div>
+</div>
 
         <script>
+
+const statsData = <?php echo $json_stats; ?>; // Data statistik kategori pelanggaran
+    const tingkatData = <?php echo $json_tingkat; ?>; // Data statistik tingkat pelanggaran
+
+    // Persiapkan data untuk Pie Chart (Kategori Pelanggaran)
+    const categories = statsData.map(stat => stat.jenis_pelanggaran); // Kategori pelanggaran
+    const counts = statsData.map(stat => stat.jumlah); // Jumlah pelanggaran per kategori
+
+    // Pie Chart untuk Kategori Pelanggaran
+    const pieChartCtx = document.getElementById('violationsPieChart').getContext('2d');
+    const pieChart = new Chart(pieChartCtx, {
+        type: 'pie',
+        data: {
+            labels: categories,
+            datasets: [{
+                label: 'Jumlah Pelanggaran per Kategori',
+                data: counts,
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+
+    // Bar Chart untuk Kategori Pelanggaran
+    const barChartCtx = document.getElementById('violationsBarChart').getContext('2d');
+    const barChart = new Chart(barChartCtx, {
+        type: 'bar',
+        data: {
+            labels: categories,
+            datasets: [{
+                label: 'Jumlah Pelanggaran per Kategori',
+                data: counts,
+                backgroundColor: '#4BC0C0',
+                borderColor: '#36A2EB',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Persiapkan data untuk Bar Chart (Tingkat Pelanggaran)
+    const tingkatLabels = tingkatData.map(stat => stat.tingkat_pelanggaran); // Tingkat pelanggaran
+    const tingkatCounts = tingkatData.map(stat => stat.jumlah); // Jumlah pelanggaran per tingkat
+
+    // Bar Chart untuk Tingkat Pelanggaran
+    const tingkatBarChartCtx = document.getElementById('violationsLevelBarChart').getContext('2d');
+    const tingkatBarChart = new Chart(tingkatBarChartCtx, {
+        type: 'bar',
+        data: {
+            labels: tingkatLabels,
+            datasets: [{
+                label: 'Jumlah Pelanggaran per Tingkat',
+                data: tingkatCounts,
+                backgroundColor: ['#FF5733', '#33FF57', '#3357FF'],
+                borderColor: '#FF5733',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
             const toggleSidebar = document.getElementById('toggleSidebar');
             const sidebar = document.getElementById('sidebar');
             const header = document.getElementById('header');
@@ -122,7 +267,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
 
     </html>
 <?php
-} else {
-    header("location: logout.php");
-}
 ?>
+<script>
+const statsData = <?php echo $json_stats; ?>;
+</script>
