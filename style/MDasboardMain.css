@@ -87,3 +87,229 @@ tr:hover td {
         min-width: 200px;
     }
 }
+.quick-actions {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.quick-actions button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.quick-actions button:hover {
+    background-color: #0056b3;
+}
+.info-box {
+    display: flex;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: -30px;
+  }
+  
+  .info-box .info-image {
+    max-width: 100px;
+    margin-right: 20px;
+  }
+  
+  .info-box h3 {
+    margin: 0;
+    font-size: 24px;
+  }
+
+
+/* Tombol Styling */
+.load-table-btn {
+    display: inline-block;
+    background: linear-gradient(45deg, #2b5199, #3b6bbe); /* Gradien hijau */
+    color: white;
+    margin-right: 10px; /* Spasi antara ikon dan teks */
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.load-table-btn:hover {
+    background: linear-gradient(45deg, #2c5ab1, #4278d4); /* Warna hover */
+    transform: scale(1.1); /* Efek zoom */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Animasi Fade In untuk Konten */
+.dynamic-content {
+    display: none;
+    animation: fadeIn 0.5s ease-in-out forwards; /* Efek fade-in */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* Gambar Full Width */
+.guide-image-container {
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.guide-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* Konten Panduan */
+.guide-content {
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+}
+
+.guide-title {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 15px;
+    color: #2E7D32;
+}
+
+.guide-description {
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-align: justify;
+    color: #555;
+}
+
+/* Poin-Poin Tata Tertib */
+.guide-points {
+    margin-bottom: 20px;
+}
+
+.guide-points h3 {
+    font-size: 22px;
+    color: #388E3C;
+    margin-bottom: 10px;
+}
+
+.guide-points ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    font-size: 16px;
+    color: #444;
+}
+
+.guide-points ul li {
+    margin-bottom: 10px;
+}
+
+
+/* Panduan Tata Tertib Styling */
+.guide-section {
+    background-color: #f9f9f9; /* Latar belakang lembut */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Bayangan lembut */
+    margin-top: 20px;
+    text-align: center;
+}
+
+.guide-section h2 {
+    font-size: 24px;
+    color: #4CAF50; /* Warna hijau untuk menekankan panduan */
+    margin-bottom: 15px;
+}
+
+.guide-section p {
+    font-size: 16px;
+    color: #555; /* Warna teks netral */
+    line-height: 1.6;
+}
+
+.guide-section img.img-guide {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.guide-section a.download-btn {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+.guide-section a.download-btn:hover {
+    background-color: #45a049; /* Warna hover */
+}
+
+.guide-section ul {
+    text-align: left;
+    margin: 15px 0;
+    padding-left: 20px;
+}
+
+.guide-section ul li {
+    margin: 10px 0;
+    color: #444;
+}
+
+/* Tombol Download */
+.download-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(45deg, #4CAF50, #8BC34A);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.download-btn i {
+    margin-right: 10px;
+}
+
+.download-btn:hover {
+    background: linear-gradient(45deg, #388E3C, #4CAF50);
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}

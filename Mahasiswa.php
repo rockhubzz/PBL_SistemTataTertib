@@ -54,6 +54,12 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
         <link rel="stylesheet" href="//cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+        <script>
+            const statisticsData = <?php echo json_encode($statisticsData); ?>;
+        </script>
+
     </head>
 
     <body>
@@ -104,8 +110,34 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
         </div>
         <!-- Main Content -->
         <div class="main" id="main">
-            <div class="table-container">
-                <div class="report-section">
+            <!-- Section 1: Informasi Penting -->
+            <div class="important-info">
+                <div class="info-box">
+                    <img src="img/LogoPLTK.png" alt="Tata Tertib" class="info-image">
+                    <h3>Pentingnya Tata Tertib</h3>
+                    <p>
+                        Tata tertib membantu menciptakan lingkungan yang kondusif untuk belajar.
+                        Pelanggaran tata tertib dapat mempengaruhi akademik dan reputasi mahasiswa.
+                    </p>
+                </div>
+            </div>
+            <!-- Tombol -->
+            <div class="button-group">
+                <button id="loadViolationsTable" class="load-table-btn">
+                    <i class="fas fa-table"></i> Tampilkan Tabel Pelanggaran
+                </button>
+                <button id="showGuide" class="load-table-btn">
+                    <i class="fas fa-book"></i> Panduan Tata Tertib
+                </button>
+                <button id="loadStatistics" class="load-table-btn">
+                    <i class="fas fa-chart-bar"></i> Statistik Pelanggaran
+                </button>
+            </div>
+
+            <div id="dynamicContent">
+                <!-- Konten Tabel Pelanggaran -->
+                <div id="violationsTableContent" class="dynamic-content">
+                    <h2>Tabel Pelanggaran</h2>
                     <table id="Tabel">
                         <thead>
                             <tr>
@@ -134,31 +166,171 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </div>
-        <script>
-            const toggleSidebar = document.getElementById('toggleSidebar');
-            const sidebar = document.getElementById('sidebar');
-            const header = document.getElementById('header');
-            const main = document.getElementById('main');
 
-            toggleSidebar.addEventListener('click', () => {
-                sidebar.classList.toggle('collapsed');
-                main.classList.toggle('collapsed');
-                header.classList.toggle('collapsed');
-            });
-            $(document).ready(function() {
-                $('#Tabel').DataTable({
-                    paging: false,
-                    searching: false,
-                    ordering: false,
-                    info: true,
-                    language: {
-                        url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json"
-                    }
+
+                <div id="mainContent">
+                    <div id="tableContent" class="dynamic-content"></div>
+                    <div id="guideContent" class="dynamic-content" style="display: none;">
+                        <div class="guide-image-container">
+                            <img src="img/po.jpg" alt="Panduan Tata Tertib" class="guide-image">
+                        </div>
+                        <div class="guide-content">
+                            <h2 class="guide-title">Panduan Tata Tertib Mahasiswa</h2>
+                            <p class="guide-description">
+                                Tata tertib kampus membantu menciptakan lingkungan yang kondusif dan mendukung keberhasilan akademik.
+                                Dengan memahami dan mematuhi aturan ini, mahasiswa dapat berkontribusi dalam menjaga keharmonisan kampus.
+                            </p>
+                            <div class="guide-points">
+                                <h3>Poin Penting:</h3>
+                                <ul>
+                                    <li>Hadir tepat waktu di kelas dan kegiatan kampus.</li>
+                                    <li>Berpakaian sesuai aturan kampus.</li>
+                                    <li>Menjaga sopan santun dalam berkomunikasi.</li>
+                                    <li>Tidak merusak fasilitas kampus.</li>
+                                    <li>Menghindari segala bentuk plagiarisme.</li>
+                                </ul>
+                            </div>
+                            <a href="downloads/panduan_tata_tertib.pdf" class="download-btn" download>
+                                <i class="fas fa-download"></i> Download Panduan
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Konten Statistik -->
+                    <div id="statisticsContent" class="dynamic-content" style="display: none;">
+                        <h2>Statistik Pelanggaran</h2>
+                        <p>Statistik pelanggaran berdasarkan data yang telah dikumpulkan.</p>
+                        <!-- Tambahkan elemen grafik di sini -->
+                    </div>
+                </div>
+
+            </div>
+            <script>
+                const loadTableButton = document.getElementById('loadViolationsTable');
+                const showGuideButton = document.getElementById('showGuide');
+                const tableContent = document.getElementById('tableContent');
+                const guideContent = document.getElementById('guideContent');
+
+                const toggleSidebar = document.getElementById('toggleSidebar');
+                const sidebar = document.getElementById('sidebar');
+                const header = document.getElementById('header');
+                const main = document.getElementById('main');
+
+                toggleSidebar.addEventListener('click', () => {
+                    sidebar.classList.toggle('collapsed');
+                    main.classList.toggle('collapsed');
+                    header.classList.toggle('collapsed');
                 });
-            });
-        </script>
+
+
+                // Fungsi untuk membersihkan konten utama
+                function clearMainContent() {
+                    main.innerHTML = ''; // Menghapus semua isi sebelumnya
+                }
+
+                // Fungsi untuk memuat tabel pelanggaran
+                function loadViolationsTable() {
+                    clearMainContent(); // Bersihkan konten sebelumnya
+                    const tableContent = `
+            <h2>Tabel Pelanggaran</h2>
+            <table id="Tabel">
+                <thead>
+                    <tr>
+                        <th>Tingkat Pelanggaran</th>
+                        <th>Jumlah</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($violations as $violation): ?>
+                        <tr>
+                            <td>Tingkat <?= htmlspecialchars($violation['tingkat_pelanggaran']) ?></td>
+                            <td><?= htmlspecialchars($violation['jumlah_pelanggaran']) ?></td>
+                            <td>
+                                <?php
+                                if ($violation['jumlah_pelanggaran'] != 0) {
+                                    $url = "mhs_listPelanggaran.php?tingkat_pelanggaran=" . urlencode($violation['tingkat_pelanggaran']);
+                                    echo "<a href='{$url}' class='view-btn'>Lihat Laporan</a>";
+                                } else {
+                                    echo "<button class='disabled-btn'>Lihat Laporan</button>";
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        `;
+                    main.innerHTML = tableContent; // Tambahkan konten tabel
+                    $('#Tabel').DataTable({
+                        paging: false,
+                        searching: false,
+                        ordering: false,
+                        info: true,
+                        language: {
+                            url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json"
+                        }
+                    });
+                }
+
+                // Fungsi untuk menampilkan panduan tata tertib
+                function showGuide() {
+                    clearMainContent(); // Bersihkan konten sebelumnya
+                    const guideContent = `
+<div id="guideContent" class="dynamic-content" style="display: none;">
+    <div class="guide-section">
+        <h2>Panduan Tata Tertib Mahasiswa</h2>
+        <p>
+            Tata tertib kampus bertujuan untuk menciptakan lingkungan belajar yang tertib, aman, dan kondusif. 
+            Berikut adalah beberapa poin penting yang harus dipatuhi mahasiswa:
+        </p>
+        <ul>
+            <li>Hadir tepat waktu untuk semua jadwal kuliah dan kegiatan kampus.</li>
+            <li>Mematuhi kode etik berpakaian yang ditetapkan kampus.</li>
+            <li>Menjaga kebersihan dan ketertiban lingkungan kampus.</li>
+            <li>Tidak melakukan tindakan yang mengganggu proses belajar mengajar.</li>
+            <li>Menghormati dosen, staf, dan sesama mahasiswa.</li>
+        </ul>
+        <img src="img/guidebook.jpg" alt="Panduan Tata Tertib" class="img-guide">
+        <p>
+            Anda dapat mengunduh panduan tata tertib lengkap melalui tautan di bawah ini:
+        </p>
+        <a href="downloads/panduan_tata_tertib.pdf" class="download-btn" download>Download Panduan</a>
+    </div>
+</div>
+
+        `;
+                    main.innerHTML = guideContent; // Tambahkan konten panduan
+                }
+                // Fungsi untuk menyembunyikan semua konten
+                function hideAllContents() {
+                    const allContents = document.querySelectorAll('.dynamic-content');
+                    allContents.forEach(content => {
+                        content.style.display = 'none';
+                    });
+                }
+
+                // Fungsi untuk menampilkan konten berdasarkan ID
+                function showContent(contentId) {
+                    hideAllContents();
+                    const selectedContent = document.getElementById(contentId);
+                    if (selectedContent) {
+                        selectedContent.style.display = 'block';
+                    }
+                }
+                // Event listener untuk tombol
+                document.getElementById('loadViolationsTable').addEventListener('click', () => {
+                    showContent('violationsTableContent');
+                });
+
+                document.getElementById('showGuide').addEventListener('click', () => {
+                    showContent('guideContent');
+                });
+
+                document.getElementById('loadStatistics').addEventListener('click', () => {
+                    showContent('statisticsContent');
+                });
+            </script>
     </body>
 
     </html>
