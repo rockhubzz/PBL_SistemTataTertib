@@ -243,79 +243,176 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
                 label: 'Jumlah Pelanggaran per Kategori',
                 data: counts,
                 backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                borderColor: '#fff',  // Memberikan border putih agar lebih kontras
+                borderWidth: 2,
             }]
         },
         options: {
-            responsive: true
-        }
-    });
-
-    // Bar Chart untuk Kategori Pelanggaran
-    const barChartCtx = document.getElementById('violationsBarChart').getContext('2d');
-    const barChart = new Chart(barChartCtx, {
-        type: 'bar',
-        data: {
-            labels: categories,
-            datasets: [{
-                label: 'Jumlah Pelanggaran per Kategori',
-                data: counts,
-                backgroundColor: '#4BC0C0',
-                borderColor: '#36A2EB',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-
-    // Persiapkan data untuk Bar Chart (Tingkat Pelanggaran)
-    const tingkatLabels = tingkatData.map(stat => stat.tingkat_pelanggaran); // Tingkat pelanggaran
-    const tingkatCounts = tingkatData.map(stat => stat.jumlah); // Jumlah pelanggaran per tingkat
-    const pastelColors = [
-    '#ff9aa2', '#ffb7b2', '#ffdac1', '#e2f0cb', '#b5ead7', '#c7ceea', '#d5a6bd'
-];
-    // Bar Chart untuk Tingkat Pelanggaran
-    const tingkatBarChartCtx = document.getElementById('violationsLevelBarChart').getContext('2d');
-    const tingkatBarChart = new Chart(tingkatBarChartCtx, {
-        type: 'bar',
-        data: {
-            labels: tingkatLabels,
-            datasets: [{
-                label: 'Jumlah Pelanggaran per Tingkat',
-                data: tingkatCounts,
-                backgroundColor: pastelColors, // Warna pelangi untuk setiap batang
-                borderColor: '#333',
-                borderWidth: 1
-            }]
-        },
         responsive: true,
-        scales: {
-            x: {
-                ticks: {
-                    color: '#333'
+        plugins: {
+            legend: {
+                position: 'top', // Posisi legend di atas
+                labels: {
+                    font: {
+                        size: 12
+                    }
                 }
             },
+            tooltip: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        return `${categories[tooltipItem.dataIndex]}: ${tooltipItem.raw} pelanggaran`;
+                    }
+                },
+                backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                titleFont: { size: 16 },
+                bodyFont: { size: 14 }
+            }
+        }
+    }
+    });
+
+// Bar Chart untuk Kategori Pelanggaran
+const barChartCtx = document.getElementById('violationsBarChart').getContext('2d');
+
+// Membuat gradasi warna
+const gradientBar = barChartCtx.createLinearGradient(0, 0, 0, 400); // Vertikal gradasi
+gradientBar.addColorStop(0, '#36A2EB'); // Warna awal (biru muda)
+gradientBar.addColorStop(1, '#4BC0C0'); // Warna akhir (teal)
+
+const barChart = new Chart(barChartCtx, {
+    type: 'bar',
+    data: {
+        labels: categories, // Nama kategori (tidak akan ditampilkan di sumbu X)
+        datasets: [{
+            label: 'Jumlah Pelanggaran per Kategori',
+            data: counts, // Jumlah pelanggaran per kategori
+            backgroundColor: gradientBar,
+            borderColor: '#36A2EB',
+            borderWidth: 1,
+            hoverBackgroundColor: '#36A2EB',
+            hoverBorderColor: '#1e3c72',
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+                labels: {
+                    font: { size: 14 }
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        return `${tooltipItem.dataset.label}: ${tooltipItem.raw}`;
+                    }
+                },
+                backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                titleFont: { size: 16 },
+                bodyFont: { size: 14 }
+            }
+        },
+        scales: {
             y: {
                 beginAtZero: true,
                 ticks: {
-                    color: '#333'
+                    color: '#333', // Warna angka pada sumbu Y
+                    font: {
+                        size: 12
+                    }
+                }
+            },
+            x: {
+                ticks: {
+                    display: false // Sembunyikan label pada sumbu X
                 }
             }
         },
         plugins: {
             legend: {
-                labels: {
-                    color: '#333'
+                display: false // Sembunyikan legenda
+            },
+        animation: {
+            duration: 1000,
+            easing: 'easeOutBounce'
+        }
+        }
+    }
+});
+
+    // Persiapkan data untuk Bar Chart (Tingkat Pelanggaran)
+// Persiapkan data untuk Bar Chart (Tingkat Pelanggaran)
+const tingkatLabels = tingkatData.map(stat => stat.tingkat_pelanggaran); // Tingkat pelanggaran
+const tingkatCounts = tingkatData.map(stat => stat.jumlah); // Jumlah pelanggaran per tingkat
+
+// Konteks untuk Bar Chart
+const tingkatBarChartCtx = document.getElementById('violationsLevelBarChart').getContext('2d');
+
+// Membuat gradasi warna
+const gradient = tingkatBarChartCtx.createLinearGradient(0, 0, 0, 400); // Vertikal gradasi
+gradient.addColorStop(0, '#36A2EB'); // Warna awal (atas)
+gradient.addColorStop(1, '#4BC0C0'); // Warna akhir (bawah)
+
+// Bar Chart untuk Tingkat Pelanggaran dengan Gradasi Warna dan Animasi
+const tingkatBarChart = new Chart(tingkatBarChartCtx, {
+    type: 'bar',
+    data: {
+        labels: tingkatLabels,
+        datasets: [{
+            label: 'Jumlah Pelanggaran per Tingkat',
+            data: tingkatCounts,
+            backgroundColor: gradient, // Gunakan gradasi warna
+            borderColor: '#333',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: '#333',
+                    font: {
+                        size: 12
+                    }
+                }
+            },
+            x: {
+                ticks: {
+                    color: '#333',
+                    font: {
+                        size: 12
+                    }
                 }
             }
+        },
+        plugins: {
+            legend: {
+                position: 'top',
+                labels: {
+                    font: { size: 14 }
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        return `${tooltipItem.dataset.label}: ${tooltipItem.raw}`;
+                    }
+                },
+                backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                titleFont: { size: 16 },
+                bodyFont: { size: 14 }
+            }
+        },
+        animation: {
+            duration: 1500, // Durasi animasi dalam milidetik
+            easing: 'easeOutBounce' // Efek animasi
         }
-    });
+    }
+});
 
             const toggleSidebar = document.getElementById('toggleSidebar');
             const sidebar = document.getElementById('sidebar');

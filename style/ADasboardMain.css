@@ -70,7 +70,12 @@
     cursor: pointer; /* Memberikan indikasi bahwa card dapat diklik */
     transition: transform 0.2s, box-shadow 0.2s; /* Animasi hover */
 }
-
+        .charts h3 {
+            text-align: center;
+            color: #333;
+            font-family: 'Arial', sans-serif;
+            margin-bottom: 20px;
+        }
 .card {
     border-radius: 12px;
     display: flex;
@@ -176,8 +181,10 @@
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    justify-content: center;
-  }
+    justify-content: space-evenly;
+    align-items: center;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Efek bayangan */
+}
   
   canvas {
     max-width: 400px; /* Maksimal lebar */
@@ -189,4 +196,18 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     padding: 10px;
   }
+  .charts h3 {
+    text-align: center;
+    color: #333;
+    font-family: 'Arial', sans-serif;
+    margin-bottom: 20px;
+}
   
+canvas:hover {
+    transition: transform 0.2s ease-in-out;
+    transform: scale(1.02); /* Perbesar sedikit grafik saat di-hover */
+}
+
+.charts:hover .charts-container {
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2); /* Tambahkan bayangan saat di-hover */
+}
