@@ -185,12 +185,18 @@ if ($stmtSelect === false) {
                                 <td><?php echo htmlspecialchars($row['nama']); ?></td>
                                 <td><?php echo htmlspecialchars($row['role']); ?></td>
                                 <td>
-                                    <form method="POST" style="display: inline;">
-                                        <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($row['user_id']); ?>">
-                                        <button type="submit" name="delete_user" class="delete-btn">Delete</button>
-                                    </form>
-                                    <a href="<?php echo $_SERVER['PHP_SELF']; ?>?edit_user=<?php echo urlencode($row['user_id']); ?>" class="edit-btn">Edit</a>
-                                </td>
+    <form method="POST" style="display: inline;">
+        <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($row['user_id']); ?>">
+        <button type="submit" name="delete_user" class="delete-btn">Delete</button>
+    </form>
+    
+    <form method="GET" action="<?php echo $_SERVER['PHP_SELF']; ?>" style="display: inline;">
+        <input type="hidden" name="edit_user" value="<?php echo htmlspecialchars($row['user_id']); ?>">
+        <button type="submit" class="edit-btn">Edit</button>
+    </form>
+</td>
+
+
                             </tr>
                         <?php endwhile; ?>
                     </tbody>

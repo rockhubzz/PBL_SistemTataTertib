@@ -149,6 +149,7 @@ label {
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s ease;
+    float: left;
 }
 
 .delete-btn:hover {
@@ -195,7 +196,7 @@ table {
 td {
     font-size: 14px;
     color: #333;
-    text-align: center; /* Tombol di tengah */
+    text-align: left; /* Tombol di tengah */
 }
 th {
     background-color: #007bff;
@@ -208,4 +209,19 @@ tr:hover td {
 }
 tr:hover td {
     background-color: #e7f3ff; /* Highlight row on hover */
+}
+.delete-btn {
+    background-color: #359fdc;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    float: left;
+}
+
+.delete-btn:hover {
+    background-color: #1d54a7;
 }
