@@ -1,5 +1,7 @@
 <?php
 session_start();
+
+// Cek apakah pengguna sudah login dan memiliki role Admin
 $config = parse_ini_file('db_config.ini');
 if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
     // Extract connection details
@@ -9,25 +11,53 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
         "UID" => $config['username'],
         "PWD" => $config['password']
     );
-    $conn = sqlsrv_connect($serverName, $connectionInfo);
 
+    // Membuat koneksi ke database
+    $conn = sqlsrv_connect($serverName, $connectionInfo);
+    
+    // Cek koneksi
     if (!$conn) {
         die("Connection failed: " . print_r(sqlsrv_errors(), true));
     }
-
     $current_page = basename($_SERVER['PHP_SELF']);
-    $query = "SELECT COUNT(nim) AS jml_mhs,
-                (SELECT COUNT(id_pelanggaran) FROM dbo.Pelanggaran) AS jml_pelanggaran,
-                (SELECT COUNT(nip) FROM dbo.Dosen) AS jml_dosen
-                FROM dbo.Mahasiswa";
+    // Query untuk mendapatkan data total mahasiswa, pelanggaran, dan dosen
+    $query = "
+        SELECT COUNT(nim) AS jml_mhs,
+               (SELECT COUNT(id_pelanggaran) FROM dbo.Pelanggaran) AS jml_pelanggaran,
+               (SELECT COUNT(nip) FROM dbo.Dosen) AS jml_dosen
+        FROM dbo.Mahasiswa";
+    
     $stmt = sqlsrv_query($conn, $query);
+    if ($stmt === false) {
+        die("Error executing query: " . print_r(sqlsrv_errors(), true));
+    }
+    
     $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
     $jml_mhs = $row['jml_mhs'];
     $jml_plg = $row['jml_pelanggaran'];
     $jml_dsn = $row['jml_dosen'];
 
-        // Query untuk mendapatkan statistik tingkat pelanggaran
-        $query_tingkat = "
+    // Query untuk mendapatkan statistik kategori pelanggaran
+    $query_stats = "
+        SELECT jenis_pelanggaran, COUNT(*) as jumlah
+        FROM dbo.Pelanggaran
+        GROUP BY jenis_pelanggaran";
+    
+    $stmt_stats = sqlsrv_query($conn, $query_stats);
+    if ($stmt_stats === false) {
+        die("Error executing stats query: " . print_r(sqlsrv_errors(), true));
+    }
+
+    $stats = [];
+    while ($row_stats = sqlsrv_fetch_array($stmt_stats, SQLSRV_FETCH_ASSOC)) {
+        $stats[] = $row_stats;
+    }
+
+    // Encode data statistik untuk digunakan di frontend (JSON)
+    $json_stats = json_encode($stats);
+
+    // Query untuk mendapatkan statistik tingkat pelanggaran
+    $query_tingkat = "
         SELECT tingkat_pelanggaran, COUNT(*) as jumlah
         FROM dbo.Pelanggaran
         GROUP BY tingkat_pelanggaran";
@@ -52,6 +82,8 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
     header("location: logout.php");
 }
 ?>
+
+
     <!DOCTYPE html>
     <html lang="en">
 
@@ -62,11 +94,13 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
         <link rel="stylesheet" href="style/AdminStyles.css">
         <link rel="stylesheet" href="style/ADasboardMain.css">
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     </head>
-    <script>
+<script>
     console.log(statsData); // Untuk memastikan data yang diterima
-    </script>
+
+</script>
     <body>
         <div class="sidebar" id="sidebar">
             <div class="logo">
@@ -175,9 +209,10 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
     </div>
 </div>
 
-        <script>
 
-const statsData = <?php echo $json_stats; ?>; // Data statistik kategori pelanggaran
+
+<script>
+    const statsData = <?php echo $json_stats; ?>; // Data statistik kategori pelanggaran
     const tingkatData = <?php echo $json_tingkat; ?>; // Data statistik tingkat pelanggaran
 
     // Persiapkan data untuk Pie Chart (Kategori Pelanggaran)
@@ -252,6 +287,7 @@ const statsData = <?php echo $json_stats; ?>; // Data statistik kategori pelangg
             }
         }
     });
+
             const toggleSidebar = document.getElementById('toggleSidebar');
             const sidebar = document.getElementById('sidebar');
             const header = document.getElementById('header');
@@ -269,5 +305,6 @@ const statsData = <?php echo $json_stats; ?>; // Data statistik kategori pelangg
 <?php
 ?>
 <script>
-const statsData = <?php echo $json_stats; ?>;
+
+    const statsData = <?php echo $json_stats; ?>;
 </script>
