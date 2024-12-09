@@ -143,7 +143,6 @@ WHERE u.user_id = ?
         </div>
         </div>
         </div>
-        <button class="toggle-btn" id="toggle-btn">&lt;</button>
         <div id="message" style="margin-top: 20px; color: green; text-align: center;"></div>
         <script>
             const handleAppealAction = (idBanding, status) => {
