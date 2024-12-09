@@ -155,34 +155,47 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
         </div>
         <!-- Main Content -->
         <div class="main" id="main">
-        <div class="cards"></div>
+    <div class="cards"></div>
+    <!-- Card: Total Mahasiswa -->
+    <a href="admin_kelolaMhs.php" class="card">
         <div class="card">
             <div class="icon">
-              <i class="fas fa-user-graduate"></i>
+                <i class="fas fa-user-graduate"></i>
             </div>
             <div class="details">
-              <h3>Total Mahasiswa</h3>
-              <p><?php echo $jml_mhs ?></p>
+                <h3>Total Mahasiswa</h3>
+                <p><?php echo $jml_mhs; ?></p>
             </div>
-          </div>
-            <div class="card">
+        </div>
+    </a>
+    
+    <!-- Card: Total Dosen -->
+    <a href="admin_kelolaDsn.php" class="card">
+        <div class="card">
             <div class="icon">
-              <i class="fas fa-chalkboard-teacher"></i>
+                <i class="fas fa-chalkboard-teacher"></i>
             </div>
             <div class="details">
-              <h3>Total Dosen</h3>
-              <p><?php echo $jml_dsn ?></p>
+                <h3>Total Dosen</h3>
+                <p><?php echo $jml_dsn; ?></p>
             </div>
-          </div>
-            <div class="card">
+        </div>
+    </a>
+    
+    <!-- Card: Total Pelanggaran -->
+    <a href="admin_laporanMasuk.php" class="card">
+        <div class="card">
             <div class="icon">
-              <i class="fas fa-exclamation-triangle"></i>
+                <i class="fas fa-exclamation-triangle"></i>
             </div>
             <div class="details">
-              <h3>Total Pelanggaran</h3>
-              <p><?php echo $jml_plg ?></p>
+                <h3>Total Pelanggaran</h3>
+                <p><?php echo $jml_plg; ?></p>
             </div>
-          </div>
+        </div>
+    </a>
+
+
 
                   <!-- Section 1: Informasi Penting -->
         <div class="important-info">
@@ -207,6 +220,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
         <!-- Bar chart untuk tingkat pelanggaran -->
         <canvas id="violationsLevelBarChart" width="400" height="400"></canvas>
     </div>
+</div>
 </div>
 
 
@@ -263,7 +277,9 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
     // Persiapkan data untuk Bar Chart (Tingkat Pelanggaran)
     const tingkatLabels = tingkatData.map(stat => stat.tingkat_pelanggaran); // Tingkat pelanggaran
     const tingkatCounts = tingkatData.map(stat => stat.jumlah); // Jumlah pelanggaran per tingkat
-
+    const pastelColors = [
+    '#ff9aa2', '#ffb7b2', '#ffdac1', '#e2f0cb', '#b5ead7', '#c7ceea', '#d5a6bd'
+];
     // Bar Chart untuk Tingkat Pelanggaran
     const tingkatBarChartCtx = document.getElementById('violationsLevelBarChart').getContext('2d');
     const tingkatBarChart = new Chart(tingkatBarChartCtx, {
@@ -273,16 +289,29 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
             datasets: [{
                 label: 'Jumlah Pelanggaran per Tingkat',
                 data: tingkatCounts,
-                backgroundColor: ['#FF5733', '#33FF57', '#3357FF'],
-                borderColor: '#FF5733',
+                backgroundColor: pastelColors, // Warna pelangi untuk setiap batang
+                borderColor: '#333',
                 borderWidth: 1
             }]
         },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true
+        responsive: true,
+        scales: {
+            x: {
+                ticks: {
+                    color: '#333'
+                }
+            },
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: '#333'
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    color: '#333'
                 }
             }
         }
