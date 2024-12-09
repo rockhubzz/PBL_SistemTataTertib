@@ -135,6 +135,11 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
         <div class="table-container">
         <div class="report-section">
         <div class="form-container">
+        <div class="back-button">
+        <button class="btn-back" onclick="history.back()">
+            ← Kembali
+        </button>
+        </div>
             <?php if (isset($_GET['success'])): ?>
                 <p class="success-message">Surat Pernyataan berhasil diunggah!</p>
                 <p><?php echo $id_pelanggaran?></p>
