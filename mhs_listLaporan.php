@@ -43,22 +43,22 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
     if (!$stmt) {
         die("Query failed: " . print_r(sqlsrv_errors(), true));
     }
-        // Check if a delete request is submitted
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
-            $idPelanggaran = $_POST['id_pelanggaran'];
-    
-            // Prepare the query to execute HapusLaporan stored procedure
-            $query = "EXEC HapusLaporan @IdPelanggaran = ?";
-            $params = [$idPelanggaran];
-            $deleteStmt = sqlsrv_query($conn, $query, $params);
-    
-            if ($deleteStmt === false) {
-                die("Failed to delete report: " . print_r(sqlsrv_errors(), true));
-            } else {
-                echo "<script>alert('Laporan berhasil dihapus.'); window.location.href = 'mhs_listLaporan.php';</script>";
-            }
+    // Check if a delete request is submitted
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
+        $idPelanggaran = $_POST['id_pelanggaran'];
+
+        // Prepare the query to execute HapusLaporan stored procedure
+        $query = "EXEC HapusLaporan @IdPelanggaran = ?";
+        $params = [$idPelanggaran];
+        $deleteStmt = sqlsrv_query($conn, $query, $params);
+
+        if ($deleteStmt === false) {
+            die("Failed to delete report: " . print_r(sqlsrv_errors(), true));
+        } else {
+            echo "<script>alert('Laporan berhasil dihapus.'); window.location.href = 'mhs_listLaporan.php';</script>";
         }
-    
+    }
+
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -124,7 +124,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
         </div>
         <!-- Main Content -->
         <div class="main" id="main">
-        <div class="table-container">
+            <div class="table-container">
                 <table id="Tabel">
                     <thead>
                         <tr>
@@ -139,40 +139,33 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (sqlsrv_has_rows($stmt)): ?>
-                            <?php while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)): ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($row['id_pelanggaran']) ?></td>
-                                    <td><?= htmlspecialchars($row['nim_pelanggar']) ?></td>
-                                    <td>
-                                        <?php if (!empty($row['bukti'])): ?>
-                                            <a href="uploads/<?= htmlspecialchars($row['bukti']) ?>" target="_blank"><?= htmlspecialchars($row['bukti']) ?></a>
-                                        <?php else: ?>
-                                            <span>Tidak ada</span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
-                                    <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
-                                    <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('d-m-Y')) ?></td>
-                                    <td><?= htmlspecialchars($row['status']) ?></td>
-                                    <td>
-                                        <?php
-                                        $url = "mhs_editLaporan.php?id_pelanggaran=" . urlencode($row['id_pelanggaran']);
-                                        echo "<a href='{$url}' class='view-btn'>Edit</a>";
-                                        ?>
-                                            <form method="POST" style="display:inline;">
-                                            <input type="hidden" name="id_pelanggaran" value="<?= htmlspecialchars($row['id_pelanggaran']) ?>">
-                                            <button type="submit" name="delete" class="delete-btn">Hapus</button>
-                                        </form>
-
-                                    </td>
-                                </tr>
-                            <?php endwhile; ?>
-                        <?php else: ?>
+                        <?php while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)): ?>
                             <tr>
-                                <td colspan="8" style="text-align: center;">Tidak ada laporan</td>
+                                <td><?= htmlspecialchars($row['id_pelanggaran']) ?></td>
+                                <td><?= htmlspecialchars($row['nim_pelanggar']) ?></td>
+                                <td>
+                                    <?php if (!empty($row['bukti'])): ?>
+                                        <a href="uploads/<?= htmlspecialchars($row['bukti']) ?>" target="_blank"><?= htmlspecialchars($row['bukti']) ?></a>
+                                    <?php else: ?>
+                                        <span>Tidak ada</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
+                                <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
+                                <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('d-m-Y')) ?></td>
+                                <td><?= htmlspecialchars($row['status']) ?></td>
+                                <td>
+                                    <?php
+                                    $url = "mhs_editLaporan.php?id_pelanggaran=" . urlencode($row['id_pelanggaran']);
+                                    echo "<a href='{$url}' class='view-btn'>Edit</a>";
+                                    ?>
+                                    <form method="POST" style="display:inline;">
+                                        <input type="hidden" name="id_pelanggaran" value="<?= htmlspecialchars($row['id_pelanggaran']) ?>">
+                                        <button type="submit" name="delete" class="delete-btn">Hapus</button>
+                                    </form>
+                                </td>
                             </tr>
-                        <?php endif; ?>
+                        <?php endwhile; ?>
                     </tbody>
                 </table>
             </div>
