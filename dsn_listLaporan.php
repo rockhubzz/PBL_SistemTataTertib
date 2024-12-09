@@ -112,7 +112,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
             </button>
             <div class="title">
                 <h1>Sistem Tata Tertib</h1>
-                <h2>Data Banding</h2>
+                <h2>Data Laporan</h2>
             </div>
         </div>
         <div class="main" id="main">
@@ -146,7 +146,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
                                     </td>
                                     <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
                                     <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
-                                    <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('Y-m-d')) ?></td>
+                                    <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('d-m-Y')) ?></td>
                                     <td><?= htmlspecialchars($row['status']) ?></td>
                                     <td>
                                         <a href="dsn_editLaporan.php?id_pelanggaran=<?= urlencode($row['id_pelanggaran']) ?>" class="view-btn">Edit</a>
