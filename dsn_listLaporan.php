@@ -17,6 +17,22 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
         die("Connection failed: " . print_r(sqlsrv_errors(), true));
     }
 
+    // Check if a delete request is submitted
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
+        $idPelanggaran = $_POST['id_pelanggaran'];
+
+        // Prepare the query to execute HapusLaporan stored procedure
+        $query = "EXEC HapusLaporan @IdPelanggaran = ?";
+        $params = [$idPelanggaran];
+        $deleteStmt = sqlsrv_query($conn, $query, $params);
+
+        if ($deleteStmt === false) {
+            die("Failed to delete report: " . print_r(sqlsrv_errors(), true));
+        } else {
+            echo "<script>alert('Laporan berhasil dihapus.'); window.location.href = 'dsn_listLaporan.php';</script>";
+        }
+    }
+
     // Get the current user's key from the session
     $userKey = $_SESSION['user_key'];
 
@@ -55,14 +71,13 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
         <link rel="stylesheet" href="style/DListLprnMain.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-        <link rel="stylesheet" href="//cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     </head>
 
     <body>
         <div class="sidebar" id="sidebar">
-            <div class="logo">
+        <div class="logo">
                 <img src="img/LogoPLTK.png" alt="Logo">
             </div>
             <div class="menu">
@@ -78,8 +93,8 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
                 <a href="dsn_laporanBanding.php" class="menu-item">
                     <i class="fas fa-balance-scale"></i><span>Laporan Banding</span>
                 </a>
-            </div>
-            <div class="profile">
+        </div>
+        <div class="profile">
                 <img src="img/profile.png" alt="Profile">
                 <span class="username">
                     <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
@@ -97,14 +112,11 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
             </button>
             <div class="title">
                 <h1>Sistem Tata Tertib</h1>
-                <h2>List Laporan</h2>
+                <h2>Data Banding</h2>
             </div>
         </div>
-        <!-- Main Content -->
         <div class="main" id="main">
             <div class="table-container">
-                <div class="report-section">
-                </div>
                 <h2>Data Laporan</h2>
                 <div class="dashboard-content">
                     <table id="Tabel">
@@ -133,16 +145,16 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
                                         <?php endif; ?>
                                     </td>
                                     <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
-                                    </td>
                                     <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
                                     <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('Y-m-d')) ?></td>
                                     <td><?= htmlspecialchars($row['status']) ?></td>
-                                    <td><?php
-                                        $url = "dsn_editLaporan.php?id_pelanggaran=" . urlencode($row['id_pelanggaran']);
-                                        echo "<a href='{$url}' class='view-btn'>Edit</a>";
-                                        ?>
+                                    <td>
+                                        <a href="dsn_editLaporan.php?id_pelanggaran=<?= urlencode($row['id_pelanggaran']) ?>" class="view-btn">Edit</a>
+                                        <form method="POST" style="display:inline;">
+                                            <input type="hidden" name="id_pelanggaran" value="<?= htmlspecialchars($row['id_pelanggaran']) ?>">
+                                            <button type="submit" name="delete" class="delete-btn">Hapus</button>
+                                        </form>
                                     </td>
-
                                 </tr>
                             <?php endwhile; ?>
                         </tbody>
@@ -151,18 +163,6 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
             </div>
         </div>
         <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                const toggleBtn = document.querySelector(".toggle-btn");
-                const sidebar = document.querySelector(".sidebar");
-                const main = document.querySelector(".main");
-                const header = document.querySelector(".header");
-
-                toggleBtn.addEventListener("click", () => {
-                    sidebar.classList.toggle("collapsed");
-                    main.classList.toggle("collapsed");
-                    header.classList.toggle("collapsed");
-                });
-            });
             $(document).ready(function() {
                 $('#Tabel').DataTable({
                     paging: true,

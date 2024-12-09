@@ -144,6 +144,11 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
                                         $url = "mhs_editLaporan.php?id_pelanggaran=" . urlencode($row['id_pelanggaran']);
                                         echo "<a href='{$url}' class='view-btn'>Edit</a>";
                                         ?>
+                                            <form method="POST" style="display:inline;">
+                                            <input type="hidden" name="id_pelanggaran" value="<?= htmlspecialchars($row['id_pelanggaran']) ?>">
+                                            <button type="submit" name="delete" class="delete-btn">Hapus</button>
+                                        </form>
+
                                     </td>
                                 </tr>
                             <?php endwhile; ?>
