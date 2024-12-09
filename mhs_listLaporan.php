@@ -43,6 +43,22 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
     if (!$stmt) {
         die("Query failed: " . print_r(sqlsrv_errors(), true));
     }
+        // Check if a delete request is submitted
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
+            $idPelanggaran = $_POST['id_pelanggaran'];
+    
+            // Prepare the query to execute HapusLaporan stored procedure
+            $query = "EXEC HapusLaporan @IdPelanggaran = ?";
+            $params = [$idPelanggaran];
+            $deleteStmt = sqlsrv_query($conn, $query, $params);
+    
+            if ($deleteStmt === false) {
+                die("Failed to delete report: " . print_r(sqlsrv_errors(), true));
+            } else {
+                echo "<script>alert('Laporan berhasil dihapus.'); window.location.href = 'mhs_listLaporan.php';</script>";
+            }
+        }
+    
 ?>
     <!DOCTYPE html>
     <html lang="en">
