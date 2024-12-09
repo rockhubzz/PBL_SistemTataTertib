@@ -123,7 +123,7 @@ WHERE u.user_id = ?
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if (sqlsrv_has_rows($stmt)): ?>
+                                
                                     <?php while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)): ?>
                                         <tr data-id="<?= htmlspecialchars($row['id_banding']) ?>">
                                             <td><?= htmlspecialchars($row['id_banding']) ?></td>
@@ -143,18 +143,13 @@ WHERE u.user_id = ?
                                             <?php endif; ?>
                                         </tr>
                                     <?php endwhile; ?>
-                                <?php else: ?>
-                                    <tr>
-                                        <td colspan="6" style="text-align: center; font-weight: bold;">Tidak ada pengajuan banding</td>
-                                    </tr>
-                                <?php endif; ?>
+                                
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-        <button class="toggle-btn" id="toggle-btn">&lt;</button>
         <div id="message" style="margin-top: 20px; color: green; text-align: center;"></div>
         <script>
             const handleAppealAction = (idBanding, status) => {

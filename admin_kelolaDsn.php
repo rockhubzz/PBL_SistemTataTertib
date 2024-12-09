@@ -113,7 +113,6 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
                         <tr>
                             <th>NIP</th>
                             <th>Nama</th>
-                            <th>Jurusan</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -121,7 +120,6 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
                             <tr>
                                 <td><?= htmlspecialchars($row['nip']) ?></td>
                                 <td><?= htmlspecialchars($row['nama']) ?></td>
-                                <td><?= htmlspecialchars($row['jurusan']) ?></td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>

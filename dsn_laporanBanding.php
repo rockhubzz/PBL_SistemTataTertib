@@ -54,6 +54,9 @@ WHERE u.user_id = ?
         <link rel="stylesheet" href="style/AdminStyles.css">
         <link rel="stylesheet" href="style/DLaporanBandingMain.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     </head>
     <body>
         <div class="sidebar" id="sidebar">
@@ -100,7 +103,7 @@ WHERE u.user_id = ?
         <div class="table-container">
         <div class="report-section">
             <div class="dashboard-content">
-                <table class="content-table">
+                <table id="Tabel">
                     <thead>
                         <tr>
                             <th>ID Banding</th>
@@ -112,7 +115,7 @@ WHERE u.user_id = ?
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (sqlsrv_has_rows($stmt)): ?>
+                        
                             <?php while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)): ?>
                                 <tr data-id="<?= htmlspecialchars($row['id_banding']) ?>">
                                     <td><?= htmlspecialchars($row['id_banding']) ?></td>
@@ -132,18 +135,13 @@ WHERE u.user_id = ?
                                     <?php endif; ?>
                                 </tr>
                             <?php endwhile; ?>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="6" style="text-align: center; font-weight: bold;">Tidak ada pengajuan banding</td>
-                            </tr>
-                        <?php endif; ?>
+                        
                     </tbody>
                 </table>
             </div>
         </div>
         </div>
         </div>
-        <button class="toggle-btn" id="toggle-btn">&lt;</button>
         <div id="message" style="margin-top: 20px; color: green; text-align: center;"></div>
         <script>
             const handleAppealAction = (idBanding, status) => {
@@ -221,6 +219,17 @@ WHERE u.user_id = ?
                 main.classList.toggle('collapsed');
                 header.classList.toggle('collapsed');
                 console.log('Sidebar collapsed:', sidebar.classList.contains('collapsed'));
+            });
+            $(document).ready(function() {
+                $('#Tabel').DataTable({
+                    paging: true,
+                    searching: true,
+                    ordering: true,
+                    info: true,
+                    language: {
+                        url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json"
+                    }
+                });
             });
         </script>
     </body>

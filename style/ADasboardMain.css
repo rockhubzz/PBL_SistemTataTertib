@@ -4,7 +4,7 @@
     flex-wrap: wrap;
     justify-content: space-between; /* Ensure elements are spaced well */
     margin-left: 250px;
-    margin-top: 80px;
+    margin-top: 50px;
     padding: 20px;
     gap: 30px; /* Increased gap between items */
     transition: margin-left 0.3s ease;
@@ -53,36 +53,69 @@
     background-color: #0056b3;
 }
 
-/* Card Layout */
+.cards {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsif */
+    width: 100%; /* Pastikan kartu menyesuaikan dengan kontainer utama */
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block; /* Memastikan seluruh card dapat diklik */
+}
+
 .card {
-    background-color: #007bff;
+    cursor: pointer; /* Memberikan indikasi bahwa card dapat diklik */
+    transition: transform 0.2s, box-shadow 0.2s; /* Animasi hover */
+}
+        .charts h3 {
+            text-align: center;
+            color: #333;
+            font-family: 'Arial', sans-serif;
+            margin-bottom: 20px;
+        }
+.card {
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: linear-gradient(135deg, #1e3c72, #2a5298); /* Warna biru gradien */
     color: white;
     padding: 20px;
-    border-radius: 12px; /* Rounded corners */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
-    flex: 1 1 30%; /* Flex to ensure cards take equal space */
-    min-width: 250px; /* Minimum width for responsiveness */
-    height: 180px;
+    flex: 1 1 30%;
+    max-width: 100%;
 }
 
 .card:hover {
-    transform: translateY(-5px); /* Slight raise effect on hover */
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
-.card h3 {
+.card .icon {
+    font-size: 50px;
+    color: #ffffffcc; /* Warna putih dengan sedikit transparansi */
+}
+
+.card .details h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #cfd8dc; /* Warna abu muda */
+}
+
+.card .details p {
+    margin: 5px 0 0;
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: 10px;
+    color: white;
 }
 
-.card p {
-    font-size: 22px;
-    font-weight: normal;
-}
+  
 
 /* Header */
 .header {
@@ -122,4 +155,59 @@
         flex: 1 1 100%; /* One card per row on very small screens */
         min-width: 200px;
     }
+}
+
+.info-box {
+    display: flex;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: -30px;
+  }
+  
+  .info-box .info-image {
+    max-width: 100px;
+    margin-right: 20px;
+  }
+  
+  .info-box h3 {
+    margin: 0;
+    font-size: 24px;
+  }
+
+  .charts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-evenly;
+    align-items: center;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Efek bayangan */
+}
+  
+  canvas {
+    max-width: 400px; /* Maksimal lebar */
+    max-height: 400px; /* Maksimal tinggi */
+    width: 100%;      /* Ukuran penuh responsif */
+    height: auto;     /* Pertahankan rasio */
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+  }
+  .charts h3 {
+    text-align: center;
+    color: #333;
+    font-family: 'Arial', sans-serif;
+    margin-bottom: 20px;
+}
+  
+canvas:hover {
+    transition: transform 0.2s ease-in-out;
+    transform: scale(1.02); /* Perbesar sedikit grafik saat di-hover */
+}
+
+.charts:hover .charts-container {
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2); /* Tambahkan bayangan saat di-hover */
 }

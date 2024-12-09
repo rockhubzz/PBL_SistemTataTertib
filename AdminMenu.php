@@ -1,5 +1,7 @@
 <?php
 session_start();
+
+// Cek apakah pengguna sudah login dan memiliki role Admin
 $config = parse_ini_file('db_config.ini');
 if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
     // Extract connection details
@@ -9,23 +11,79 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
         "UID" => $config['username'],
         "PWD" => $config['password']
     );
-    $conn = sqlsrv_connect($serverName, $connectionInfo);
 
+    // Membuat koneksi ke database
+    $conn = sqlsrv_connect($serverName, $connectionInfo);
+    
+    // Cek koneksi
     if (!$conn) {
         die("Connection failed: " . print_r(sqlsrv_errors(), true));
     }
-
     $current_page = basename($_SERVER['PHP_SELF']);
-    $query = "SELECT COUNT(nim) AS jml_mhs,
-                (SELECT COUNT(id_pelanggaran) FROM dbo.Pelanggaran) AS jml_pelanggaran,
-                (SELECT COUNT(nip) FROM dbo.Dosen) AS jml_dosen
-                FROM dbo.Mahasiswa";
+    // Query untuk mendapatkan data total mahasiswa, pelanggaran, dan dosen
+    $query = "
+        SELECT COUNT(nim) AS jml_mhs,
+               (SELECT COUNT(id_pelanggaran) FROM dbo.Pelanggaran) AS jml_pelanggaran,
+               (SELECT COUNT(nip) FROM dbo.Dosen) AS jml_dosen
+        FROM dbo.Mahasiswa";
+    
     $stmt = sqlsrv_query($conn, $query);
+    if ($stmt === false) {
+        die("Error executing query: " . print_r(sqlsrv_errors(), true));
+    }
+    
     $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
     $jml_mhs = $row['jml_mhs'];
     $jml_plg = $row['jml_pelanggaran'];
     $jml_dsn = $row['jml_dosen'];
+
+    // Query untuk mendapatkan statistik kategori pelanggaran
+    $query_stats = "
+        SELECT jenis_pelanggaran, COUNT(*) as jumlah
+        FROM dbo.Pelanggaran
+        GROUP BY jenis_pelanggaran";
+    
+    $stmt_stats = sqlsrv_query($conn, $query_stats);
+    if ($stmt_stats === false) {
+        die("Error executing stats query: " . print_r(sqlsrv_errors(), true));
+    }
+
+    $stats = [];
+    while ($row_stats = sqlsrv_fetch_array($stmt_stats, SQLSRV_FETCH_ASSOC)) {
+        $stats[] = $row_stats;
+    }
+
+    // Encode data statistik untuk digunakan di frontend (JSON)
+    $json_stats = json_encode($stats);
+
+    // Query untuk mendapatkan statistik tingkat pelanggaran
+    $query_tingkat = "
+        SELECT tingkat_pelanggaran, COUNT(*) as jumlah
+        FROM dbo.Pelanggaran
+        GROUP BY tingkat_pelanggaran";
+
+    $stmt_tingkat = sqlsrv_query($conn, $query_tingkat);
+    if ($stmt_tingkat === false) {
+        die("Error executing tingkat query: " . print_r(sqlsrv_errors(), true));
+    }
+
+    $tingkat = [];
+    while ($row_tingkat = sqlsrv_fetch_array($stmt_tingkat, SQLSRV_FETCH_ASSOC)) {
+        $tingkat[] = $row_tingkat;
+    }
+
+    // Encode data statistik tingkat pelanggaran untuk digunakan di frontend (JSON)
+    $json_tingkat = json_encode($tingkat);
+
+    // Menutup koneksi SQL Server
+    sqlsrv_close($conn);
+} else {
+    // Jika pengguna tidak memiliki session atau bukan admin, arahkan ke halaman logout
+    header("location: logout.php");
+}
 ?>
+
+
     <!DOCTYPE html>
     <html lang="en">
 
@@ -35,9 +93,14 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
         <title>Dashboard Admin</title>
         <link rel="stylesheet" href="style/AdminStyles.css">
         <link rel="stylesheet" href="style/ADasboardMain.css">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     </head>
+<script>
+    console.log(statsData); // Untuk memastikan data yang diterima
 
+</script>
     <body>
         <div class="sidebar" id="sidebar">
             <div class="logo">
@@ -92,21 +155,265 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
         </div>
         <!-- Main Content -->
         <div class="main" id="main">
-            <div class="card">
+    <div class="cards"></div>
+    <!-- Card: Total Mahasiswa -->
+    <a href="admin_kelolaMhs.php" class="card">
+        <div class="card">
+            <div class="icon">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+            <div class="details">
                 <h3>Total Mahasiswa</h3>
-                <p><?php echo $jml_mhs ?></p>
-            </div>
-            <div class="card">
-                <h3>Total Pelanggaran</h3>
-                <p><?php echo $jml_plg ?></p>
-            </div>
-            <div class="card">
-                <h3>Total Dosen</h3>
-                <p><?php echo $jml_dsn ?></p>
+                <p><?php echo $jml_mhs; ?></p>
             </div>
         </div>
+    </a>
+    
+    <!-- Card: Total Dosen -->
+    <a href="admin_kelolaDsn.php" class="card">
+        <div class="card">
+            <div class="icon">
+                <i class="fas fa-chalkboard-teacher"></i>
+            </div>
+            <div class="details">
+                <h3>Total Dosen</h3>
+                <p><?php echo $jml_dsn; ?></p>
+            </div>
+        </div>
+    </a>
+    
+    <!-- Card: Total Pelanggaran -->
+    <a href="admin_laporanMasuk.php" class="card">
+        <div class="card">
+            <div class="icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="details">
+                <h3>Total Pelanggaran</h3>
+                <p><?php echo $jml_plg; ?></p>
+            </div>
+        </div>
+    </a>
 
-        <script>
+
+
+                  <!-- Section 1: Informasi Penting -->
+        <div class="important-info">
+          <div class="info-box">
+            <img src="img/LogoPLTK.png" alt="Tata Tertib" class="info-image">
+            <h3>Pentingnya Tata Tertib</h3>
+            <p>
+              Tata tertib membantu menciptakan lingkungan yang kondusif untuk belajar. 
+              Pelanggaran tata tertib dapat mempengaruhi akademik dan reputasi mahasiswa.
+            </p>
+          </div>
+        </div>
+                <!-- Section 2: Grafik Statistik -->
+<!-- Section untuk Grafik Statistik Pelanggaran -->
+<div class="statistics">
+    <h3>Statistik Pelanggaran</h3>
+    <div class="charts">
+        <!-- Pie chart untuk kategori pelanggaran -->
+        <canvas id="violationsPieChart" width="400" height="400"></canvas>
+        <!-- Bar chart untuk kategori pelanggaran -->
+        <canvas id="violationsBarChart" width="400" height="400"></canvas>
+        <!-- Bar chart untuk tingkat pelanggaran -->
+        <canvas id="violationsLevelBarChart" width="400" height="400"></canvas>
+    </div>
+</div>
+</div>
+
+
+
+<script>
+    const statsData = <?php echo $json_stats; ?>; // Data statistik kategori pelanggaran
+    const tingkatData = <?php echo $json_tingkat; ?>; // Data statistik tingkat pelanggaran
+
+    // Persiapkan data untuk Pie Chart (Kategori Pelanggaran)
+    const categories = statsData.map(stat => stat.jenis_pelanggaran); // Kategori pelanggaran
+    const counts = statsData.map(stat => stat.jumlah); // Jumlah pelanggaran per kategori
+
+    // Pie Chart untuk Kategori Pelanggaran
+    const pieChartCtx = document.getElementById('violationsPieChart').getContext('2d');
+    const pieChart = new Chart(pieChartCtx, {
+        type: 'pie',
+        data: {
+            labels: categories,
+            datasets: [{
+                label: 'Jumlah Pelanggaran per Kategori',
+                data: counts,
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                borderColor: '#fff',  // Memberikan border putih agar lebih kontras
+                borderWidth: 2,
+            }]
+        },
+        options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top', // Posisi legend di atas
+                labels: {
+                    font: {
+                        size: 12
+                    }
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        return `${categories[tooltipItem.dataIndex]}: ${tooltipItem.raw} pelanggaran`;
+                    }
+                },
+                backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                titleFont: { size: 16 },
+                bodyFont: { size: 14 }
+            }
+        }
+    }
+    });
+
+// Bar Chart untuk Kategori Pelanggaran
+const barChartCtx = document.getElementById('violationsBarChart').getContext('2d');
+
+// Membuat gradasi warna
+const gradientBar = barChartCtx.createLinearGradient(0, 0, 0, 400); // Vertikal gradasi
+gradientBar.addColorStop(0, '#36A2EB'); // Warna awal (biru muda)
+gradientBar.addColorStop(1, '#4BC0C0'); // Warna akhir (teal)
+
+const barChart = new Chart(barChartCtx, {
+    type: 'bar',
+    data: {
+        labels: categories, // Nama kategori (tidak akan ditampilkan di sumbu X)
+        datasets: [{
+            label: 'Jumlah Pelanggaran per Kategori',
+            data: counts, // Jumlah pelanggaran per kategori
+            backgroundColor: gradientBar,
+            borderColor: '#36A2EB',
+            borderWidth: 1,
+            hoverBackgroundColor: '#36A2EB',
+            hoverBorderColor: '#1e3c72',
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+                labels: {
+                    font: { size: 14 }
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        return `${tooltipItem.dataset.label}: ${tooltipItem.raw}`;
+                    }
+                },
+                backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                titleFont: { size: 16 },
+                bodyFont: { size: 14 }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: '#333', // Warna angka pada sumbu Y
+                    font: {
+                        size: 12
+                    }
+                }
+            },
+            x: {
+                ticks: {
+                    display: false // Sembunyikan label pada sumbu X
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                display: false // Sembunyikan legenda
+            },
+        animation: {
+            duration: 1000,
+            easing: 'easeOutBounce'
+        }
+        }
+    }
+});
+
+    // Persiapkan data untuk Bar Chart (Tingkat Pelanggaran)
+// Persiapkan data untuk Bar Chart (Tingkat Pelanggaran)
+const tingkatLabels = tingkatData.map(stat => stat.tingkat_pelanggaran); // Tingkat pelanggaran
+const tingkatCounts = tingkatData.map(stat => stat.jumlah); // Jumlah pelanggaran per tingkat
+
+// Konteks untuk Bar Chart
+const tingkatBarChartCtx = document.getElementById('violationsLevelBarChart').getContext('2d');
+
+// Membuat gradasi warna
+const gradient = tingkatBarChartCtx.createLinearGradient(0, 0, 0, 400); // Vertikal gradasi
+gradient.addColorStop(0, '#36A2EB'); // Warna awal (atas)
+gradient.addColorStop(1, '#4BC0C0'); // Warna akhir (bawah)
+
+// Bar Chart untuk Tingkat Pelanggaran dengan Gradasi Warna dan Animasi
+const tingkatBarChart = new Chart(tingkatBarChartCtx, {
+    type: 'bar',
+    data: {
+        labels: tingkatLabels,
+        datasets: [{
+            label: 'Jumlah Pelanggaran per Tingkat',
+            data: tingkatCounts,
+            backgroundColor: gradient, // Gunakan gradasi warna
+            borderColor: '#333',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: '#333',
+                    font: {
+                        size: 12
+                    }
+                }
+            },
+            x: {
+                ticks: {
+                    color: '#333',
+                    font: {
+                        size: 12
+                    }
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                position: 'top',
+                labels: {
+                    font: { size: 14 }
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        return `${tooltipItem.dataset.label}: ${tooltipItem.raw}`;
+                    }
+                },
+                backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                titleFont: { size: 16 },
+                bodyFont: { size: 14 }
+            }
+        },
+        animation: {
+            duration: 1500, // Durasi animasi dalam milidetik
+            easing: 'easeOutBounce' // Efek animasi
+        }
+    }
+});
+
             const toggleSidebar = document.getElementById('toggleSidebar');
             const sidebar = document.getElementById('sidebar');
             const header = document.getElementById('header');
@@ -122,7 +429,8 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
 
     </html>
 <?php
-} else {
-    header("location: logout.php");
-}
 ?>
+<script>
+
+    const statsData = <?php echo $json_stats; ?>;
+</script>
