@@ -80,26 +80,29 @@ tr:hover td {
 
 .view-btn, .delete-btn {
     display: inline-block; /* Align buttons horizontally */
-    background-color: #4CAF50; /* Color for Edit (green) */
+    background-color: #007bff; /* Color for Edit (blue) */
     color: white;
     border: none;
-    padding: 5px 10px;
+    padding: 6px 18px; /* Ensure equal padding for both buttons */
     border-radius: 5px;
     cursor: pointer;
     text-decoration: none;
+    text-align: center; /* Center text within the button */
 }
 
 .view-btn:hover {
-    background-color: #2d9c32; /* Hover effect for Edit button */
+    background-color: #0056b3; /* Hover effect for Edit button */
 }
 
 .delete-btn {
-    background-color: #f44336; /* Color for Hapus (red) */
+    background-color: #dc3535; /* Color for Delete (red) */
+    padding: 8px 12px; /* Ensure equal padding for both buttons */
 }
 
 .delete-btn:hover {
-    background-color: #cf2926; /* Hover effect for Hapus button */
+    background-color: #a71d1d; /* Hover effect for Delete button */
 }
+
 .action-buttons {
     display: flex;
     justify-content: space-between; /* Jarak rata kiri dan kanan */
