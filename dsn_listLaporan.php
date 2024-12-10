@@ -148,16 +148,20 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
                                     <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
                                     <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('d-m-Y')) ?></td>
                                     <td><?= htmlspecialchars($row['status']) ?></td>
-<td>
-    <!-- Edit Button -->
-    <a href="dsn_editLaporan.php?id_pelanggaran=<?= urlencode($row['id_pelanggaran']) ?>" class="action-btn">Edit</a>
+                                    <td>
+    <!-- Action buttons container -->
+    <div class="action-btn-container">
+        <!-- Edit Button -->
+        <a href="dsn_editLaporan.php?id_pelanggaran=<?= urlencode($row['id_pelanggaran']) ?>" class="action-btn">Edit</a>
 
-    <!-- Delete Button -->
-    <form method="POST" style="display:inline;">
-        <input type="hidden" name="id_pelanggaran" value="<?= htmlspecialchars($row['id_pelanggaran']) ?>">
-        <button type="submit" name="delete" class="action-btn delete-btn">Hapus</button>
-    </form>
+        <!-- Delete Button -->
+        <form method="POST" style="display:inline;">
+            <input type="hidden" name="id_pelanggaran" value="<?= htmlspecialchars($row['id_pelanggaran']) ?>">
+            <button type="submit" name="delete" class="delete-btn">Hapus</button>
+        </form>
+    </div>
 </td>
+
                                 </tr>
                             <?php endwhile; ?>
                         </tbody>

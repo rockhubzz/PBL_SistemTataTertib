@@ -23,7 +23,11 @@ table {
 
 th, td {
     padding: 15px;
-    border: 1px solid #ccc; /* Border di setiap sel */
+    border: 1px solid #ccc;
+}
+
+td {
+    max-width: 300px; /* Ensure there's enough space for the action buttons */
 }
 th {
     color: white; /* Warna teks header */
@@ -53,6 +57,13 @@ tr:hover td {
     font-size: 18px;
     cursor: pointer;
     margin-right: 20px;
+}
+/* Adjust action button container for proper side-by-side display */
+.action-btn-container {
+    display: flex; /* Use flexbox to align buttons side by side */
+    gap: 10px; /* Add some space between the buttons */
+    justify-content: center; /* Center buttons */
+    align-items: center; /* Vertically center buttons */
 }
 .action-btn {
     background-color: #007bff;
@@ -96,40 +107,36 @@ tr:hover td {
     width: calc(100% - 250px);
 }
 
-/* Edit Button */
+/* Ensure that buttons inside the table fit */
+.action-btn, .delete-btn {
+    padding: 7px 20px; /* Add more padding for better visibility */
+    font-size: 14px; /* Slightly increase font size */
+}
+
+/* Styling for the action buttons */
 .action-btn {
-    background-color: #007bff; /* Blue color for Edit */
+    background-color: #007bff;
     color: white;
     border: none;
-    padding: 5px 15px;
     border-radius: 5px;
     cursor: pointer;
     text-decoration: none;
-    display: inline-block; /* Make it inline with proper styling */
 }
 
 .action-btn:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #0056b3;
 }
 
-/* Delete Button */
 .delete-btn {
-    background-color: #dc3545; /* Red color for Delete */
+    background-color: #eb3131;
     color: white;
     border: none;
-    padding: 7px 10px;
+    padding: 7px 14px;
     border-radius: 5px;
     cursor: pointer;
     text-decoration: none;
-    display: inline-block; /* Make it inline with proper styling */
 }
 
 .delete-btn:hover {
-    background-color: #a71d1d; /* Darker red on hover */
-}
-*/
-.action-btn-container {
-    display: inline-flex; /* Use inline-flex to place buttons side by side */
-    gap: 10px; /* Space between the buttons */
-    align-items: center; /* Vertically align buttons */
+    background-color: #aa1414;
 }
