@@ -258,6 +258,17 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
                     }
                 }
             },
+            title: {
+                    display: true,
+                    text: 'Distribusi Pelanggaran berdasarkan Kategori',
+                    font: {
+                        size: 16,
+                        weight: 'bold'
+                    },
+                    padding: {
+                        bottom: 20
+                    }
+                },
             tooltip: {
                 callbacks: {
                     label: function(tooltipItem) {
@@ -283,10 +294,10 @@ gradientBar.addColorStop(1, '#4BC0C0'); // Warna akhir (teal)
 const barChart = new Chart(barChartCtx, {
     type: 'bar',
     data: {
-        labels: categories, // Nama kategori (tidak akan ditampilkan di sumbu X)
+        labels: categories, // Kategori pelanggaran
         datasets: [{
             label: 'Jumlah Pelanggaran per Kategori',
-            data: counts, // Jumlah pelanggaran per kategori
+            data: counts,
             backgroundColor: gradientBar,
             borderColor: '#36A2EB',
             borderWidth: 1,
@@ -303,6 +314,17 @@ const barChart = new Chart(barChartCtx, {
                     font: { size: 14 }
                 }
             },
+            title: {
+                    display: true,
+                    text: 'Jumlah Pelanggaran per Kategori (Bar Chart)',
+                    font: {
+                        size: 16,
+                        weight: 'bold'
+                    },
+                    padding: {
+                        bottom: 20
+                    }
+                },
             tooltip: {
                 callbacks: {
                     label: function(tooltipItem) {
@@ -332,7 +354,7 @@ const barChart = new Chart(barChartCtx, {
         },
         plugins: {
             legend: {
-                display: false // Sembunyikan legenda
+                display: true // Sembunyikan legenda
             },
         animation: {
             duration: 1000,
@@ -341,6 +363,7 @@ const barChart = new Chart(barChartCtx, {
         }
     }
 });
+
 
     // Persiapkan data untuk Bar Chart (Tingkat Pelanggaran)
 // Persiapkan data untuk Bar Chart (Tingkat Pelanggaran)
@@ -370,50 +393,60 @@ const tingkatBarChart = new Chart(tingkatBarChartCtx, {
     },
     options: {
         responsive: true,
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    color: '#333',
-                    font: {
-                        size: 12
-                    }
-                }
-            },
-            x: {
-                ticks: {
-                    color: '#333',
-                    font: {
-                        size: 12
-                    }
-                }
-            }
-        },
-        plugins: {
-            legend: {
-                position: 'top',
-                labels: {
-                    font: { size: 14 }
-                }
-            },
-            tooltip: {
-                callbacks: {
-                    label: function(tooltipItem) {
-                        return `${tooltipItem.dataset.label}: ${tooltipItem.raw}`;
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        font: { size: 14 }
                     }
                 },
-                backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                titleFont: { size: 16 },
-                bodyFont: { size: 14 }
+                title: {
+                    display: true,
+                    text: 'Jumlah Pelanggaran berdasarkan Tingkat Pelanggaran',
+                    font: {
+                        size: 16,
+                        weight: 'bold'
+                    },
+                    padding: {
+                        bottom: 20
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return `${tooltipItem.dataset.label}: ${tooltipItem.raw}`;
+                        }
+                    },
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                    titleFont: { size: 16 },
+                    bodyFont: { size: 14 }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: '#333',
+                        font: {
+                            size: 12
+                        }
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: '#333',
+                        font: {
+                            size: 12
+                        }
+                    }
+                }
+            },
+            animation: {
+                duration: 1500, // Durasi animasi dalam milidetik
+                easing: 'easeOutBounce' // Efek animasi
             }
-        },
-        animation: {
-            duration: 1500, // Durasi animasi dalam milidetik
-            easing: 'easeOutBounce' // Efek animasi
         }
-    }
-});
-
+    });
             const toggleSidebar = document.getElementById('toggleSidebar');
             const sidebar = document.getElementById('sidebar');
             const header = document.getElementById('header');
