@@ -61,9 +61,9 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
 
     </head>
     <script>
-    console.log("Data dari PHP:", violationsData);
-
+        console.log("Data dari PHP:", violationsData);
     </script>
+
     <body>
         <div class="sidebar" id="sidebar">
             <div class="logo">
@@ -174,7 +174,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
                     <div id="tableContent" class="dynamic-content"></div>
                     <div id="guideContent" class="dynamic-content" style="display: none;">
                         <div class="guide-image-container">
-                            <img src="img/po.jpg" alt="Panduan Tata Tertib" class="guide-image">
+
                         </div>
                         <div class="guide-content">
                             <h2 class="guide-title">Panduan Tata Tertib Mahasiswa</h2>
@@ -209,65 +209,64 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
             </div>
 
             <script>
+                const violationsData = <?php echo json_encode($violations, JSON_HEX_TAG); ?>;
 
-    const violationsData = <?php echo json_encode($violations, JSON_HEX_TAG); ?>;
 
+                document.addEventListener('DOMContentLoaded', () => {
+                    const ctx = document.getElementById('violationsChart').getContext('2d');
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const ctx = document.getElementById('violationsChart').getContext('2d');
+                    const levels = violationsData.map(item => `Tingkat ${item.tingkat_pelanggaran}`);
+                    const counts = violationsData.map(item => item.jumlah_pelanggaran);
 
-            const levels = violationsData.map(item => `Tingkat ${item.tingkat_pelanggaran}`);
-    const counts = violationsData.map(item => item.jumlah_pelanggaran);
+                    // Detail tambahan untuk tooltip
+                    const details = violationsData.map(item => {
+                        return `Jumlah Pelanggaran: ${item.jumlah_pelanggaran}`;
+                    });
 
-    // Detail tambahan untuk tooltip
-    const details = violationsData.map(item => {
-        return `Jumlah Pelanggaran: ${item.jumlah_pelanggaran}`;
-    });
-
-    // Inisialisasi Chart.js
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: levels,
-            datasets: [{
-                label: 'Jumlah Pelanggaran',
-                data: counts,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            const index = context.dataIndex;
-                            return details[index]; // Menampilkan detail di tooltip
+                    // Inisialisasi Chart.js
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: levels,
+                            datasets: [{
+                                label: 'Jumlah Pelanggaran',
+                                data: counts,
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            const index = context.dataIndex;
+                                            return details[index]; // Menampilkan detail di tooltip
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'Jumlah Pelanggaran'
+                                    }
+                                },
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Tingkat Pelanggaran'
+                                    }
+                                }
+                            }
                         }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Jumlah Pelanggaran'
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Tingkat Pelanggaran'
-                    }
-                }
-            }
-        }
-            });
-        });
-    </script>
+                    });
+                });
+            </script>
 
             <script>
                 const loadTableButton = document.getElementById('loadViolationsTable');
