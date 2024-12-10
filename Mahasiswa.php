@@ -56,12 +56,14 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
-        <script>
-            const statisticsData = <?php echo json_encode($statisticsData); ?>;
-        </script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
     </head>
+    <script>
+    console.log("Data dari PHP:", violationsData);
 
+    </script>
     <body>
         <div class="sidebar" id="sidebar">
             <div class="logo">
@@ -200,11 +202,73 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
                     <div id="statisticsContent" class="dynamic-content" style="display: none;">
                         <h2>Statistik Pelanggaran</h2>
                         <p>Statistik pelanggaran berdasarkan data yang telah dikumpulkan.</p>
-                        <!-- Tambahkan elemen grafik di sini -->
+                        <canvas id="violationsChart" width="400" height="200"></canvas>
                     </div>
                 </div>
 
             </div>
+
+            <script>
+
+    const violationsData = <?php echo json_encode($violations, JSON_HEX_TAG); ?>;
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('violationsChart').getContext('2d');
+
+            const levels = violationsData.map(item => `Tingkat ${item.tingkat_pelanggaran}`);
+    const counts = violationsData.map(item => item.jumlah_pelanggaran);
+
+    // Detail tambahan untuk tooltip
+    const details = violationsData.map(item => {
+        return `Jumlah Pelanggaran: ${item.jumlah_pelanggaran}`;
+    });
+
+    // Inisialisasi Chart.js
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: levels,
+            datasets: [{
+                label: 'Jumlah Pelanggaran',
+                data: counts,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const index = context.dataIndex;
+                            return details[index]; // Menampilkan detail di tooltip
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Jumlah Pelanggaran'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Tingkat Pelanggaran'
+                    }
+                }
+            }
+        }
+            });
+        });
+    </script>
+
             <script>
                 const loadTableButton = document.getElementById('loadViolationsTable');
                 const showGuideButton = document.getElementById('showGuide');
