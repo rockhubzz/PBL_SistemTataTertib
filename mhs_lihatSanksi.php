@@ -130,12 +130,14 @@ ORDER BY tingkat_pelanggaran
                                 <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
                                 <td><?= htmlspecialchars($row['sanksi']) ?></td>
                                 <td>
-                                    <?php if ($row['sp_count'] > 0): ?>
-                                        <a href="uploads/<?php echo $row['sp_path_file']; ?>" class="view-btn">Lihat SP</a>
-                                    <?php else: ?>
-                                        <a href="mhs_uploadPernyataan.php?id_pelanggaran=<?php echo $row['id_pelanggaran'] ?>" class="view-btn">Upload Surat Pernyataan</a>
-                                    <?php endif; ?>
-                                </td>
+    <div class="action-buttons">
+        <?php if ($row['sp_count'] > 0): ?>
+            <a href="uploads/<?php echo $row['sp_path_file']; ?>" class="view-btn">Lihat SP</a>
+        <?php else: ?>
+            <a href="mhs_uploadPernyataan.php?id_pelanggaran=<?php echo $row['id_pelanggaran'] ?>" class="view-btn">Upload SuratPernyataan</a>
+        <?php endif; ?>
+    </div>
+</td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>

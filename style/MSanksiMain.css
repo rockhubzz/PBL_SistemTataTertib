@@ -122,16 +122,30 @@ textarea {
     height: 100px;
     resize: none;
 }
-/* Button Styles */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ensure it takes the full width of the cell */
+}
+
 .view-btn {
-    background-color: #4CAF50;
+    background-color: #51ca70;
     color: white;
     border: none;
-    padding: 5px 10px;
     border-radius: 5px;
+    padding: 10px 20px; /* Increased padding for longer button */
     cursor: pointer;
+    width: auto; /* Ensure the width is set to auto */
+    min-width: 150px; /* Set a minimum width for the button */
+    flex: 1; 
 }
 
 .view-btn:hover {
-    background-color: #45a049; /* Warna hover */
+    background-color: #2e9e33; /* Hover color */
+}
+/* Set width for the last column ("Aksi") */
+table th:last-child, table td:last-child {
+    width: 200px; /* Adjust the width as needed */
+    min-width: 200px; /* Minimum width to avoid shrinking */
 }
