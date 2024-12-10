@@ -235,6 +235,19 @@ if ($stmtSelect === false) {
     </div>
     <?php sqlsrv_close($conn); ?>
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    const toggleBtn = document.querySelector(".toggle-btn");
+    const sidebar = document.querySelector(".sidebar");
+    const main = document.querySelector(".main");
+    const header = document.querySelector(".header");
+
+    toggleBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("collapsed");
+        main.classList.toggle("collapsed");
+        header.classList.toggle("collapsed");
+    });
+});
+
         $(document).ready(function() {
             $('#Tabel').DataTable({
                 language: {
