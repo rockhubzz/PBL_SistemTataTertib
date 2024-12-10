@@ -155,15 +155,17 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
                                 <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('d-m-Y')) ?></td>
                                 <td><?= htmlspecialchars($row['status']) ?></td>
                                 <td>
-                                    <?php
-                                    $url = "mhs_editLaporan.php?id_pelanggaran=" . urlencode($row['id_pelanggaran']);
-                                    echo "<a href='{$url}' class='view-btn'>Edit</a>";
-                                    ?>
-                                    <form method="POST" style="display:inline;">
-                                        <input type="hidden" name="id_pelanggaran" value="<?= htmlspecialchars($row['id_pelanggaran']) ?>">
-                                        <button type="submit" name="delete" class="delete-btn">Hapus</button>
-                                    </form>
-                                </td>
+    <div class="action-buttons">
+        <?php
+        $url = "mhs_editLaporan.php?id_pelanggaran=" . urlencode($row['id_pelanggaran']);
+        echo "<a href='{$url}' class='view-btn'>Edit</a>";
+        ?>
+        <form method="POST" style="display:inline;">
+            <input type="hidden" name="id_pelanggaran" value="<?= htmlspecialchars($row['id_pelanggaran']) ?>">
+            <button type="submit" name="delete" class="delete-btn">Hapus</button>
+        </form>
+    </div>
+</td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
