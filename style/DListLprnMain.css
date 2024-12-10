@@ -22,13 +22,9 @@ table {
 }
 
 th, td {
-    padding: 15px;
     border: 1px solid #ccc;
 }
 
-td {
-    max-width: 300px; /* Ensure there's enough space for the action buttons */
-}
 th {
     color: white; /* Warna teks header */
     font-weight: bold; /* Menebalkan teks header */
@@ -109,7 +105,6 @@ tr:hover td {
 
 /* Ensure that buttons inside the table fit */
 .action-btn, .delete-btn {
-    padding: 7px 20px; /* Add more padding for better visibility */
     font-size: 14px; /* Slightly increase font size */
 }
 
@@ -124,6 +119,7 @@ tr:hover td {
 }
 
 .action-btn:hover {
+    padding: 7px 8px;
     background-color: #0056b3;
 }
 
@@ -131,7 +127,7 @@ tr:hover td {
     background-color: #eb3131;
     color: white;
     border: none;
-    padding: 7px 14px;
+    padding: 5px 4px;
     border-radius: 5px;
     cursor: pointer;
     text-decoration: none;
