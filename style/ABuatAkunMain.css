@@ -122,23 +122,6 @@ label {
 .delete-btn {
     background-color: #dc3545;
 }
-/* Buttons for forms */
-.submit-btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    display: block;
-    margin: 15px auto;
-    transition: background-color 0.3s ease;
-}
-
-.submit-btn:hover {
-    background-color: #0056b3;
-}
 
 /* Success and delete messages */
 .success-message, .delete-message {
@@ -231,4 +214,50 @@ tr:hover td {
 /* Add hover transition effect */
 button.edit-btn:hover, button.delete-btn:hover {
     opacity: 0.9; /* Slight transparency effect on hover */
+}
+
+/* Container untuk tombol */
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+/* Gaya default untuk tombol Submit */
+.submit-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
+}
+/* Gaya untuk tombol Batal */
+.cancel-btn {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    padding: 10px 40px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.cancel-btn:hover {
+    background-color: #e2e6ea;
+    color: #343a40;
+}
+
+/* Kelas tambahan untuk membalikkan posisi tombol */
+.button-container.reverse {
+    flex-direction: row-reverse;
 }

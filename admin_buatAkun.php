@@ -101,6 +101,7 @@ if ($stmtSelect === false) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -112,58 +113,59 @@ if ($stmtSelect === false) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 </head>
+
 <body>
-<div class="sidebar" id="sidebar">
-            <div class="logo">
-                <img src="img/LogoPLTK.png" alt="Logo">
-            </div>
-            <div class="menu">
-                <a href="AdminMenu.php" class="menu-item">
-                    <i class="fas fa-home"></i><span>Dashboard</span>
-                </a>
-                <a href="admin_kelolaMhs.php" class="menu-item">
-                    <i class="fas fa-user"></i><span>Data Mahasiswa</span>
-                </a>
-                <a href="admin_kelolaDsn.php" class="menu-item">
-                    <i class="fas fa-book"></i><span>Data Dosen</span>
-                </a>
-                <a href="admin_laporanMasuk.php" class="menu-item">
-                    <i class="fas fa-warning"></i><span>Laporan Masuk</span>
-                </a>
-                <a href="admin_editPlg.php" class="menu-item">
-                    <i class="fas fa-exclamation-circle"></i><span>Edit Pelanggaran</span>
-                </a>
-                <a href="admin_editSanksi.php" class="menu-item">
-                    <i class="fas fa-gavel"></i><span>Edit Sanksi</span>
-                </a>
-                <a href="admin_SPMasuk.php" class="menu-item">
-                    <i class="fas fa-envelope"></i><span>SP masuk</span>
-                </a>
-                <a href="admin_buatAkun.php" class="menu-item">
-                    <i class="fas fa-user-cog"></i><span>Manage Akun</span>
-                </a>
-            </div>
-            <div class="profile">
-                <img src="img/profile.png" alt="Profile">
-                <span class="username">
-                    <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
-                </span>
-                <div class="dropdown-content">
-                    <a href="update_profile.php">Change Password</a>
-                    <a href="logout.php">Logout</a>
-                </div>
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <img src="img/LogoPLTK.png" alt="Logo">
+        </div>
+        <div class="menu">
+            <a href="AdminMenu.php" class="menu-item">
+                <i class="fas fa-home"></i><span>Dashboard</span>
+            </a>
+            <a href="admin_kelolaMhs.php" class="menu-item">
+                <i class="fas fa-user"></i><span>Data Mahasiswa</span>
+            </a>
+            <a href="admin_kelolaDsn.php" class="menu-item">
+                <i class="fas fa-book"></i><span>Data Dosen</span>
+            </a>
+            <a href="admin_laporanMasuk.php" class="menu-item">
+                <i class="fas fa-warning"></i><span>Laporan Masuk</span>
+            </a>
+            <a href="admin_editPlg.php" class="menu-item">
+                <i class="fas fa-exclamation-circle"></i><span>Edit Pelanggaran</span>
+            </a>
+            <a href="admin_editSanksi.php" class="menu-item">
+                <i class="fas fa-gavel"></i><span>Edit Sanksi</span>
+            </a>
+            <a href="admin_SPMasuk.php" class="menu-item">
+                <i class="fas fa-envelope"></i><span>SP masuk</span>
+            </a>
+            <a href="admin_buatAkun.php" class="menu-item">
+                <i class="fas fa-user-cog"></i><span>Manage Akun</span>
+            </a>
+        </div>
+        <div class="profile">
+            <img src="img/profile.png" alt="Profile">
+            <span class="username">
+                <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
+            </span>
+            <div class="dropdown-content">
+                <a href="update_profile.php">Change Password</a>
+                <a href="logout.php">Logout</a>
             </div>
         </div>
-        <!-- Header -->
-        <div class="header" id="header">
-            <button class="toggle-btn" id="toggleSidebar">
-                <i class="fas fa-bars"></i>
-            </button>
-            <div class="title">
-                <h1>Sistem Tata Tertib</h1>
-                <h2>Edit Laporan</h2>
-            </div>
+    </div>
+    <!-- Header -->
+    <div class="header" id="header">
+        <button class="toggle-btn" id="toggleSidebar">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="title">
+            <h1>Sistem Tata Tertib</h1>
+            <h2>Edit Laporan</h2>
         </div>
+    </div>
     <div class="main">
         <!-- Main content -->
         <div class="content-container">
@@ -185,18 +187,18 @@ if ($stmtSelect === false) {
                                 <td><?php echo htmlspecialchars($row['nama']); ?></td>
                                 <td><?php echo htmlspecialchars($row['role']); ?></td>
                                 <td>
-    <!-- Delete User Form -->
-    <form method="POST" style="display: inline;">
-        <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($row['user_id']); ?>">
-        <button type="submit" name="delete_user" class="delete-btn">Delete</button>
-    </form>
-    
-    <!-- Edit User Form -->
-    <form method="GET" action="<?php echo $_SERVER['PHP_SELF']; ?>" style="display: inline;">
-        <input type="hidden" name="edit_user" value="<?php echo htmlspecialchars($row['user_id']); ?>">
-        <button type="submit" class="edit-btn">Edit</button>
-    </form>
-</td>
+                                    <!-- Delete User Form -->
+                                    <form method="POST" style="display: inline;">
+                                        <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($row['user_id']); ?>">
+                                        <button type="submit" name="delete_user" class="delete-btn">Delete</button>
+                                    </form>
+
+                                    <!-- Edit User Form -->
+                                    <form method="GET" action="<?php echo $_SERVER['PHP_SELF']; ?>" style="display: inline;">
+                                        <input type="hidden" name="edit_user" value="<?php echo htmlspecialchars($row['user_id']); ?>">
+                                        <button type="submit" class="edit-btn">Edit</button>
+                                    </form>
+                                </td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
@@ -205,16 +207,17 @@ if ($stmtSelect === false) {
             <div class="form-container">
                 <h2><?php echo $editMode ? "Edit User" : "Tambah User"; ?></h2>
                 <?php if (isset($_GET['success'])): ?>
-                        <p class="success-message">User berhasil ditambahkan!</p>
-                    <?php endif; ?>
-                    <?php if (isset($_GET['deleted'])): ?>
-                        <p class="delete-message">User berhasil dihapus!</p>
-                    <?php endif; ?>
+                    <p class="success-message">User berhasil ditambahkan!</p>
+                <?php endif; ?>
+                <?php if (isset($_GET['deleted'])): ?>
+                    <p class="delete-message">User berhasil dihapus!</p>
+                <?php endif; ?>
                 <form method="POST">
                     <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($editUser['user_id'] ?? ''); ?>">
                     <div class="form-group">
                         <label for="role">Role</label>
-                        <select id="role" name="role" required <?php if($editMode): echo 'disabled'; endif; ?>>
+                        <select id="role" name="role" required <?php if ($editMode): echo 'disabled';
+                                                                endif; ?>>
                             <option value="Admin" <?php echo $editUser['role'] == "Admin" ? "selected" : ""; ?>>Admin</option>
                             <option value="Dosen" <?php echo $editUser['role'] == "Dosen" ? "selected" : ""; ?>>Dosen</option>
                             <option value="Mahasiswa" <?php echo $editUser['role'] == "Mahasiswa" ? "selected" : ""; ?>>Mahasiswa</option>
@@ -228,12 +231,16 @@ if ($stmtSelect === false) {
                         <label for="nama">Nama</label>
                         <input type="text" id="nama" name="nama" value="<?php echo htmlspecialchars($editUser['nama'] ?? ''); ?>" required>
                     </div>
-                    <button type="submit" name="submit_user" class="submit-btn"><?php echo $editMode ? "Update User" : "Tambah User"; ?></button>
-                    <?php
-                    if($editMode){
-                        echo "<a href='admin_buatAkun.php'>Batal</a>";
-                    }
-                    ?>
+                    <!-- Submit and Cancel -->
+                    <div class="button-container">
+    <button type="submit" name="submit_user" class="submit-btn">
+        <?php echo $editMode ? "Update User" : "Tambah User"; ?>
+    </button>
+    <?php if ($editMode): ?>
+        <a href="admin_buatAkun.php" class="cancel-btn">Batal</a>
+    <?php endif; ?>
+</div>
+
                 </form>
             </div>
         </div>
@@ -241,17 +248,17 @@ if ($stmtSelect === false) {
     <?php sqlsrv_close($conn); ?>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-    const toggleBtn = document.querySelector(".toggle-btn");
-    const sidebar = document.querySelector(".sidebar");
-    const main = document.querySelector(".main");
-    const header = document.querySelector(".header");
+            const toggleBtn = document.querySelector(".toggle-btn");
+            const sidebar = document.querySelector(".sidebar");
+            const main = document.querySelector(".main");
+            const header = document.querySelector(".header");
 
-    toggleBtn.addEventListener("click", () => {
-        sidebar.classList.toggle("collapsed");
-        main.classList.toggle("collapsed");
-        header.classList.toggle("collapsed");
-    });
-});
+            toggleBtn.addEventListener("click", () => {
+                sidebar.classList.toggle("collapsed");
+                main.classList.toggle("collapsed");
+                header.classList.toggle("collapsed");
+            });
+        });
 
         $(document).ready(function() {
             $('#Tabel').DataTable({
@@ -262,4 +269,5 @@ if ($stmtSelect === false) {
         });
     </script>
 </body>
+
 </html>
