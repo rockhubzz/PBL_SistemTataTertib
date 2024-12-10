@@ -54,19 +54,7 @@ tr:hover td {
     cursor: pointer;
     margin-right: 20px;
 }
-.action-btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-}
 
-.action-btn:hover {
-    background-color: #0056b3;
-}
 .header {
     position: fixed;
     top: 0;
@@ -83,32 +71,15 @@ tr:hover td {
     width: calc(100% - 250px);
 }
 .action-btn {
-    background-color: #007bff;
     color: white;
     border: none;
-    padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
     text-decoration: none;
 }
 
-.action-btn:hover {
-    background-color: #0056b3;
-}
-.view-btn {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.view-btn:hover {
-    background-color: #45a049;
-}
 .view-btn, .delete-btn {
     display: inline-block; /* Align buttons horizontally */
-    margin-right: 5px; /* Add space between buttons */
     background-color: #4CAF50; /* Color for Edit (green) */
     color: white;
     border: none;
@@ -119,7 +90,7 @@ tr:hover td {
 }
 
 .view-btn:hover {
-    background-color: #45a049; /* Hover effect for Edit button */
+    background-color: #2d9c32; /* Hover effect for Edit button */
 }
 
 .delete-btn {
@@ -127,7 +98,7 @@ tr:hover td {
 }
 
 .delete-btn:hover {
-    background-color: #e53935; /* Hover effect for Hapus button */
+    background-color: #cf2926; /* Hover effect for Hapus button */
 }
 .action-buttons {
     display: flex;
