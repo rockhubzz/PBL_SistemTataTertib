@@ -67,6 +67,19 @@ tr:hover td {
 .action-btn:hover {
     background-color: #0056b3;
 }
+.action-btn .delete-btn{
+    background-color: #eb3131;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.action-btn:hover .delete-btn{
+    background-color: #aa1414;
+}
 .header {
     position: fixed;
     top: 0;
@@ -82,27 +95,41 @@ tr:hover td {
     transition: left 0.3s ease, width 0.3s ease;
     width: calc(100% - 250px);
 }
+
+/* Edit Button */
 .action-btn {
-    background-color: #007bff;
+    background-color: #007bff; /* Blue color for Edit */
     color: white;
     border: none;
-    padding: 5px 10px;
+    padding: 5px 15px;
     border-radius: 5px;
     cursor: pointer;
     text-decoration: none;
+    display: inline-block; /* Make it inline with proper styling */
 }
 
 .action-btn:hover {
-    background-color: #0056b3;
+    background-color: #0056b3; /* Darker blue on hover */
 }
-.view-btn {
-    background-color: #4CAF50;
+
+/* Delete Button */
+.delete-btn {
+    background-color: #dc3545; /* Red color for Delete */
     color: white;
     border: none;
-    padding: 5px 10px;
+    padding: 7px 10px;
     border-radius: 5px;
     cursor: pointer;
+    text-decoration: none;
+    display: inline-block; /* Make it inline with proper styling */
 }
-.view-btn:hover {
-    background-color: #45a049;
+
+.delete-btn:hover {
+    background-color: #a71d1d; /* Darker red on hover */
+}
+*/
+.action-btn-container {
+    display: inline-flex; /* Use inline-flex to place buttons side by side */
+    gap: 10px; /* Space between the buttons */
+    align-items: center; /* Vertically align buttons */
 }

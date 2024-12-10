@@ -148,13 +148,16 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
                                     <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
                                     <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('d-m-Y')) ?></td>
                                     <td><?= htmlspecialchars($row['status']) ?></td>
-                                    <td>
-                                        <a href="dsn_editLaporan.php?id_pelanggaran=<?= urlencode($row['id_pelanggaran']) ?>" class="view-btn">Edit</a>
-                                        <form method="POST" style="display:inline;">
-                                            <input type="hidden" name="id_pelanggaran" value="<?= htmlspecialchars($row['id_pelanggaran']) ?>">
-                                            <button type="submit" name="delete" class="delete-btn">Hapus</button>
-                                        </form>
-                                    </td>
+<td>
+    <!-- Edit Button -->
+    <a href="dsn_editLaporan.php?id_pelanggaran=<?= urlencode($row['id_pelanggaran']) ?>" class="action-btn">Edit</a>
+
+    <!-- Delete Button -->
+    <form method="POST" style="display:inline;">
+        <input type="hidden" name="id_pelanggaran" value="<?= htmlspecialchars($row['id_pelanggaran']) ?>">
+        <button type="submit" name="delete" class="action-btn delete-btn">Hapus</button>
+    </form>
+</td>
                                 </tr>
                             <?php endwhile; ?>
                         </tbody>
@@ -163,6 +166,19 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
             </div>
         </div>
         <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    const toggleBtn = document.querySelector(".toggle-btn");
+    const sidebar = document.querySelector(".sidebar");
+    const main = document.querySelector(".main");
+    const header = document.querySelector(".header");
+
+    toggleBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("collapsed");
+        main.classList.toggle("collapsed");
+        header.classList.toggle("collapsed");
+    });
+});
+
             $(document).ready(function() {
                 $('#Tabel').DataTable({
                     paging: true,
