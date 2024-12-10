@@ -76,3 +76,61 @@ tr:hover td {
         margin-left: 80px;
     }
 }
+
+/* Tombol umum */
+.view-btn, .delete-btn {
+    padding: 8px 12px;
+    margin: 5px 2px;
+    font-size: 14px;
+    border-radius: 5px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Tombol Ajukan Banding (Hijau) */
+.view-btn.ajukan {
+    background-color: #28a745; /* Warna hijau */
+    color: white;
+    border: 1px solid #218838;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.view-btn.ajukan:hover {
+    background-color: #218838;
+    transform: scale(1.05); /* Efek hover */
+}
+
+/* Tombol Edit Banding (Biru) */
+.view-btn.edit {
+    background-color: #007bff; /* Warna biru */
+    color: white;
+    border: 1px solid #0056b3;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.view-btn.edit:hover {
+    background-color: #0056b3;
+    transform: scale(1.05); /* Efek hover */
+}
+
+/* Tombol Hapus Banding (Merah) */
+.delete-btn {
+    background-color: #dc3545; /* Warna merah */
+    color: white;
+    border: 1px solid #a71d2a;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.delete-btn:hover {
+    background-color: #a71d2a;
+    transform: scale(1.05); /* Efek hover */
+}
+
+/* Tombol dinonaktifkan */
+button[disabled] {
+    background-color: grey;
+    color: white;
+    cursor: not-allowed;
+    border: 1px solid grey;
+}

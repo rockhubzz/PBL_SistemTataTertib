@@ -75,20 +75,20 @@ ORDER BY p.id_pelanggaran
         $filteredViolations[] = $row;
     }
 ?>
-<!DOCTYPE html>
-<html lang="en">
+    <!DOCTYPE html>
+    <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List Pelanggaran</title>
-    <link rel="stylesheet" href="style/AdminStyles.css">
-    <link rel="stylesheet" href="style/MListPelanggaranMain.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>List Pelanggaran</title>
+        <link rel="stylesheet" href="style/AdminStyles.css">
+        <link rel="stylesheet" href="style/MListPelanggaranMain.css">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    </head>
 
-<body>
-<div class="sidebar" id="sidebar">
+    <body>
+        <div class="sidebar" id="sidebar">
             <div class="logo">
                 <img src="img/LogoPLTK.png" alt="Logo">
             </div>
@@ -130,110 +130,111 @@ ORDER BY p.id_pelanggaran
             </button>
             <div class="title">
                 <h1>Sistem Tata Tertib</h1>
-                <h2>Dashboard Mahasiswa</h2>
+                <h2>Data Pelanggaran</h2>
             </div>
         </div>
-    <div class="main" id="main">
-        <div class="table-container">
-            <div class="filter-section">
-                <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="get">
-                    <label for="tingkat_pelanggaran">Filter by Tingkat Pelanggaran:</label>
-                    <select name="tingkat_pelanggaran" id="tingkat_pelanggaran" onchange="this.form.submit()">
-                        <option value="1" <?= $filterLevel == 1 ? 'selected' : '' ?>>Tingkat 1</option>
-                        <option value="2" <?= $filterLevel == 2 ? 'selected' : '' ?>>Tingkat 2</option>
-                        <option value="3" <?= $filterLevel == 3 ? 'selected' : '' ?>>Tingkat 3</option>
-                        <option value="4" <?= $filterLevel == 4 ? 'selected' : '' ?>>Tingkat 4</option>
-                        <option value="5" <?= $filterLevel == 5 ? 'selected' : '' ?>>Tingkat 5</option>
-                    </select>
-                </form>
-            </div>
+        <div class="main" id="main">
+            <div class="table-container">
+                <div class="filter-section">
+                    <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="get">
+                        <label for="tingkat_pelanggaran">Filter by Tingkat Pelanggaran:</label>
+                        <select name="tingkat_pelanggaran" id="tingkat_pelanggaran" onchange="this.form.submit()">
+                            <option value="1" <?= $filterLevel == 1 ? 'selected' : '' ?>>Tingkat 1</option>
+                            <option value="2" <?= $filterLevel == 2 ? 'selected' : '' ?>>Tingkat 2</option>
+                            <option value="3" <?= $filterLevel == 3 ? 'selected' : '' ?>>Tingkat 3</option>
+                            <option value="4" <?= $filterLevel == 4 ? 'selected' : '' ?>>Tingkat 4</option>
+                            <option value="5" <?= $filterLevel == 5 ? 'selected' : '' ?>>Tingkat 5</option>
+                        </select>
+                    </form>
+                </div>
 
-            <!-- Tabel Laporan -->
-            <table class="report-table">
-                <thead>
-                    <tr>
-                        <th>ID Pelanggaran</th>
-                        <th>Jenis Pelanggaran</th>
-                        <th>Tanggal</th>
-                        <th>Status</th>
-                        <th>Status Banding</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (!empty($filteredViolations)): ?>
-                        <?php foreach ($filteredViolations as $pelanggaran): ?>
-                            <?php
-                            // Query to get the banding status and id_banding for the current id_pelanggaran
-                            $bandingQuery = "
+                <!-- Tabel Laporan -->
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th>ID Pelanggaran</th>
+                            <th>Jenis Pelanggaran</th>
+                            <th>Tanggal</th>
+                            <th>Status</th>
+                            <th>Status Banding</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (!empty($filteredViolations)): ?>
+                            <?php foreach ($filteredViolations as $pelanggaran): ?>
+                                <?php
+                                // Query to get the banding status and id_banding for the current id_pelanggaran
+                                $bandingQuery = "
                             SELECT id_banding, kesepakatan 
                             FROM dbo.Banding 
                             WHERE id_pelanggaran = ?
                             ";
-                            $params = [$pelanggaran['id_pelanggaran']];
-                            $bandingStmt = sqlsrv_query($conn, $bandingQuery, $params);
+                                $params = [$pelanggaran['id_pelanggaran']];
+                                $bandingStmt = sqlsrv_query($conn, $bandingQuery, $params);
 
-                            // Default values
-                            $bandingStatus = "Belum Ada Banding";
-                            $idBanding = null;
+                                // Default values
+                                $bandingStatus = "Belum Ada Banding";
+                                $idBanding = null;
 
-                            if ($bandingStmt && $row = sqlsrv_fetch_array($bandingStmt, SQLSRV_FETCH_ASSOC)) {
-                                $idBanding = $row['id_banding'];
-                                if ($row['kesepakatan'] === null) {
-                                    $bandingStatus = "Pending";
-                                } elseif ($row['kesepakatan'] == 0) {
-                                    $bandingStatus = "Ditolak";
-                                } elseif ($row['kesepakatan'] == 1) {
-                                    $bandingStatus = "Diterima";
+                                if ($bandingStmt && $row = sqlsrv_fetch_array($bandingStmt, SQLSRV_FETCH_ASSOC)) {
+                                    $idBanding = $row['id_banding'];
+                                    if ($row['kesepakatan'] === null) {
+                                        $bandingStatus = "Pending";
+                                    } elseif ($row['kesepakatan'] == 0) {
+                                        $bandingStatus = "Ditolak";
+                                    } elseif ($row['kesepakatan'] == 1) {
+                                        $bandingStatus = "Diterima";
+                                    }
                                 }
-                            }
-                            ?>
-                            <tr>
-                                <td><?= htmlspecialchars($pelanggaran['id_pelanggaran']) ?></td>
-                                <td><?= htmlspecialchars($pelanggaran['jenis_pelanggaran']) ?></td>
-                                <td><?= htmlspecialchars($pelanggaran['tanggal_pelanggaran']->format('Y-m-d')) ?></td>
-                                <td><?= htmlspecialchars($pelanggaran['status']) ?></td>
-                                <td><?= htmlspecialchars($bandingStatus) ?></td>
-                                <td>
-                                    <?php if ($bandingStatus == 'Belum Ada Banding'): ?>
-                                        <a href="mhs_ajukanBanding.php?id_pelanggaran=<?= urlencode($pelanggaran['id_pelanggaran']) ?>" class="view-btn">Ajukan Banding</a>
-                                    <?php elseif ($row['kesepakatan'] === null): ?>
-                                        <a href="mhs_editBanding.php?id_pelanggaran=<?= urlencode($pelanggaran['id_pelanggaran']) ?>" class="view-btn">Edit Banding</a>
-                                        <form method="POST" style="display: inline;">
-                                            <input type="hidden" name="id_banding" value="<?= htmlspecialchars($idBanding) ?>">
-                                            <button type="submit" name="delete_banding" class="delete-btn">Hapus Banding</button>
-                                        </form>
+                                ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($pelanggaran['id_pelanggaran']) ?></td>
+                                    <td><?= htmlspecialchars($pelanggaran['jenis_pelanggaran']) ?></td>
+                                    <td><?= htmlspecialchars($pelanggaran['tanggal_pelanggaran']->format('Y-m-d')) ?></td>
+                                    <td><?= htmlspecialchars($pelanggaran['status']) ?></td>
+                                    <td><?= htmlspecialchars($bandingStatus) ?></td>
+                                    <td>
+                                        <?php if ($bandingStatus == 'Belum Ada Banding'): ?>
+                                            <a href="mhs_ajukanBanding.php?id_pelanggaran=<?= urlencode($pelanggaran['id_pelanggaran']) ?>" class="view-btn ajukan">Ajukan Banding</a>
+                                        <?php elseif ($row['kesepakatan'] === null): ?>
+                                            <a href="mhs_editBanding.php?id_pelanggaran=<?= urlencode($pelanggaran['id_pelanggaran']) ?>" class="view-btn edit">Edit Banding</a>
+                                            <form method="POST" style="display: inline;">
+                                                <input type="hidden" name="id_banding" value="<?= htmlspecialchars($idBanding) ?>">
+                                                <button type="submit" name="delete_banding" class="delete-btn">Hapus Banding</button>
+                                            </form>
                                         <?php else: ?>
                                             <button class="view-btn" disabled style="background-color: grey;">Edit Banding</button>
                                         <?php endif; ?>
-                                </td>
+
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="7">Tidak ada pelanggaran pada tingkat ini.</td>
                             </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="7">Tidak ada pelanggaran pada tingkat ini.</td>
-                        </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
 
-    <script>
-        const toggleSidebar = document.getElementById('toggleSidebar');
-        const sidebar = document.getElementById('sidebar');
-        const header = document.getElementById('header');
-        const main = document.getElementById('main');
+        <script>
+            const toggleSidebar = document.getElementById('toggleSidebar');
+            const sidebar = document.getElementById('sidebar');
+            const header = document.getElementById('header');
+            const main = document.getElementById('main');
 
-        toggleSidebar.addEventListener('click', () => {
-            sidebar.classList.toggle('collapsed');
-            main.classList.toggle('collapsed');
-            header.classList.toggle('collapsed');
-        });
-    </script>
-</body>
+            toggleSidebar.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+                main.classList.toggle('collapsed');
+                header.classList.toggle('collapsed');
+            });
+        </script>
+    </body>
 
-</html>
+    </html>
 <?php
 } else {
     header("location: logout.php");
