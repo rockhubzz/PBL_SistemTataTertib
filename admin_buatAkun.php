@@ -229,6 +229,11 @@ if ($stmtSelect === false) {
                         <input type="text" id="nama" name="nama" value="<?php echo htmlspecialchars($editUser['nama'] ?? ''); ?>" required>
                     </div>
                     <button type="submit" name="submit_user" class="submit-btn"><?php echo $editMode ? "Update User" : "Tambah User"; ?></button>
+                    <?php
+                    if($editMode){
+                        echo "<a href='admin_buatAkun.php'>Batal</a>";
+                    }
+                    ?>
                 </form>
             </div>
         </div>
