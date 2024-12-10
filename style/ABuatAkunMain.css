@@ -139,22 +139,6 @@ label {
 .submit-btn:hover {
     background-color: #0056b3;
 }
-/* Buttons inside table */
-.delete-btn {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-    float: left;
-}
-
-.delete-btn:hover {
-    background-color: #a71d2a;
-}
 
 /* Success and delete messages */
 .success-message, .delete-message {
@@ -210,10 +194,13 @@ tr:hover td {
 tr:hover td {
     background-color: #e7f3ff; /* Highlight row on hover */
 }
+
+
 .delete-btn {
-    background-color: #359fdc;
+    margin-left: 50px;
+    background-color: #dc3535;
     color: white;
-    border: none;
+    border: 2;
     padding: 8px 12px;
     border-radius: 4px;
     cursor: pointer;
@@ -223,5 +210,25 @@ tr:hover td {
 }
 
 .delete-btn:hover {
-    background-color: #1d54a7;
+    background-color: #a71d1d;
+}
+
+/* Edit button styles */
+.edit-btn {
+    background-color: #007bff; /* Blue color for Edit button */
+    color: white;
+    padding: 8px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    float: left;
+}
+
+.edit-btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+/* Add hover transition effect */
+button.edit-btn:hover, button.delete-btn:hover {
+    opacity: 0.9; /* Slight transparency effect on hover */
 }
