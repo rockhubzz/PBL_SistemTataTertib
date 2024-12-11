@@ -192,7 +192,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
                                     <li>Menghindari segala bentuk plagiarisme.</li>
                                 </ul>
                             </div>
-                            <a href="downloads/panduan_tata_tertib.pdf" class="download-btn" download>
+                            <a href="https://drive.google.com/file/d/1prQyYqHih3ZPUi7svXBZ6vQrx-Oyw47c/view" class="download-btn" download>
                                 <i class="fas fa-download"></i> Download Panduan
                             </a>
                         </div>
