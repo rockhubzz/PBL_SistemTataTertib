@@ -20,10 +20,12 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
     // Fetch mahasiswa data
     $query = "
 SELECT s.id_sp, s.id_pelanggaran, s.nim_pembuat,
-	(SELECT nama FROM Users WHERE user_id = 4) AS nama,
+	(SELECT nama FROM Users WHERE user_id = m.user_id) AS nama,
 	p.tingkat_pelanggaran, p.jenis_pelanggaran, s.tanggal_dibuat, s.path_file
 FROM SP s
 JOIN Pelanggaran p ON p.id_pelanggaran = s.id_pelanggaran
+JOIN Mahasiswa m ON p.nim_pelanggar = m.nim
+
 ";
     $stmt = sqlsrv_query($conn, $query);
 
