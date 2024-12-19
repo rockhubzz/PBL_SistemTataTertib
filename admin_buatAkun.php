@@ -267,6 +267,7 @@ if ($stmtSelect === false) {
                 }
             });
         });
+        
     </script>
 </body>
 
