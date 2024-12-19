@@ -261,3 +261,20 @@ button.edit-btn:hover, button.delete-btn:hover {
 .button-container.reverse {
     flex-direction: row-reverse;
 }
+/* Filter container style */
+.filter-container {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Filter input style */
+#filterRole {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px; /* Adjust width as needed */
+}

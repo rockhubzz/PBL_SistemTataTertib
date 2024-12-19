@@ -171,6 +171,19 @@ if ($stmtSelect === false) {
         <div class="content-container">
             <div class="user-list-container">
                 <h2>Daftar User</h2>
+
+                <!-- Filter Dropdown -->
+                <div class="filter-container">
+                    <label for="filterRole">Filter Role:</label>
+                    <select id="filterRole">
+                        <option value="">Semua</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Dosen">Dosen</option>
+                        <option value="Mahasiswa">Mahasiswa</option>
+                    </select>
+                </div>
+
+
                 <table id="Tabel">
                     <thead>
                         <tr>
@@ -260,15 +273,23 @@ if ($stmtSelect === false) {
             });
         });
 
-        $(document).ready(function() {
-            $('#Tabel').DataTable({
-                language: {
-                    url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json"
-                }
-            });
+    $(document).ready(function () {
+        // Inisialisasi DataTable
+        const table = $('#Tabel').DataTable({
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json"
+            }
         });
+
+        // Filter Role
+        $('#filterRole').on('change', function () {
+            const role = $(this).val(); // Ambil nilai dari dropdown filter
+            table.column(2).search(role).draw(); // Kolom index 2 adalah kolom "Role"
+        });
+    });
         
     </script>
+    
 </body>
 
 </html>
