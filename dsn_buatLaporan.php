@@ -124,35 +124,35 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
     </head>
 
     <body>
-            <div class="sidebar" id="sidebar">
-                <div class="logo">
-                    <img src="img/LogoPLTK.png" alt="Logo">
-                </div>
-                <div class="menu">
-                    <a href="dosenMenu.php" class="menu-item">
-                        <i class="fas fa-home"></i><span>Dashboard</span>
-                    </a>
-                    <a href="dsn_buatLaporan.php" class="menu-item">
-                        <i class="fas fa-user"></i><span>Buat Laporan</span>
-                    </a>
-                    <a href="dsn_listLaporan.php" class="menu-item">
-                        <i class="fas fa-book"></i><span>List Laporan</span>
-                    </a>
-                    <a href="dsn_laporanBanding.php" class="menu-item">
-                        <i class="fas fa-balance-scale"></i><span>Laporan Banding</span>
-                    </a>
-                </div>
-                <div class="profile">
-                    <img src="img/profile.png" alt="Profile">
-                    <span class="username">
-                        <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
-                    </span>
-                    <div class="dropdown-content">
-                        <a href="update_profile.php">Change Password</a>
-                        <a href="logout.php">Logout</a>
-                    </div>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <img src="img/LogoPLTK.png" alt="Logo">
+            </div>
+            <div class="menu">
+                <a href="dosenMenu.php" class="menu-item">
+                    <i class="fas fa-home"></i><span>Dashboard</span>
+                </a>
+                <a href="dsn_buatLaporan.php" class="menu-item">
+                    <i class="fas fa-user"></i><span>Buat Laporan</span>
+                </a>
+                <a href="dsn_listLaporan.php" class="menu-item">
+                    <i class="fas fa-book"></i><span>List Laporan</span>
+                </a>
+                <a href="dsn_laporanBanding.php" class="menu-item">
+                    <i class="fas fa-balance-scale"></i><span>Laporan Banding</span>
+                </a>
+            </div>
+            <div class="profile">
+                <img src="img/profile.png" alt="Profile">
+                <span class="username">
+                    <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
+                </span>
+                <div class="dropdown-content">
+                    <a href="update_profile.php">Change Password</a>
+                    <a href="logout.php">Logout</a>
                 </div>
             </div>
+        </div>
         <!-- Header -->
         <div class="header" id="header">
             <button class="toggle-btn" id="toggleSidebar">
@@ -163,127 +163,137 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
                 <h2>Buat Laporan</h2>
             </div>
         </div>
-                <!-- Main Content -->
-                <div class="main" id="main">
-                    <div class="form-container">
-                        <?php if (isset($_GET['success'])): ?>
-                            <p class="success-message">Laporan berhasil dibuat!</p>
-                        <?php endif; ?>
-                        <form method="POST" enctype="multipart/form-data">
-                            <div class="form-group">
-                                <label for="nim_pelanggar">NIM / Nama Pelanggar</label>
-                                <div style="display: flex; gap: 10px;">
-                                    <input type="text" id="nim_pelanggar" name="nim_pelanggar" placeholder="Masukkan NIM/nama" value="<?= htmlspecialchars($_POST['nim_pelanggar'] ?? '') ?>" required>
-                                    <button type="button" class="submit-btn" onclick="checkNim()">Check</button>
-                                </div>
-                            </div>
-
-                            <?php if ($student): ?>
-                                <p style="color: green;">Mahasiswa found: <?= htmlspecialchars($student['nama']) ?> (NIM: <?= htmlspecialchars($student['nim']) ?>)</p>
-                            <?php elseif (!$student && isset($_POST['nim_pelanggar'])): ?>
-                                <p style="color: red;">Mahasiswa not found.</p>
-                            <?php endif; ?>
-
-                            <div class="form-group">
-                                <label for="jenis_pelanggaran">Jenis Pelanggaran</label>
-                                <select id="jenis_pelanggaran" name="jenis_pelanggaran" class="select2" required onchange="updateTingkatPelanggaran()">
-                                    <option value="" disabled selected>Pilih Pelanggaran</option>
-                                    <?php foreach (array_keys($options) as $jenis): ?>
-                                        <option value="<?= htmlspecialchars($jenis) ?>"><?= htmlspecialchars($jenis) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <p id="tingkat_pelanggaran" style="font-weight: bold; color: #333;"></p><br> <!-- Display as plain text -->
-                            </div>
-
-                            <div class="form-group">
-                                <label for="tanggal_pelanggaran">Tanggal Pelanggaran</label>
-                                <input type="date" id="tanggal_pelanggaran" name="tanggal_pelanggaran" value="<?= date('Y-m-d') ?>" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="bukti">Upload Bukti</label>
-                                <input type="file" id="bukti" name="bukti" accept=".jpg,.png,.pdf">
-                            </div>
-
-                            <button type="submit" name="submit_report" class="submit-btn">Submit Report</button>
-                        </form>
+        <!-- Main Content -->
+        <div class="main" id="main">
+            <div class="form-container">
+                <?php if (isset($_GET['success'])): ?>
+                    <p class="success-message">Laporan berhasil dibuat!</p>
+                <?php endif; ?>
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="nim_pelanggar">NIM / Nama Pelanggar</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="nim_pelanggar" name="nim_pelanggar" placeholder="Masukkan NIM/nama" value="<?= htmlspecialchars($_POST['nim_pelanggar'] ?? '') ?>" required>
+                            <button type="button" class="submit-btn" onclick="checkNim()">Check</button>
+                        </div>
                     </div>
-                </div>
+
+                    <?php if ($student): ?>
+                        <p style="color: green;">Mahasiswa found: <?= htmlspecialchars($student['nama']) ?> (NIM: <?= htmlspecialchars($student['nim']) ?>)</p>
+                    <?php elseif (!$student && isset($_POST['nim_pelanggar'])): ?>
+                        <p style="color: red;">Mahasiswa not found.</p>
+                    <?php endif; ?>
+
+                    <div class="form-group">
+                        <label for="jenis_pelanggaran">Jenis Pelanggaran</label>
+                        <select id="jenis_pelanggaran" name="jenis_pelanggaran" class="select2" required onchange="updateTingkatPelanggaran()">
+                            <option value="" disabled selected>Pilih Pelanggaran</option>
+                            <?php foreach (array_keys($options) as $jenis): ?>
+                                <option value="<?= htmlspecialchars($jenis) ?>"><?= htmlspecialchars($jenis) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <!-- Display tingkat pelanggaran directly below the dropdown -->
+                    <div class="form-group">
+                        <label for="tingkat_pelanggaran_display">Tingkat Pelanggaran</label>
+                        <div id="tingkat_pelanggaran_display" style="padding: 10px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 6px;  color: #333;">
+                            Pilih jenis pelanggaran untuk melihat tingkatnya.
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tanggal_pelanggaran">Tanggal Pelanggaran</label>
+                        <input type="date" id="tanggal_pelanggaran" name="tanggal_pelanggaran" value="<?= date('Y-m-d') ?>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bukti">Upload Bukti</label>
+                        <input type="file" id="bukti" name="bukti" accept=".jpg,.png,.pdf">
+                    </div>
+
+                    <button type="submit" name="submit_report" class="submit-btn">Submit Report</button>
+                </form>
             </div>
+        </div>
+        </div>
         <!-- Close database connection -->
         <?php sqlsrv_close($conn); ?>
 
         <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    $('#jenis_pelanggaran').select2({
-                        placeholder: 'Select',
-                        allowClear: true,
-                        dropdownAutoWidth: true,
-                        width: '100%'
-                    });
-
-                    const studentData = <?= $studentJson ?>;
-                    if (studentData && studentData.nim) {
-                        document.getElementById('nim_pelanggar').value = studentData.nim;
-                    }
+            document.addEventListener('DOMContentLoaded', function() {
+                $('#jenis_pelanggaran').select2({
+                    placeholder: 'Select',
+                    allowClear: true,
+                    dropdownAutoWidth: true,
+                    width: '100%'
                 });
 
-                const options = <?= $optionsJson ?>;
-
-                function updateTingkatPelanggaran() {
-                    const jenisPelanggaran = document.getElementById('jenis_pelanggaran').value;
-                    const tingkatPelanggaranText = document.getElementById('tingkat_pelanggaran');
-
-                    const tingkatValue = options[jenisPelanggaran];
-
-                    tingkatPelanggaranText.textContent = "Tingkat Pelanggaran: " + tingkatValue;
+                const studentData = <?= $studentJson ?>;
+                if (studentData && studentData.nim) {
+                    document.getElementById('nim_pelanggar').value = studentData.nim;
                 }
-                async function checkNim() {
-                    const nim = document.getElementById('nim_pelanggar').value.trim();
+            });
 
-                    if (!nim) {
-                        alert('Please enter a NIM or name to check.');
-                        return;
-                    }
+            const options = <?= $optionsJson ?>;
 
-                    try {
-                        const formData = new FormData();
-                        formData.append('nim_pelanggar', nim);
+            function updateTingkatPelanggaran() {
+                const jenisPelanggaran = document.getElementById('jenis_pelanggaran').value;
+                const tingkatPelanggaranDisplay = document.getElementById('tingkat_pelanggaran_display');
 
-                        const response = await fetch(window.location.href, {
-                            method: 'POST',
-                            body: formData
-                        });
+                if (options[jenisPelanggaran]) {
+                    tingkatPelanggaranDisplay.textContent = options[jenisPelanggaran];
+                } else {
+                    tingkatPelanggaranDisplay.textContent = "Tingkat pelanggaran tidak ditemukan.";
+                }
 
-                        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+                const tingkatValue = options[jenisPelanggaran];
 
-                        const html = await response.text();
+                tingkatPelanggaranText.textContent = "Tingkat Pelanggaran: " + tingkatValue;
+            }
+            async function checkNim() {
+                const nim = document.getElementById('nim_pelanggar').value.trim();
 
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(html, 'text/html');
+                if (!nim) {
+                    alert('Please enter a NIM or name to check.');
+                    return;
+                }
 
-                        const foundMessage = doc.querySelector('p[style="color: green;"]');
-                        const notFoundMessage = doc.querySelector('p[style="color: red;"]');
+                try {
+                    const formData = new FormData();
+                    formData.append('nim_pelanggar', nim);
 
-                        if (foundMessage) {
-                            alert(foundMessage.textContent);
-                            const nimValueMatch = foundMessage.textContent.match(/NIM:\s*(\S+?)(?:\s*\))/);
-                            if (nimValueMatch) {
-                                document.getElementById('nim_pelanggar').value = nimValueMatch[1]; // Extract NIM without parentheses
-                            }
-                        } else if (notFoundMessage) {
-                            alert(notFoundMessage.textContent);
-                        } else {
-                            alert('Unexpected response from the server.');
+                    const response = await fetch(window.location.href, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+
+                    const html = await response.text();
+
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+
+                    const foundMessage = doc.querySelector('p[style="color: green;"]');
+                    const notFoundMessage = doc.querySelector('p[style="color: red;"]');
+
+                    if (foundMessage) {
+                        alert(foundMessage.textContent);
+                        const nimValueMatch = foundMessage.textContent.match(/NIM:\s*(\S+?)(?:\s*\))/);
+                        if (nimValueMatch) {
+                            document.getElementById('nim_pelanggar').value = nimValueMatch[1]; // Extract NIM without parentheses
                         }
-
-                    } catch (error) {
-                        alert('Error checking NIM: ' + error.message);
+                    } else if (notFoundMessage) {
+                        alert(notFoundMessage.textContent);
+                    } else {
+                        alert('Unexpected response from the server.');
                     }
+
+                } catch (error) {
+                    alert('Error checking NIM: ' + error.message);
                 }
+            }
             document.addEventListener("DOMContentLoaded", function() {
                 const toggleBtn = document.querySelector(".toggle-btn");
                 const sidebar = document.querySelector(".sidebar");

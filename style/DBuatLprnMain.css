@@ -40,12 +40,14 @@
 .form-container label {
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
-    color: #555555; /* Warna teks gelap */
+    color: #000000; /* Warna teks gelap */
 }
 
 /* Input Fields */
 .form-container input,
 .form-container select {
+    width: 100%;
+    font-size: 14px;
     padding: 12px;
     border: 1px solid #ccc;
     border-radius: 6px;
