@@ -200,8 +200,12 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
                         </select>
                     </div>
 
+                    <!-- Display tingkat pelanggaran directly below the dropdown -->
                     <div class="form-group">
-                        <p id="tingkat_pelanggaran" style="font-weight: bold; color: #333;"></p><br> <!-- Display as plain text -->
+                        <label for="tingkat_pelanggaran_display">Tingkat Pelanggaran</label>
+                        <div id="tingkat_pelanggaran_display" style="padding: 10px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 6px;  color: #333;">
+                            Pilih jenis pelanggaran untuk melihat tingkatnya.
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -239,7 +243,13 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
 
             function updateTingkatPelanggaran() {
                 const jenisPelanggaran = document.getElementById('jenis_pelanggaran').value;
-                const tingkatPelanggaranText = document.getElementById('tingkat_pelanggaran');
+                const tingkatPelanggaranDisplay = document.getElementById('tingkat_pelanggaran_display');
+
+                if (options[jenisPelanggaran]) {
+                    tingkatPelanggaranDisplay.textContent = options[jenisPelanggaran];
+                } else {
+                    tingkatPelanggaranDisplay.textContent = "Tingkat pelanggaran tidak ditemukan.";
+                }
 
                 const tingkatValue = options[jenisPelanggaran];
 
@@ -288,17 +298,17 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
                     alert('Error checking NIM: ' + error.message);
                 }
             }
-        </script>
-        <script>
-            const toggleSidebar = document.getElementById('toggleSidebar');
-            const sidebar = document.getElementById('sidebar');
-            const header = document.getElementById('header');
-            const main = document.getElementById('main');
+            document.addEventListener("DOMContentLoaded", function() {
+                const toggleBtn = document.querySelector(".toggle-btn");
+                const sidebar = document.querySelector(".sidebar");
+                const main = document.querySelector(".main");
+                const header = document.querySelector(".header");
 
-            toggleSidebar.addEventListener('click', () => {
-                sidebar.classList.toggle('collapsed');
-                main.classList.toggle('collapsed');
-                header.classList.toggle('collapsed');
+                toggleBtn.addEventListener("click", () => {
+                    sidebar.classList.toggle("collapsed");
+                    main.classList.toggle("collapsed");
+                    header.classList.toggle("collapsed");
+                });
             });
         </script>
     </body>
