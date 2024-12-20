@@ -19,12 +19,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
     }
 
     // Retrieve the tingkat_pelanggaran filter from the query string
-    $filterLevel = isset($_GET['tingkat_pelanggaran']) ? intval($_GET['tingkat_pelanggaran']) : null;
-
-    // Validate tingkat_pelanggaran
-    if ($filterLevel === null) {
-        $filterLevel = 1;
-    }
+    $filterLevel = isset($_GET['tingkat_pelanggaran']) ? intval($_GET['tingkat_pelanggaran']) : 1;
 
     // Handle deletion of banding
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_banding'])) {
@@ -45,21 +40,21 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
     // SQL query to fetch filtered pelanggarans
     $query = "
 SELECT 
-p.id_pelanggaran, 
-p.jenis_pelanggaran, 
-p.tingkat_pelanggaran,
-p.tanggal_pelanggaran, 
-p.status,
-m.nim, 
-u.nama AS nama_mahasiswa 
+    p.id_pelanggaran, 
+    p.jenis_pelanggaran, 
+    p.tingkat_pelanggaran,
+    p.tanggal_pelanggaran, 
+    p.status,
+    m.nim, 
+    u.nama AS nama_mahasiswa 
 FROM 
-dbo.Pelanggaran p
+    dbo.Pelanggaran p
 JOIN 
-dbo.Mahasiswa m ON p.nim_pelanggar = m.nim
+    dbo.Mahasiswa m ON p.nim_pelanggar = m.nim
 JOIN 
-dbo.Users u ON m.user_id = u.user_id
+    dbo.Users u ON m.user_id = u.user_id
 WHERE 
-p.tingkat_pelanggaran = ? AND m.nim = (SELECT nim FROM dbo.Mahasiswa WHERE user_id = ?)
+    p.tingkat_pelanggaran = ? AND m.nim = (SELECT nim FROM dbo.Mahasiswa WHERE user_id = ?)
 ORDER BY p.id_pelanggaran
 ";
     $params = [$filterLevel, $_SESSION['user_key']];
@@ -115,7 +110,7 @@ ORDER BY p.id_pelanggaran
             <div class="profile">
                 <img src="img/profile.png" alt="Profile">
                 <span class="username">
-                    <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
+                    <h3 id="profile-name"><?php echo htmlspecialchars($_SESSION['profile_name']); ?></h3>
                 </span>
                 <div class="dropdown-content">
                     <a href="update_profile.php">Change Password</a>
@@ -123,7 +118,6 @@ ORDER BY p.id_pelanggaran
                 </div>
             </div>
         </div>
-        <!-- Header -->
         <div class="header" id="header">
             <button class="toggle-btn" id="toggleSidebar">
                 <i class="fas fa-bars"></i>
@@ -147,8 +141,6 @@ ORDER BY p.id_pelanggaran
                         </select>
                     </form>
                 </div>
-
-                <!-- Tabel Laporan -->
                 <table class="report-table">
                     <thead>
                         <tr>
@@ -164,16 +156,10 @@ ORDER BY p.id_pelanggaran
                         <?php if (!empty($filteredViolations)): ?>
                             <?php foreach ($filteredViolations as $pelanggaran): ?>
                                 <?php
-                                // Query to get the banding status and id_banding for the current id_pelanggaran
-                                $bandingQuery = "
-                            SELECT id_banding, kesepakatan 
-                            FROM dbo.Banding 
-                            WHERE id_pelanggaran = ?
-                            ";
+                                $bandingQuery = "SELECT id_banding, kesepakatan FROM dbo.Banding WHERE id_pelanggaran = ?";
                                 $params = [$pelanggaran['id_pelanggaran']];
                                 $bandingStmt = sqlsrv_query($conn, $bandingQuery, $params);
 
-                                // Default values
                                 $bandingStatus = "Belum Ada Banding";
                                 $idBanding = null;
 
@@ -188,11 +174,24 @@ ORDER BY p.id_pelanggaran
                                     }
                                 }
                                 ?>
+                                <?php
+                                $statusClass = '';
+                                if (!empty($pelanggaran['status'])) {
+                                    $status = strtolower(trim($pelanggaran['status']));
+                                    if ($status === 'pending') {
+                                        $statusClass = 'pending';
+                                    } elseif ($status === 'rejected') {
+                                        $statusClass = 'rejected';
+                                    } elseif ($status === 'reviewed') {
+                                        $statusClass = 'reviewed';
+                                    }
+                                }
+                                ?>
                                 <tr>
                                     <td><?= htmlspecialchars($pelanggaran['id_pelanggaran']) ?></td>
                                     <td><?= htmlspecialchars($pelanggaran['jenis_pelanggaran']) ?></td>
                                     <td><?= htmlspecialchars($pelanggaran['tanggal_pelanggaran']->format('Y-m-d')) ?></td>
-                                    <td><?= htmlspecialchars($pelanggaran['status']) ?></td>
+                                    <td class="<?= htmlspecialchars($statusClass) ?>"><?= htmlspecialchars($pelanggaran['status']) ?></td>
                                     <td><?= htmlspecialchars($bandingStatus) ?></td>
                                     <td>
                                         <?php if ($bandingStatus == 'Belum Ada Banding'): ?>
@@ -206,7 +205,6 @@ ORDER BY p.id_pelanggaran
                                         <?php else: ?>
                                             <button class="view-btn" disabled style="background-color: grey;">Edit Banding</button>
                                         <?php endif; ?>
-
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -219,13 +217,32 @@ ORDER BY p.id_pelanggaran
                 </table>
             </div>
         </div>
-
         <script>
+            $('#Tabel').on('draw.dt', function() {
+                $('tr.pending').css({
+                    'background-color': '#ffecb3',
+                    'color': '#b45f06'
+                });
+
+                $('td.rejected').css({
+                    'background-color': '#f8bbd0',
+                    /* Merah muda terang */
+                    'color': '#b71c1c',
+                    /* Teks merah gelap */
+                    'font-weight': 'bold'
+                });
+
+                $('tr.reviewed').css({
+                    'background-color': '#c8e6c9',
+                    'color': '#1b5e20'
+                });
+            });
+
+
             const toggleSidebar = document.getElementById('toggleSidebar');
             const sidebar = document.getElementById('sidebar');
             const header = document.getElementById('header');
             const main = document.getElementById('main');
-
             toggleSidebar.addEventListener('click', () => {
                 sidebar.classList.toggle('collapsed');
                 main.classList.toggle('collapsed');

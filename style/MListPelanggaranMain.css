@@ -134,3 +134,27 @@ button[disabled] {
     cursor: not-allowed;
     border: 1px solid grey;
 }
+/* Default styling for table cells */
+td {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Styling for status column */
+td.pending {
+    background-color: #ffecb3; /* Kuning terang */
+    color: #b45f06; /* Teks oranye gelap */
+    font-weight: bold;
+}
+
+/* Styling for status column */
+td.rejected {
+    background-color: #f36999; /* Warna latar belakang merah muda terang */
+    color: #b71c1c; /* Teks merah gelap */
+    font-weight: bold;
+}
+
+td.reviewed {
+    background-color: #c8e6c9; /* Hijau terang */
+    color: #1b5e20; /* Teks hijau gelap */
+    font-weight: bold;
+}
