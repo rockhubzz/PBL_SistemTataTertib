@@ -104,7 +104,7 @@ JOIN Mahasiswa m ON p.nim_pelanggar = m.nim
         <!-- Main Content -->
         <div class="main" id="main">
             <div class="content-container">
-                <h2>Data Mahasiswa</h2>
+                <h2>Surat Pernyataan Masuk</h2>
                 <div class="table-container">
                     <table id="Tabel">
                         <thead>
