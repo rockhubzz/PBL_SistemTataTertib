@@ -195,24 +195,22 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
 
         <script>
             $('#Tabel').on('draw.dt', function() {
-                $('tr.pending').css({
-                    'background-color': '#ffecb3',
-                    'color': '#b45f06'
-                });
+    // Apply styles to the Status column cells (td elements) only
+    $('td.pending').css({
+        'color': '#b45f06',  // Dark orange text
+        'font-weight': 'bold'
+    });
 
-                $('td.rejected').css({
-                    'background-color': '#f8bbd0',
-                    /* Merah muda terang */
-                    'color': '#b71c1c',
-                    /* Teks merah gelap */
-                    'font-weight': 'bold'
-                });
+    $('td.rejected').css({
+        'color': '#b71c1c',  // Dark red text
+        'font-weight': 'bold'
+    });
 
-                $('tr.reviewed').css({
-                    'background-color': '#c8e6c9',
-                    'color': '#1b5e20'
-                });
-            });
+    $('td.reviewed').css({
+        'color': '#1b5e20',  // Dark green text
+        'font-weight': 'bold'
+    });
+});
 
             const toggleSidebar = document.getElementById('toggleSidebar');
             const sidebar = document.getElementById('sidebar');
