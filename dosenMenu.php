@@ -122,7 +122,24 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
                         </thead>
                         <tbody>
                             <?php while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)): ?>
-                                <tr>
+                                <?php
+                                // Determine the CSS class based on the status
+                                $statusClass = '';
+                                switch (strtolower($row['status'])) {
+                                    case 'pending':
+                                        $statusClass = 'pending';
+                                        break;
+                                    case 'rejected':
+                                        $statusClass = 'rejected';
+                                        break;
+                                    case 'reviewed':
+                                        $statusClass = 'reviewed';
+                                        break;
+                                    default:
+                                        $statusClass = '';
+                                }
+                                ?>
+                                <tr class="<?= htmlspecialchars($statusClass) ?>">
                                     <td><?= htmlspecialchars($row['id_pelanggaran']) ?></td>
                                     <td><?= htmlspecialchars($row['nim_pelanggar']) ?></td>
                                     <td>
@@ -133,17 +150,17 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
                                         <?php endif; ?>
                                     </td>
                                     <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
-                                    </td>
                                     <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
                                     <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('Y-m-d')) ?></td>
                                     <td><?= htmlspecialchars($row['status']) ?></td>
-                                    <td><?php
+                                    <td>
+                                        <?php
                                         $url = "dsn_editLaporan.php?id_pelanggaran=" . urlencode($row['id_pelanggaran']);
                                         echo "<a href='{$url}' class='view-btn'>Edit</a>";
                                         ?>
                                     </td>
-
                                 </tr>
+
                             <?php endwhile; ?>
                         </tbody>
                     </table>
@@ -152,6 +169,13 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
         </div>
 
         <script>
+            $('#Tabel').on('draw.dt', function() {
+                $('tr.pending').css('background-color', '#fff3cd');
+                $('tr.rejected').css('background-color', '#f8d7da');
+                $('tr.reviewed').css('background-color', '#d4edda');
+            });
+
+
             const toggleSidebar = document.getElementById('toggleSidebar');
             const sidebar = document.getElementById('sidebar');
             const header = document.getElementById('header');

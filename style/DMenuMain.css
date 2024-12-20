@@ -51,19 +51,7 @@ tr:hover td {
     cursor: pointer;
     margin-right: 20px;
 }
-.action-btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-}
 
-.action-btn:hover {
-    background-color: #0056b3;
-}
 .header {
     position: fixed;
     top: 0;
@@ -79,19 +67,6 @@ tr:hover td {
     transition: left 0.3s ease, width 0.3s ease;
     width: calc(100% - 250px);
 }
-.action-btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.action-btn:hover {
-    background-color: #0056b3;
-}
 .view-btn {
     background-color: #4CAF50;
     color: white;
@@ -103,4 +78,30 @@ tr:hover td {
 
 .view-btn:hover {
     background-color: #45a049;
+}
+/* Default styling for rows */
+tr {
+    transition: background-color 0.3s ease;
+}
+
+/* Styling for rows based on status */
+tr.pending {
+    background-color: #fff3cd; /* Warna kuning muda */
+}
+
+tr.rejected {
+    background-color: #f8d7da; /* Merah muda */
+    color: #721c24; /* Warna teks */
+}
+
+tr.reviewed {
+    background-color: #d4edda; /* Hijau muda */
+    color: #155724; /* Warna teks */
+}
+
+
+/* Add hover effect for rows */
+tr:hover {
+    background-color: #e0e0e0; /* Abu muda */
+    color: #000; /* Teks lebih gelap */
 }
