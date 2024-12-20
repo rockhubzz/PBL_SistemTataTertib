@@ -229,24 +229,22 @@ ORDER BY p.id_pelanggaran
             });
 
             $('#Tabel').on('draw.dt', function() {
-                $('tr.pending').css({
-                    'background-color': '#ffecb3',
-                    'color': '#b45f06'
-                });
+    // Apply styles to the Status column cells (td elements) only
+    $('td.pending').css({
+        'color': '#b45f06',  // Dark orange text
+        'font-weight': 'bold'
+    });
 
-                $('td.rejected').css({
-                    'background-color': '#f8bbd0',
-                    /* Merah muda terang */
-                    'color': '#b71c1c',
-                    /* Teks merah gelap */
-                    'font-weight': 'bold'
-                });
+    $('td.rejected').css({
+        'color': '#b71c1c',  // Dark red text
+        'font-weight': 'bold'
+    });
 
-                $('tr.reviewed').css({
-                    'background-color': '#c8e6c9',
-                    'color': '#1b5e20'
-                });
-            });
+    $('td.reviewed').css({
+        'color': '#1b5e20',  // Dark green text
+        'font-weight': 'bold'
+    });
+});
 
         </script>
     </body>

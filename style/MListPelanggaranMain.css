@@ -40,12 +40,8 @@ td {
     background-color: #f9f9f9; /* Warna default sel */
 }
 
-tr:nth-child(even) td {
-    background-color: #f1f1f1; /* Warna baris genap */
-}
-
 tr:hover td {
-    background-color: #e1e1e1; /* Warna hover */
+    background-color: #ccc; /* Warna hover */
 }
 
 /* Button Styles */
@@ -148,13 +144,13 @@ td.pending {
 
 /* Styling for status column */
 td.rejected {
-    background-color: #f36999; /* Warna latar belakang merah muda terang */
+    background-color: #f8d7da; /* Merah muda */
     color: #b71c1c; /* Teks merah gelap */
     font-weight: bold;
 }
 
 td.reviewed {
-    background-color: #c8e6c9; /* Hijau terang */
+    background-color: #d4edda; /* Hijau muda */
     color: #1b5e20; /* Teks hijau gelap */
     font-weight: bold;
 }
