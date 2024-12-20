@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_user'])) {
         die("Delete failed: " . print_r(sqlsrv_errors(), true));
     }
 
-    // Redirect to refresh the page
+    // Redirect untuk refresh halaman setelah delete
     header("Location: " . $_SERVER['PHP_SELF'] . "?deleted=1");
     exit;
 }
@@ -124,6 +124,7 @@ if ($stmtSelect === false) {
 <script>
     var_dump($editUser);
 </script>
+
 <body>
     <div class="sidebar" id="sidebar">
         <div class="logo">
@@ -210,7 +211,7 @@ if ($stmtSelect === false) {
                                 <td><?php echo htmlspecialchars($row['role']); ?></td>
                                 <td>
                                     <!-- Delete User Form -->
-                                    <form method="POST" style="display: inline;">
+                                    <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>" style="display: inline;">
                                         <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($row['user_id']); ?>">
                                         <button type="submit" name="delete_user" class="delete-btn">Delete</button>
                                     </form>
@@ -228,6 +229,8 @@ if ($stmtSelect === false) {
             </div>
             <div class="form-container">
                 <h2><?php echo $editMode ? "Edit User" : "Tambah User"; ?></h2>
+
+                <!-- Success and Delete Messages -->
                 <?php if (isset($_GET['success'])): ?>
                     <p class="success-message">User berhasil ditambahkan!</p>
                 <?php endif; ?>
@@ -236,6 +239,7 @@ if ($stmtSelect === false) {
                 <?php endif; ?>
                 <form method="POST">
                     <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($editUser['user_id'] ?? ''); ?>">
+
                     <div class="form-group">
                         <label for="role">Role</label>
                         <select id="role" name="role" required <?php if ($editMode): echo 'disabled';
@@ -250,10 +254,12 @@ if ($stmtSelect === false) {
                         <label for="nim_nip">NIM/NIP</label>
                         <input type="text" id="nim_nip" name="nim_nip" value="<?php echo htmlspecialchars($editUser['nimp'] ?? ''); ?>" required>
                     </div>
+
                     <div class="form-group">
                         <label for="nama">Nama</label>
                         <input type="text" id="nama" name="nama" value="<?php echo htmlspecialchars($editUser['nama'] ?? ''); ?>" required>
                     </div>
+
                     <!-- Submit and Cancel -->
                     <div class="button-container">
                         <button type="submit" name="submit_user" class="submit-btn">
@@ -294,6 +300,8 @@ if ($stmtSelect === false) {
                 table.column(2).search(role).draw(); // Kolom index 2 adalah kolom "Role"
             });
         });
+
+        
     </script>
 </body>
 
