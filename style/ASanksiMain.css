@@ -114,8 +114,10 @@ th {
 .btn:hover {
     background-color: #0056b3;
 }
-textarea {
+textarea.sanksi {
     width: 500px;
     height: 100px;
     resize: none;
+    font-size: 14px; /* Menyesuaikan ukuran font */
+    padding: 8px; /* Memberikan padding agar teks tidak terlalu dekat dengan tepi */
 }
