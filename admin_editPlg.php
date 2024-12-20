@@ -150,18 +150,24 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Admin") {
         <!-- Main Content -->
         <div class="main">
             <h2 style="color: black">Manage Opsi Pelanggaran</h2>
-            <!-- Create Form -->
             <div class="form-container">
-                <form method="POST" action="">
-                    <label for="tingkat_pelanggaran">Tingkat Pelanggaran:</label>
-                    <input type="number" id="tingkat_pelanggaran" name="tingkat_pelanggaran" required>
-                    <br><br>
-                    <label for="deskripsi">Deskripsi:</label>
-                    <input type="text" id="deskripsi" name="deskripsi" required>
-                    <br><br>
-                    <button type="submit" name="create" class="btn">Create</button>
-                </form>
-            </div>
+    <form method="POST" action="">
+        <!-- Tingkat Pelanggaran -->
+        <div class="form-input">
+            <label for="tingkat_pelanggaran">Tingkat Pelanggaran : </label>
+            <input type="number" id="tingkat_pelanggaran" name="tingkat_pelanggaran" class="tingkat" required>
+        </div>
+        
+        <!-- Deskripsi -->
+        <div class="form-input">
+            <label for="deskripsi">Deskripsi : </label>
+            <input type="text" id="deskripsi" name="deskripsi" class="deskripsi" required>
+        </div>
+        
+        <!-- Tombol Create -->
+        <button type="submit" name="create" class="btn">Create</button>
+    </form>
+</div>
 
             <!-- Display Data -->
             <div class="table-container">

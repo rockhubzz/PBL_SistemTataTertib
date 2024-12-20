@@ -51,13 +51,66 @@ tr:hover td {
 
 /* Form Container Styling */
 .form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between form elements */
     padding: 20px;
     margin: 20px;
-    border-radius: 8px;
+    border-radius: 10px;
     background-color: #f9f9f9;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+/* Styling for form inputs and labels to align horizontally */
+.form-input {
+    display: flex;
+    align-items: center; /* Vertically center the label and input */
+    gap: 15px; /* Menambahkan jarak antara label dan input */
+    margin-bottom: 20px;
+}
 
+/* Label Styling */
+.form-container label {
+    font-size: 14px;
+    font-weight: bold;
+    width: 200px; /* Menentukan lebar label agar rata kiri */
+}
+
+/* Styling for the inputs */
+.deskripsi, .tingkat {
+    width: 100%; /* Membuat input mengambil lebar penuh form */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+}
+
+.deskripsi {
+    max-width: 500px;  /* Lebar maksimum untuk deskripsi */
+
+}
+
+.tingkat {
+    max-width: 150px;  /* Lebar maksimum untuk tingkat pelanggaran */
+
+    text-align: center;
+}
+
+/* Button Styling */
+.form-container button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    align-self: flex-start; /* Agar tombol Create rata kiri */
+}
+
+.form-container button:hover {
+    background-color: #0056b3;
+}
 /* Header Styling */
 .header {
     position: fixed;
@@ -95,7 +148,7 @@ tr:hover td {
 
 /* Button Styling */
 .btn {
-    padding: 5px 10px;
+    padding: 7px 12px;
     background-color: #007bff;
     color: white;
     border: none;
@@ -107,32 +160,10 @@ tr:hover td {
     background-color: #0056b3;
 }
 
-/* Deskripsi Input Width */
-.deskripsi {
-    width: 500px;
-}
 
-/* Tingkat Input Width */
-.tingkat {
-    width: 60px;
-    text-align: center;
-}
-
-/* Save Button */
-.save-btn {
-    background-color: #27365a;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.save-btn:hover {
-    background-color: #1b2540;
-}
 /* Delete Button Styling */
 .btn.delete-btn {
+    padding: 6px 10px;
     background-color: red;
     color: white;
 }
