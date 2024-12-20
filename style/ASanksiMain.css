@@ -30,7 +30,7 @@ tr:hover {
     background-color: #e0e0e0; /* Warna saat hover */
 }
 tr:hover td {
-    background-color: #f1f1f1; /* Warna lebih terang saat hover */
+    background-color: #ccc; /* Warna lebih terang saat hover */
     transition: background-color 0.3s;
 }
 
