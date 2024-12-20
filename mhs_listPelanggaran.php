@@ -218,6 +218,16 @@ ORDER BY p.id_pelanggaran
             </div>
         </div>
         <script>
+            const toggleSidebar = document.getElementById('toggleSidebar');
+            const sidebar = document.getElementById('sidebar');
+            const header = document.getElementById('header');
+            const main = document.getElementById('main');
+            toggleSidebar.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+                main.classList.toggle('collapsed');
+                header.classList.toggle('collapsed');
+            });
+
             $('#Tabel').on('draw.dt', function() {
                 $('tr.pending').css({
                     'background-color': '#ffecb3',
@@ -238,16 +248,6 @@ ORDER BY p.id_pelanggaran
                 });
             });
 
-
-            const toggleSidebar = document.getElementById('toggleSidebar');
-            const sidebar = document.getElementById('sidebar');
-            const header = document.getElementById('header');
-            const main = document.getElementById('main');
-            toggleSidebar.addEventListener('click', () => {
-                sidebar.classList.toggle('collapsed');
-                main.classList.toggle('collapsed');
-                header.classList.toggle('collapsed');
-            });
         </script>
     </body>
 
