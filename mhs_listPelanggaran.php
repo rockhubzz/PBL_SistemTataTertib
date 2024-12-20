@@ -19,7 +19,8 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
     }
 
     // Retrieve the tingkat_pelanggaran filter from the query string
-    $filterLevel = isset($_GET['tingkat_pelanggaran']) ? intval($_GET['tingkat_pelanggaran']) : 1;
+    // If no filter is provided, set the filter to "all" (0 or another value that means "show all levels")
+    $filterLevel = isset($_GET['tingkat_pelanggaran']) ? intval($_GET['tingkat_pelanggaran']) : 0;
 
     // Handle deletion of banding
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_banding'])) {
@@ -38,26 +39,48 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
     }
 
     // SQL query to fetch filtered pelanggarans
-    $query = "
-SELECT 
-    p.id_pelanggaran, 
-    p.jenis_pelanggaran, 
-    p.tingkat_pelanggaran,
-    p.tanggal_pelanggaran, 
-    p.status,
-    m.nim, 
-    u.nama AS nama_mahasiswa 
-FROM 
-    dbo.Pelanggaran p
-JOIN 
-    dbo.Mahasiswa m ON p.nim_pelanggar = m.nim
-JOIN 
-    dbo.Users u ON m.user_id = u.user_id
-WHERE 
-    p.tingkat_pelanggaran = ? AND m.nim = (SELECT nim FROM dbo.Mahasiswa WHERE user_id = ?)
-ORDER BY p.id_pelanggaran
-";
-    $params = [$filterLevel, $_SESSION['user_key']];
+    // If $filterLevel is 0 (showing all levels), remove the WHERE condition for tingkat_pelanggaran
+    if ($filterLevel == 0) {
+        $query = "
+        SELECT 
+            p.id_pelanggaran, 
+            p.jenis_pelanggaran, 
+            p.tingkat_pelanggaran,
+            p.tanggal_pelanggaran, 
+            p.status,
+            m.nim, 
+            u.nama AS nama_mahasiswa 
+        FROM 
+            dbo.Pelanggaran p
+        JOIN 
+            dbo.Mahasiswa m ON p.nim_pelanggar = m.nim
+        JOIN 
+            dbo.Users u ON m.user_id = u.user_id
+        WHERE 
+            m.nim = (SELECT nim FROM dbo.Mahasiswa WHERE user_id = ?)
+        ORDER BY p.id_pelanggaran";
+    } else {
+        $query = "
+        SELECT 
+            p.id_pelanggaran, 
+            p.jenis_pelanggaran, 
+            p.tingkat_pelanggaran,
+            p.tanggal_pelanggaran, 
+            p.status,
+            m.nim, 
+            u.nama AS nama_mahasiswa 
+        FROM 
+            dbo.Pelanggaran p
+        JOIN 
+            dbo.Mahasiswa m ON p.nim_pelanggar = m.nim
+        JOIN 
+            dbo.Users u ON m.user_id = u.user_id
+        WHERE 
+            p.tingkat_pelanggaran = ? AND m.nim = (SELECT nim FROM dbo.Mahasiswa WHERE user_id = ?)
+        ORDER BY p.id_pelanggaran";
+    }
+
+    $params = $filterLevel == 0 ? [$_SESSION['user_key']] : [$filterLevel, $_SESSION['user_key']];
     $stmt = sqlsrv_query($conn, $query, $params);
 
     if ($stmt === false) {
@@ -133,6 +156,7 @@ ORDER BY p.id_pelanggaran
                     <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="get">
                         <label for="tingkat_pelanggaran">Filter by Tingkat Pelanggaran:</label>
                         <select name="tingkat_pelanggaran" id="tingkat_pelanggaran" onchange="this.form.submit()">
+                            <option value="0" <?= $filterLevel == 0 ? 'selected' : '' ?>>Semua Tingkat</option>
                             <option value="1" <?= $filterLevel == 1 ? 'selected' : '' ?>>Tingkat 1</option>
                             <option value="2" <?= $filterLevel == 2 ? 'selected' : '' ?>>Tingkat 2</option>
                             <option value="3" <?= $filterLevel == 3 ? 'selected' : '' ?>>Tingkat 3</option>
@@ -227,25 +251,6 @@ ORDER BY p.id_pelanggaran
                 main.classList.toggle('collapsed');
                 header.classList.toggle('collapsed');
             });
-
-            $('#Tabel').on('draw.dt', function() {
-    // Apply styles to the Status column cells (td elements) only
-    $('td.pending').css({
-        'color': '#b45f06',  // Dark orange text
-        'font-weight': 'bold'
-    });
-
-    $('td.rejected').css({
-        'color': '#b71c1c',  // Dark red text
-        'font-weight': 'bold'
-    });
-
-    $('td.reviewed').css({
-        'color': '#1b5e20',  // Dark green text
-        'font-weight': 'bold'
-    });
-});
-
         </script>
     </body>
 
