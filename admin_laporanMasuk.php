@@ -167,19 +167,18 @@ ORDER BY p.id_pelanggaran DESC
                                     <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
                                     <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
                                     <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('d-m-Y')) ?></td>
-                                    <td><?php
-                                        if ($row['laporan_banding']): echo $row['laporan_banding'];
-                                        else: echo 'Belum ada banding';
-                                        endif; ?></td>
-                                    <td><?php
-                                        if ($row['status_banding'] == null) {
+                                    <td><?= $row['laporan_banding'] ? htmlspecialchars($row['laporan_banding']) : 'Belum ada banding' ?></td>
+                                    <td>
+                                        <?php
+                                        if ($row['status_banding'] === null) {
                                             echo 'Belum ada banding';
                                         } elseif ($row['status_banding'] == 0) {
                                             echo 'Ditolak pelapor';
                                         } elseif ($row['status_banding'] == 1) {
                                             echo 'Diterima pelapor';
                                         }
-                                        ?></td>
+                                        ?>
+                                    </td>
                                     <td>
                                         <select name="status[<?= $row['id_pelanggaran'] ?>]">
                                             <option value="Pending" <?= $row['status'] == 'Pending' ? 'selected' : '' ?>>Pending</option>
@@ -187,16 +186,15 @@ ORDER BY p.id_pelanggaran DESC
                                             <option value="Rejected" <?= $row['status'] == 'Rejected' ? 'selected' : '' ?>>Rejected</option>
                                         </select>
                                     </td>
-                                    <td><?php
-                                        $url = "admin_editLaporan.php?id_pelanggaran=" . urlencode($row['id_pelanggaran']);
-                                        echo "<a href='{$url}'class='save-btn'>Edit</a>";
-                                        ?>
+                                    <td>
+                                        <a href="admin_editLaporan.php?id_pelanggaran=<?= urlencode($row['id_pelanggaran']) ?>" class="edit-btn">Edit</a>
+                                        <button type="submit" name="save[<?= $row['id_pelanggaran'] ?>]" class="save-btn">Save</button>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>
                         </tbody>
                     </table>
-                    <button type="submit" class="save-btn">Save Changes</button>
+                    <button type="submit" class="savec-btn">Save Changes</button>
                 </form>
             </div>
         </div>

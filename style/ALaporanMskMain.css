@@ -69,16 +69,53 @@ tr:hover td {
     transition: left 0.3s ease, width 0.3s ease;
     width: calc(100% - 250px);
 }
-/* Button Style */
-.save-btn {
-    background-color: #007bff;
+/* Tombol Edit */
+.edit-btn {
+    background-color: #4CAF50; /* Warna hijau */
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 6px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.edit-btn:hover {
+    background-color: #45a049; /* Hijau lebih gelap saat hover */
+    transform: scale(1.05); /* Sedikit memperbesar */
+}
+
+/* Tombol Save */
+.save-btn {
+    background-color: #007bff; /* Warna biru */
+    color: white;
+    border: none;
+    padding: 8px 13px;
     border-radius: 5px;
     cursor: pointer;
 }
 .save-btn:hover {
-    background-color: #0056b3; /* Warna lebih gelap */
+    background-color: #0056b3; /* Biru lebih gelap saat hover */
     transform: scale(1.05); /* Sedikit memperbesar */
+}
+/* Tombol Save */
+.savec-btn {
+    background-color: #007bff; /* Warna biru */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.savec-btn:hover {
+    background-color: #0056b3; /* Biru lebih gelap saat hover */
+    transform: scale(1.05); /* Sedikit memperbesar */
+}
+
+/* Tentukan lebar tabel *
+
+/* Sesuaikan ukuran tombol */
+.edit-btn,
+.save-btn {
+    display: inline-block; /* Pastikan tombol ditampilkan secara horizontal */
+
 }
