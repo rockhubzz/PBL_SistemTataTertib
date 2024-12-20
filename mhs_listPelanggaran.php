@@ -154,7 +154,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
             <div class="table-container">
                 <div class="filter-section">
                     <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="get">
-                        <label for="tingkat_pelanggaran">Filter by Tingkat Pelanggaran:</label>
+                        <label for="tingkat_pelanggaran">Filter by Tingkat Pelanggaran : </label>
                         <select name="tingkat_pelanggaran" id="tingkat_pelanggaran" onchange="this.form.submit()">
                             <option value="0" <?= $filterLevel == 0 ? 'selected' : '' ?>>Semua Tingkat</option>
                             <option value="1" <?= $filterLevel == 1 ? 'selected' : '' ?>>Tingkat 1</option>

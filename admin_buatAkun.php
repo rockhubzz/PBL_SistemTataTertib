@@ -45,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_user'])) {
         }
     } else {
         // Add new user
+        // Example of adding a new user
         $queryInsert = "EXEC AddUser @NimpUser = ?, @Nama = ?, @Role = ?";
         $paramsInsert = [$nim_nip, $nama, $role];
         $stmtInsert = sqlsrv_query($conn, $queryInsert, $paramsInsert);
@@ -75,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_user'])) {
     exit;
 }
 
-// Handle edit user action
+// Fetch user data for editing
 if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['edit_user'])) {
     $userID = intval($_GET['edit_user']);
     $queryGetUser = "EXEC GetEditUser @UserID = ?";
@@ -86,7 +87,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['edit_user'])) {
         die("Query failed: " . print_r(sqlsrv_errors(), true));
     }
 
+    // Ensure the fetched user data is properly assigned to $editUser
     $editUser = sqlsrv_fetch_array($stmtGetUser, SQLSRV_FETCH_ASSOC);
+
+    // Check if data is being fetched correctly
+    if (!$editUser) {
+        die("No user found for editing.");
+    }
+
     $editMode = true;
 }
 
@@ -113,7 +121,9 @@ if ($stmtSelect === false) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 </head>
-
+<script>
+    var_dump($editUser);
+</script>
 <body>
     <div class="sidebar" id="sidebar">
         <div class="logo">
@@ -172,11 +182,10 @@ if ($stmtSelect === false) {
             <div class="user-list-container">
                 <h2>Daftar User</h2>
 
-                <!-- Filter Dropdown -->
-                <div class="filter-container">
-                    <label for="filterRole">Filter Role:</label>
-                    <select id="filterRole">
-                        <option value="">Semua</option>
+                <div class="form-group">
+                    <label for="filterRole">Filter by Role</label>
+                    <select id="filterRole" class="filter-role">
+                        <option value="">Semua User</option>
                         <option value="Admin">Admin</option>
                         <option value="Dosen">Dosen</option>
                         <option value="Mahasiswa">Mahasiswa</option>
@@ -236,6 +245,7 @@ if ($stmtSelect === false) {
                             <option value="Mahasiswa" <?php echo $editUser['role'] == "Mahasiswa" ? "selected" : ""; ?>>Mahasiswa</option>
                         </select>
                     </div>
+
                     <div class="form-group">
                         <label for="nim_nip">NIM/NIP</label>
                         <input type="text" id="nim_nip" name="nim_nip" value="<?php echo htmlspecialchars($editUser['nimp'] ?? ''); ?>" required>
@@ -246,15 +256,13 @@ if ($stmtSelect === false) {
                     </div>
                     <!-- Submit and Cancel -->
                     <div class="button-container">
-    <button type="submit" name="submit_user" class="submit-btn">
-        <?php echo $editMode ? "Update User" : "Tambah User"; ?>
-    </button>
-    <?php if ($editMode): ?>
-        <a href="admin_buatAkun.php" class="cancel-btn">Batal</a>
-    <?php endif; ?>
-</div>
-
-                </form>
+                        <button type="submit" name="submit_user" class="submit-btn">
+                            <?php echo $editMode ? "Update User" : "Tambah User"; ?>
+                        </button>
+                        <?php if ($editMode): ?>
+                            <a href="admin_buatAkun.php" class="cancel-btn">Batal</a>
+                        <?php endif; ?>
+                    </div>
             </div>
         </div>
     </div>
@@ -273,23 +281,20 @@ if ($stmtSelect === false) {
             });
         });
 
-    $(document).ready(function () {
-        // Inisialisasi DataTable
-        const table = $('#Tabel').DataTable({
-            language: {
-                url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json"
-            }
+        $(document).ready(function() {
+            // Inisialisasi DataTable
+            const table = $('#Tabel').DataTable({
+                language: {
+                    url: "https://cdn.datatables.net/plug-ins/1.13.6/i18n/id.json"
+                }
+            });
+            // Filter Role
+            $('#filterRole').on('change', function() {
+                const role = $(this).val(); // Ambil nilai dari dropdown filter
+                table.column(2).search(role).draw(); // Kolom index 2 adalah kolom "Role"
+            });
         });
-
-        // Filter Role
-        $('#filterRole').on('change', function () {
-            const role = $(this).val(); // Ambil nilai dari dropdown filter
-            table.column(2).search(role).draw(); // Kolom index 2 adalah kolom "Role"
-        });
-    });
-        
     </script>
-    
 </body>
 
 </html>
