@@ -3,7 +3,7 @@
     width: calc(100% - 250px); /* Lebar default saat sidebar penuh */
     margin-left: 250px; /* Margin sesuai ukuran sidebar default */
     margin-top: 80px;
-    padding: 30px;
+    padding: 20px;
     background-color: #f4f4f8;
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
@@ -28,12 +28,13 @@
 
 /* Card Style for Forms */
 .form-container {
-    padding: 25px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); /* Efek bayangan halus */
-}
 
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 .form-container .form-group {
     margin-bottom: 20px; /* Memberikan jarak antar elemen form */
 }
@@ -43,11 +44,15 @@
     font-family: 'Poppins', sans-serif;
     font-size: 14px;
     color: #555555; /* Warna teks gelap */
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
 }
 
 /* Input Fields */
 .form-container input,
 .form-container select {
+    width: 100%;
     padding: 12px;
     border: 1px solid #ccc;
     border-radius: 6px;
