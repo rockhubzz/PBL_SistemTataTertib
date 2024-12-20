@@ -121,39 +121,40 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
                             </tr>
                         </thead>
                         <tbody>
-                            <?php while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)): ?>
-                                <?php
-                                // Determine the CSS class based on the status
-                                $statusClass = '';
-                                switch (strtolower($row['status'])) {
-                                    case 'pending':
-                                        $statusClass = 'pending';
-                                        break;
-                                    case 'rejected':
-                                        $statusClass = 'rejected';
-                                        break;
-                                    case 'reviewed':
-                                        $statusClass = 'reviewed';
-                                        break;
-                                    default:
-                                        $statusClass = '';
-                                }
-                                ?>
-                                <tr class="<?= htmlspecialchars($statusClass) ?>">
-                                    <td><?= htmlspecialchars($row['id_pelanggaran']) ?></td>
-                                    <td><?= htmlspecialchars($row['nim_pelanggar']) ?></td>
-                                    <td>
-                                        <?php if (!empty($row['bukti'])): ?>
-                                            <a href="uploads/<?= htmlspecialchars($row['bukti']) ?>" target="_blank"><?= htmlspecialchars($row['bukti']) ?></a>
-                                        <?php else: ?>
-                                            <span>Tidak ada</span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
-                                    <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
-                                    <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('Y-m-d')) ?></td>
-                                    <td><?= htmlspecialchars($row['status']) ?></td>
-                                    <td>
+                        <?php
+while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)):
+    // Default empty class
+    $statusClass = '';  
+    if (!empty($row['status'])) {
+        // Determine the status and assign appropriate class
+        $status = strtolower(trim($row['status']));
+        if ($status === 'pending') {
+            $statusClass = 'pending';  // Class for Pending
+        } elseif ($status === 'rejected') {
+            $statusClass = 'rejected';  // Class for Rejected
+        } elseif ($status === 'reviewed') {
+            $statusClass = 'reviewed';  // Class for Reviewed
+        }
+    }
+?>
+<tr class="<?= $statusClass ?>">
+    <td><?= htmlspecialchars($row['id_pelanggaran']) ?></td>
+    <td><?= htmlspecialchars($row['nim_pelanggar']) ?></td>
+    <td>
+        <?php if (!empty($row['bukti'])): ?>
+            <a href="uploads/<?= htmlspecialchars($row['bukti']) ?>" target="_blank"><?= htmlspecialchars($row['bukti']) ?></a>
+        <?php else: ?>
+            <span>Tidak ada</span>
+        <?php endif; ?>
+    </td>
+    <td><?= htmlspecialchars($row['jenis_pelanggaran']) ?></td>
+    <td><?= htmlspecialchars($row['tingkat_pelanggaran']) ?></td>
+    <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('d-m-Y')) ?></td>
+    
+    <!-- Status Column with Dynamic Class -->
+    <td class="<?= $statusClass ?>"><?= htmlspecialchars($row['status']) ?></td>
+    
+    <td>
                                         <?php
                                         $url = "dsn_editLaporan.php?id_pelanggaran=" . urlencode($row['id_pelanggaran']);
                                         echo "<a href='{$url}' class='view-btn'>Edit</a>";
@@ -169,12 +170,6 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
         </div>
 
         <script>
-            $('#Tabel').on('draw.dt', function() {
-                $('tr.pending').css('background-color', '#fff3cd');
-                $('tr.rejected').css('background-color', '#f8d7da');
-                $('tr.reviewed').css('background-color', '#d4edda');
-            });
-
 
             const toggleSidebar = document.getElementById('toggleSidebar');
             const sidebar = document.getElementById('sidebar');
@@ -198,6 +193,24 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
                     }
                 });
             });
+
+            $('#Tabel').on('draw.dt', function() {
+    // Apply styles to the Status column cells (td elements) only
+    $('td.pending').css({
+        'color': '#b45f06',  // Dark orange text
+        'font-weight': 'bold'
+    });
+
+    $('td.rejected').css({
+        'color': '#b71c1c',  // Dark red text
+        'font-weight': 'bold'
+    });
+
+    $('td.reviewed').css({
+        'color': '#1b5e20',  // Dark green text
+        'font-weight': 'bold'
+    });
+});
         </script>
     </body>
 

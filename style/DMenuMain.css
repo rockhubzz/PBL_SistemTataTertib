@@ -40,7 +40,7 @@ tr:hover {
     background-color: #e0e0e0; /* Warna saat hover */
 }
 tr:hover td {
-    background-color: #f1f1f1; /* Warna lebih terang saat hover */
+    background-color: #ccc; /* Warna lebih terang saat hover */
     transition: background-color 0.3s;
 }
 
@@ -80,28 +80,26 @@ tr:hover td {
     background-color: #45a049;
 }
 /* Default styling for rows */
-tr {
-    transition: background-color 0.3s ease;
+td {
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Styling for rows based on status */
-tr.pending {
-    background-color: #fff3cd; /* Warna kuning muda */
+/* Styling for status column */
+td.pending {
+    background-color: #ffecb3; /* Kuning terang */
+    color: #b45f06; /* Teks oranye gelap */
+    font-weight: bold;
 }
 
-tr.rejected {
+/* Styling for status column */
+td.rejected {
     background-color: #f8d7da; /* Merah muda */
     color: #721c24; /* Warna teks */
+    font-weight: bold;
 }
 
-tr.reviewed {
+td.reviewed {
     background-color: #d4edda; /* Hijau muda */
     color: #155724; /* Warna teks */
-}
-
-
-/* Add hover effect for rows */
-tr:hover {
-    background-color: #e0e0e0; /* Abu muda */
-    color: #000; /* Teks lebih gelap */
+    font-weight: bold;
 }
