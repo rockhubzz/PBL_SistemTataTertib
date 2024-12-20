@@ -1,6 +1,6 @@
 /* Main Content Area */
 .main {
-    margin-top: 100px; /* Untuk memberi ruang di bawah header */
+    margin-top: 80px; /* Untuk memberi ruang di bawah header */
     margin-left: 250px; /* Margin saat sidebar lebar penuh */
     padding: 20px;
     transition: margin-left 0.3s ease, width 0.3s ease;
