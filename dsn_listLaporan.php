@@ -77,7 +77,7 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
 
     <body>
         <div class="sidebar" id="sidebar">
-        <div class="logo">
+            <div class="logo">
                 <img src="img/LogoPLTK.png" alt="Logo">
             </div>
             <div class="menu">
@@ -93,8 +93,8 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
                 <a href="dsn_laporanBanding.php" class="menu-item">
                     <i class="fas fa-balance-scale"></i><span>Laporan Banding</span>
                 </a>
-        </div>
-        <div class="profile">
+            </div>
+            <div class="profile">
                 <img src="img/profile.png" alt="Profile">
                 <span class="username">
                     <h3 id="profile-name"><?php echo $_SESSION['profile_name']; ?></h3>
@@ -134,7 +134,24 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
                         </thead>
                         <tbody>
                             <?php while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)): ?>
-                                <tr>
+                                <?php
+                                // Determine the CSS class based on the status
+                                $statusClass = '';
+                                switch (strtolower($row['status'])) {
+                                    case 'pending':
+                                        $statusClass = 'pending';
+                                        break;
+                                    case 'rejected':
+                                        $statusClass = 'rejected';
+                                        break;
+                                    case 'reviewed':
+                                        $statusClass = 'reviewed';
+                                        break;
+                                    default:
+                                        $statusClass = '';
+                                }
+                                ?>
+                                <tr class="<?= $statusClass ?>">
                                     <td><?= htmlspecialchars($row['id_pelanggaran']) ?></td>
                                     <td><?= htmlspecialchars($row['nim_pelanggar']) ?></td>
                                     <td>
@@ -149,19 +166,18 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
                                     <td><?= htmlspecialchars($row['tanggal_pelanggaran']->format('d-m-Y')) ?></td>
                                     <td><?= htmlspecialchars($row['status']) ?></td>
                                     <td>
-    <!-- Action buttons container -->
-    <div class="action-btn-container">
-        <!-- Edit Button -->
-        <a href="dsn_editLaporan.php?id_pelanggaran=<?= urlencode($row['id_pelanggaran']) ?>" class="action-btn">Edit</a>
+                                        <!-- Action buttons container -->
+                                        <div class="action-btn-container">
+                                            <!-- Edit Button -->
+                                            <a href="dsn_editLaporan.php?id_pelanggaran=<?= urlencode($row['id_pelanggaran']) ?>" class="action-btn">Edit</a>
 
-        <!-- Delete Button -->
-        <form method="POST" style="display:inline;">
-            <input type="hidden" name="id_pelanggaran" value="<?= htmlspecialchars($row['id_pelanggaran']) ?>">
-            <button type="submit" name="delete" class="delete-btn">Hapus</button>
-        </form>
-    </div>
-</td>
-
+                                            <!-- Delete Button -->
+                                            <form method="POST" style="display:inline;">
+                                                <input type="hidden" name="id_pelanggaran" value="<?= htmlspecialchars($row['id_pelanggaran']) ?>">
+                                                <button type="submit" name="delete" class="delete-btn">Hapus</button>
+                                            </form>
+                                        </div>
+                                    </td>
                                 </tr>
                             <?php endwhile; ?>
                         </tbody>
@@ -170,18 +186,24 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Dosen") {
             </div>
         </div>
         <script>
-    document.addEventListener("DOMContentLoaded", function() {
-    const toggleBtn = document.querySelector(".toggle-btn");
-    const sidebar = document.querySelector(".sidebar");
-    const main = document.querySelector(".main");
-    const header = document.querySelector(".header");
-
-    toggleBtn.addEventListener("click", () => {
-        sidebar.classList.toggle("collapsed");
-        main.classList.toggle("collapsed");
-        header.classList.toggle("collapsed");
-    });
+            $('#Tabel').on('draw.dt', function() {
+    $('tr.pending').css('background-color', '#fff3cd');
+    $('tr.rejected').css('background-color', '#f8d7da');
+    $('tr.reviewed').css('background-color', '#d4edda');
 });
+
+            document.addEventListener("DOMContentLoaded", function() {
+                const toggleBtn = document.querySelector(".toggle-btn");
+                const sidebar = document.querySelector(".sidebar");
+                const main = document.querySelector(".main");
+                const header = document.querySelector(".header");
+
+                toggleBtn.addEventListener("click", () => {
+                    sidebar.classList.toggle("collapsed");
+                    main.classList.toggle("collapsed");
+                    header.classList.toggle("collapsed");
+                });
+            });
 
             $(document).ready(function() {
                 $('#Tabel').DataTable({

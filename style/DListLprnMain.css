@@ -119,7 +119,7 @@ tr:hover td {
 }
 
 .action-btn:hover {
-    padding: 7px 8px;
+    padding: 7px 10px;
     background-color: #0056b3;
 }
 
@@ -135,4 +135,30 @@ tr:hover td {
 
 .delete-btn:hover {
     background-color: #aa1414;
+}
+/* Default styling for rows */
+tr {
+    transition: background-color 0.3s ease;
+}
+
+/* Styling for rows based on status */
+tr.pending {
+    background-color: #fff3cd !important; /* Warna kuning muda */
+}
+
+
+tr.rejected {
+    background-color: #f8d7da; /* Merah muda */
+    color: #721c24; /* Warna teks */
+}
+
+tr.reviewed {
+    background-color: #d4edda; /* Hijau muda */
+    color: #155724; /* Warna teks */
+}
+
+/* Add hover effect for rows */
+tr:hover {
+    background-color: #e0e0e0; /* Abu muda */
+    color: #000; /* Teks lebih gelap */
 }
