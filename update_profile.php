@@ -27,9 +27,9 @@ if (!$conn) {
 // Initialize variables
 $user_key = $_SESSION['user_key'];
 $message = "";
+$success_flag = false; // Flag to indicate success
 
 // Fetch current username
-
 $current_username = "";
 $query = "SELECT username FROM dbo.Users WHERE user_id = ?";
 $stmt = sqlsrv_query($conn, $query, array($user_key));
@@ -37,6 +37,7 @@ if ($stmt && sqlsrv_has_rows($stmt)) {
     $row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC);
     $current_username = $row['username'];
 }
+
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $new_password = $_POST['new_password'];
@@ -49,9 +50,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $update_stmt = sqlsrv_query($conn, $update_query, $params);
 
         if ($update_stmt) {
-            $message = "Profile updated successfully!";
+            $success_flag = true; // Set success flag
+            $message = "Password changed successfully!";
         } else {
-            $message = "Failed to update profile: " . print_r(sqlsrv_errors(), true);
+            $message = "Failed to update password: " . print_r(sqlsrv_errors(), true);
         }
     } else {
         $message = "Passwords do not match. Please try again.";
@@ -66,6 +68,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="style/Password.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <title>Update Profile</title>
+    <script>
+        // Function to show success alert and redirect to logout
+        function showSuccessAndLogout() {
+            alert("Password changed successfully!");
+            window.location.href = "logout.php";
+        }
+    </script>
 </head>
 <body>
 <div class="update-container">
@@ -80,6 +89,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <?= htmlspecialchars($message) ?>
             </div>
         <?php endif; ?>
+        <?php if ($success_flag): ?>
+            <script>
+                // Trigger the alert and redirect if password was successfully updated
+                showSuccessAndLogout();
+            </script>
+        <?php endif; ?>
         <form action="update_profile.php" method="post">
             <div class="form-group">
                 <label for="new_password"><i class="fas fa-key"></i> New Password:</label>
@@ -91,10 +106,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Update</button>
         </form>
-        <!-- Back to Login Link -->
-        <div class="actions">
-            <a href="loginPage.php">Back to Login</a>
-        </div>
     </div>
 </body>
 </html>
