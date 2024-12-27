@@ -1,44 +1,79 @@
 <?php
 session_start();
-if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
-    $current_page = basename($_SERVER['PHP_SELF']);
-    $config = parse_ini_file('db_config.ini');
 
-    // Extract connection details
+// Cek apakah pengguna adalah Mahasiswa
+function checkMahasiswaSession() {
+    if (empty($_SESSION['user_key']) || $_SESSION['role'] !== "Mahasiswa") {
+        header("location: logout.php");
+        exit;
+    }
+}
+
+// Koneksi ke database SQL Server
+function connectToDatabase() {
+    $config = parse_ini_file('db_config.ini');
     $serverName = $config['serverName'];
     $connectionInfo = array(
         "Database" => $config['database'],
         "UID" => $config['username'],
         "PWD" => $config['password']
     );
-    $conn = sqlsrv_connect($serverName, $connectionInfo);
 
+    $conn = sqlsrv_connect($serverName, $connectionInfo);
     if (!$conn) {
         die("Connection failed: " . print_r(sqlsrv_errors(), true));
     }
-    $query = "
-    SELECT 
-        tingkat_pelanggaran, 
-        jumlah_pelanggaran
-    FROM 
-        dbo.RangkumanPelanggaran
-    WHERE 
-        nim = (SELECT nim FROM Mahasiswa WHERE user_id = ?)
-    ORDER BY 
-        tingkat_pelanggaran;
-";
-    $params = [$_SESSION['user_key']];
-    $stmt = sqlsrv_query($conn, $query, $params);
+    return $conn;
+}
 
+// Ambil data pelanggaran berdasarkan user_key
+function getViolationsData($conn, $userKey) {
+    $query = "
+        SELECT 
+            tingkat_pelanggaran, 
+            jumlah_pelanggaran
+        FROM 
+            dbo.RangkumanPelanggaran
+        WHERE 
+            nim = (SELECT nim FROM Mahasiswa WHERE user_id = ?)
+        ORDER BY 
+            tingkat_pelanggaran;
+    ";
+    $params = [$userKey];
+    $stmt = sqlsrv_query($conn, $query, $params);
     if ($stmt === false) {
         die("Query failed: " . print_r(sqlsrv_errors(), true));
     }
 
-    // Fetch results
     $violations = [];
     while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
         $violations[] = $row;
     }
+    return $violations;
+}
+
+// Render tabel pelanggaran
+function renderViolationsTable($violations) {
+    foreach ($violations as $violation) {
+        echo "<tr>";
+        echo "<td>Tingkat " . htmlspecialchars($violation['tingkat_pelanggaran']) . "</td>";
+        echo "<td>" . htmlspecialchars($violation['jumlah_pelanggaran']) . "</td>";
+        echo "<td>";
+        if ($violation['jumlah_pelanggaran'] != 0) {
+            $url = "mhs_listPelanggaran.php?tingkat_pelanggaran=" . urlencode($violation['tingkat_pelanggaran']);
+            echo "<a href='{$url}' class='view-btn'>Lihat Laporan</a>";
+        } else {
+            echo "<button class='disabled-btn'>Lihat Laporan</button>";
+        }
+        echo "</td>";
+        echo "</tr>";
+    }
+}
+
+// Eksekusi utama
+checkMahasiswaSession();
+$conn = connectToDatabase();
+$violations = getViolationsData($conn, $_SESSION['user_key']);
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -405,7 +440,4 @@ if (!empty($_SESSION['user_key']) && $_SESSION['role'] == "Mahasiswa") {
     </html>
 <?php
     sqlsrv_close($conn);
-} else {
-    header("location: logout.php");
-}
 ?>
